@@ -1,0 +1,181 @@
+/* ============================================================
+   tokens.css
+   Única fuente de verdad del design system.
+   Declara las variables que el resto del CSS consume.
+   En fase 2, theme-loader.js sobreescribirá estos valores
+   leyendo theme.json. Aquí solo dejamos los defaults iniciales:
+   Catppuccin Latte (light) y Mocha (dark), acento mauve.
+   ============================================================ */
+
+:root {
+  /* ---------- Tipografía ---------- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.875rem;
+  --fs-2xl: 2.5rem;
+  --fs-3xl: 3.75rem;
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.35;
+  --lh-normal: 1.6;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+
+  /* ---------- Espaciado (escala 8pt) ---------- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+  --sp-9: 6rem;
+  --sp-10: 8rem;
+
+  /* ---------- Radios ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* ---------- Layout ---------- */
+  --sidebar-width: 280px;
+  --content-max: 760px;
+  --content-padding: var(--sp-7);
+
+  /* ---------- Transiciones ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-fast: 150ms var(--ease-out);
+  --transition-base: 240ms var(--ease-out);
+  --transition-slow: 480ms var(--ease-out);
+
+  /* ============================================================
+     PALETAS
+     Catppuccin Latte (claro, modo por defecto)
+     Variables semánticas → asignadas desde la paleta cruda
+     ============================================================ */
+
+  /* Latte raw colors */
+  --latte-base: #eff1f5;
+  --latte-mantle: #e6e9ef;
+  --latte-crust: #dce0e8;
+  --latte-surface0: #ccd0da;
+  --latte-surface1: #bcc0cc;
+  --latte-surface2: #acb0be;
+  --latte-overlay0: #9ca0b0;
+  --latte-overlay1: #8c8fa1;
+  --latte-overlay2: #7c7f93;
+  --latte-text: #4c4f69;
+  --latte-subtext1: #5c5f77;
+  --latte-subtext0: #6c6f85;
+  --latte-mauve: #8839ef;
+  --latte-rosewater: #dc8a78;
+  --latte-flamingo: #dd7878;
+  --latte-pink: #ea76cb;
+  --latte-red: #d20f39;
+  --latte-peach: #fe640b;
+  --latte-yellow: #df8e1d;
+  --latte-green: #40a02b;
+  --latte-teal: #179299;
+  --latte-blue: #1e66f5;
+  --latte-lavender: #7287fd;
+
+  /* Mocha raw colors */
+  --mocha-base: #1e1e2e;
+  --mocha-mantle: #181825;
+  --mocha-crust: #11111b;
+  --mocha-surface0: #313244;
+  --mocha-surface1: #45475a;
+  --mocha-surface2: #585b70;
+  --mocha-overlay0: #6c7086;
+  --mocha-overlay1: #7f849c;
+  --mocha-overlay2: #9399b2;
+  --mocha-text: #cdd6f4;
+  --mocha-subtext1: #bac2de;
+  --mocha-subtext0: #a6adc8;
+  --mocha-mauve: #cba6f7;
+  --mocha-rosewater: #f5e0dc;
+  --mocha-flamingo: #f2cdcd;
+  --mocha-pink: #f5c2e7;
+  --mocha-red: #f38ba8;
+  --mocha-peach: #fab387;
+  --mocha-yellow: #f9e2af;
+  --mocha-green: #a6e3a1;
+  --mocha-teal: #94e2d5;
+  --mocha-blue: #89b4fa;
+  --mocha-lavender: #b4befe;
+
+  /* ============================================================
+     VARIABLES SEMÁNTICAS (las que consume el CSS)
+     Default = Latte. El [data-theme="dark"] las sobreescribe.
+     ============================================================ */
+  --color-bg: var(--latte-base);
+  --color-bg-elevated: var(--latte-mantle);
+  --color-bg-deep: var(--latte-crust);
+  --color-surface: var(--latte-mantle);
+  --color-surface-hover: var(--latte-surface0);
+  --color-border: var(--latte-surface0);
+  --color-border-strong: var(--latte-surface1);
+
+  --color-text: var(--latte-text);
+  --color-text-muted: var(--latte-subtext0);
+  --color-text-faint: var(--latte-overlay1);
+
+  --color-accent: var(--latte-mauve);
+  --color-accent-hover: #7c2bdb;
+  --color-accent-soft: rgba(136, 57, 239, 0.12);
+
+  --color-link: var(--latte-mauve);
+
+  --shadow-sm: 0 1px 2px rgba(76, 79, 105, 0.06);
+  --shadow-md: 0 4px 16px rgba(76, 79, 105, 0.08);
+  --shadow-lg: 0 12px 40px rgba(76, 79, 105, 0.12);
+
+  --selection-bg: rgba(136, 57, 239, 0.2);
+  --selection-text: var(--latte-text);
+}
+
+[data-theme="dark"] {
+  --color-bg: var(--mocha-base);
+  --color-bg-elevated: var(--mocha-mantle);
+  --color-bg-deep: var(--mocha-crust);
+  --color-surface: var(--mocha-mantle);
+  --color-surface-hover: var(--mocha-surface0);
+  --color-border: var(--mocha-surface0);
+  --color-border-strong: var(--mocha-surface1);
+
+  --color-text: var(--mocha-text);
+  --color-text-muted: var(--mocha-subtext0);
+  --color-text-faint: var(--mocha-overlay1);
+
+  --color-accent: var(--mocha-mauve);
+  --color-accent-hover: #d9bcff;
+  --color-accent-soft: rgba(203, 166, 247, 0.14);
+
+  --color-link: var(--mocha-mauve);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  --selection-bg: rgba(203, 166, 247, 0.25);
+  --selection-text: var(--mocha-text);
+}
