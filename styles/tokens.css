@@ -179,3 +179,79 @@
   --selection-bg: rgba(203, 166, 247, 0.25);
   --selection-text: var(--mocha-text);
 }
+
+[data-theme="retro-term"] {
+  --color-bg: #0a0a0a;
+  --color-bg-elevated: #0f0f0f;
+  --color-bg-deep: #000000;
+  --color-surface: #111111;
+  --color-surface-hover: #1a1a1a;
+  --color-border: #1a3d1a;
+  --color-border-strong: #2d6b2d;
+
+  --color-text: #33ff00;
+  --color-text-muted: #1fcc00;
+  --color-text-faint: #0d8a00;
+
+  --color-accent: #39ff14;
+  --color-accent-hover: #57ff33;
+  --color-accent-soft: rgba(51, 255, 0, 0.1);
+  --color-link: #39ff14;
+
+  --shadow-sm: 0 0 4px rgba(51, 255, 0, 0.2);
+  --shadow-md: 0 0 12px rgba(51, 255, 0, 0.25);
+  --shadow-lg: 0 0 28px rgba(51, 255, 0, 0.3);
+
+  --selection-bg: rgba(51, 255, 0, 0.2);
+  --selection-text: #0a0a0a;
+
+  /* Todo en mono, como una terminal real */
+  --font-display: "JetBrains Mono", monospace;
+  --font-body: "JetBrains Mono", monospace;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+}
+
+[data-theme="pixel8"] {
+  --color-bg: #000000;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-deep: #0d0d0d;
+  --color-surface: #1a1a1a;
+  --color-surface-hover: #262626;
+  --color-border: #3c3c3c;
+  --color-border-strong: #e40058;
+
+  --color-text: #fcfcfc;
+  --color-text-muted: #bcbcbc;
+  --color-text-faint: #7c7c7c;
+
+  --color-accent: #e40058;
+  --color-accent-hover: #ff3377;
+  --color-accent-soft: rgba(228, 0, 88, 0.15);
+  --color-link: #e40058;
+
+  /* Sombras offset estilo sprite, sin blur */
+  --shadow-sm: 3px 3px 0 #e40058;
+  --shadow-md: 4px 4px 0 #e40058;
+  --shadow-lg: 6px 6px 0 #e40058;
+
+  --selection-bg: rgba(228, 0, 88, 0.3);
+  --selection-text: #fcfcfc;
+
+  --font-display: "Press Start 2P", monospace;
+  --font-body: "Press Start 2P", monospace;
+  --font-mono: "Press Start 2P", monospace;
+
+  /* Line height alto para que Press Start 2P respire */
+  --lh-tight: 1.8;
+  --lh-snug: 2;
+  --lh-normal: 2.4;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+}

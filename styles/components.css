@@ -72,8 +72,41 @@
 .theme-toggle__icon--sun { display: none; }
 .theme-toggle__icon--moon { display: inline-block; }
 
-[data-theme="dark"] .theme-toggle__icon--sun { display: inline-block; }
-[data-theme="dark"] .theme-toggle__icon--moon { display: none; }
+/* La clase base-dark la pone JS cuando baseTheme es "dark",
+   independientemente del tema especial activo */
+.theme-toggle.base-dark .theme-toggle__icon--sun { display: inline-block; }
+.theme-toggle.base-dark .theme-toggle__icon--moon { display: none; }
+
+/* ---------- Botones de temas especiales ---------- */
+
+.theme-special-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-faint);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.theme-special-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.theme-special-btn.is-active {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
 
 /* ---------- Hero (About) ---------- */
 

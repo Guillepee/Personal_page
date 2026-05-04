@@ -9,7 +9,7 @@
   <!-- Fuentes: Fraunces (display), Inter Tight (body), JetBrains Mono (mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles/main.css" />
 </head>
@@ -91,17 +91,23 @@
       </nav>
 
       <div class="sidebar__footer">
-        <span class="sidebar__footer-text">v0.1 · fase 1</span>
-        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Cambiar tema">
-          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-          </svg>
-          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-          </svg>
-          <span id="themeToggleLabel">Dark</span>
-        </button>
+        <div class="sidebar__footer-top">
+          <span class="sidebar__footer-text">v0.1 · fase 1</span>
+          <button class="theme-toggle" type="button" id="themeToggle" aria-label="Cambiar tema">
+            <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            </svg>
+            <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+            <span id="themeToggleLabel">Dark</span>
+          </button>
+        </div>
+        <div class="sidebar__footer-specials">
+          <button class="theme-special-btn" type="button" id="retroTermBtn" aria-label="Activar tema Terminal">&gt;_ Term</button>
+          <button class="theme-special-btn" type="button" id="pixel8Btn" aria-label="Activar tema 8-bit">8-bit</button>
+        </div>
       </div>
     </aside>
 
@@ -729,26 +735,60 @@
     (function () {
       const root = document.documentElement;
       const toggle = document.getElementById("themeToggle");
-      const label = document.getElementById("themeToggleLabel");
+      const toggleLabel = document.getElementById("themeToggleLabel");
+      const retroBtn = document.getElementById("retroTermBtn");
+      const pixel8Btn = document.getElementById("pixel8Btn");
 
-      // Modo inicial: respeta localStorage, si no, usa el data-theme del HTML.
-      const stored = localStorage.getItem("theme");
-      if (stored === "light" || stored === "dark") {
-        root.setAttribute("data-theme", stored);
+      const SPECIAL_THEMES = ["retro-term", "pixel8"];
+
+      // baseTheme guarda el último estado del toggle light/dark
+      let baseTheme = localStorage.getItem("baseTheme") || "light";
+
+      // Tema activo inicial: puede ser base o especial
+      const storedTheme = localStorage.getItem("theme") || "";
+      const validThemes = ["light", "dark", ...SPECIAL_THEMES];
+      const initialTheme = validThemes.includes(storedTheme) ? storedTheme : baseTheme;
+      root.setAttribute("data-theme", initialTheme);
+
+      function applyTheme(theme) {
+        root.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        syncUI();
       }
-      const updateLabel = () => {
-        const current = root.getAttribute("data-theme");
-        label.textContent = current === "dark" ? "Light" : "Dark";
-      };
-      updateLabel();
 
-      toggle.addEventListener("click", () => {
+      function syncUI() {
         const current = root.getAttribute("data-theme");
-        const next = current === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", next);
-        localStorage.setItem("theme", next);
-        updateLabel();
+
+        // El label del toggle refleja el próximo estado normal (opuesto del baseTheme actual)
+        toggleLabel.textContent = baseTheme === "dark" ? "Light" : "Dark";
+
+        // Clase que controla el icono sol/luna, independiente del tema especial activo
+        toggle.classList.toggle("base-dark", baseTheme === "dark");
+
+        // Estado activo de los botones especiales
+        retroBtn.classList.toggle("is-active", current === "retro-term");
+        pixel8Btn.classList.toggle("is-active", current === "pixel8");
+      }
+
+      // Toggle light/dark: siempre opera sobre baseTheme, descarta temas especiales
+      toggle.addEventListener("click", () => {
+        baseTheme = baseTheme === "light" ? "dark" : "light";
+        localStorage.setItem("baseTheme", baseTheme);
+        applyTheme(baseTheme);
       });
+
+      // Botones especiales: toggle on/off; al desactivar vuelve al baseTheme
+      retroBtn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme");
+        applyTheme(current === "retro-term" ? baseTheme : "retro-term");
+      });
+
+      pixel8Btn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme");
+        applyTheme(current === "pixel8" ? baseTheme : "pixel8");
+      });
+
+      syncUI();
 
       // Scrollspy: marca el nav-link de la sección visible.
       const navLinks = document.querySelectorAll(".sidebar__nav .nav-link");
@@ -763,7 +803,6 @@
 
       const observer = new IntersectionObserver(
         (entries) => {
-          // Toma la entrada más visible.
           const visible = entries
             .filter((e) => e.isIntersecting)
             .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];

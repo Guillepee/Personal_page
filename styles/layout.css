@@ -98,9 +98,20 @@
   padding-top: var(--sp-5);
   border-top: 1px solid var(--color-border);
   display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.sidebar__footer-top {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
+}
+
+.sidebar__footer-specials {
+  display: flex;
+  gap: var(--sp-2);
 }
 
 .sidebar__footer-text {
