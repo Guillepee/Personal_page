@@ -21,20 +21,24 @@
   padding: var(--sp-6) var(--sp-5);
   background: var(--color-bg-elevated);
   border-right: 1px solid var(--color-border);
-  /* El contenido entra completo en cualquier tema en pantallas estándar
-     (alto >= ~690px). En pantallas muy bajas permitimos scroll como red de
-     seguridad, pero ocultamos la barra para que nunca se vea (sin cortar
-     contenido, que es lo que pasaría con overflow:hidden). */
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
+  /* Nunca hay scroll: el contenido se escala para entrar completo (ver
+     .sidebar__fit y fitSidebar() en el script). overflow:hidden recorta
+     solo subpíxeles del escalado. */
+  overflow: hidden;
   transition:
     background-color var(--transition-base),
     border-color var(--transition-base);
 }
 
-/* Oculta la barra de scroll de la sidebar en Webkit (Chrome/Safari) */
-.sidebar::-webkit-scrollbar {
-  display: none;
+/* Contenedor del contenido de la sidebar. Se escala con --sidebar-scale
+   (calculado por JS) para que todo entre sin scroll en cualquier altura. */
+.sidebar__fit {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  transform-origin: top center;
+  transform: scale(var(--sidebar-scale, 1));
 }
 
 .sidebar__brand {

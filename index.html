@@ -19,6 +19,9 @@
          SIDEBAR
          ============================================================ -->
     <aside class="sidebar">
+      <!-- Contenedor escalable: theme-loader/JS ajusta --sidebar-scale para
+           que todo entre sin scroll en cualquier altura de viewport. -->
+      <div class="sidebar__fit">
       <div class="sidebar__brand">
         <div class="sidebar__brand-mark">G</div>
         <div class="sidebar__brand-text">
@@ -109,6 +112,7 @@
           <button class="theme-special-btn theme-special-btn--pixel8" type="button" id="pixel8Btn" aria-label="Activar tema 8-bit">8-bit</button>
           <button class="theme-special-btn theme-special-btn--dnd35" type="button" id="dnd35Btn" aria-label="Activar tema D&D 3.5">D&D</button>
         </div>
+      </div>
       </div>
     </aside>
 
@@ -756,6 +760,30 @@
         root.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
         syncUI();
+        // El tema cambia las fuentes (y la altura del contenido): reajustar.
+        fitSidebar();
+        document.fonts.ready.then(fitSidebar);
+      }
+
+      // Escala el contenido de la sidebar para que entre completo sin scroll.
+      // Mide la altura natural (sin que flex la comprima) y la compara con el
+      // alto disponible; si no entra, reduce --sidebar-scale proporcionalmente.
+      const sidebarEl = document.querySelector(".sidebar");
+      const sidebarFit = document.querySelector(".sidebar__fit");
+      function fitSidebar() {
+        if (!sidebarEl || !sidebarFit) return;
+        // Medir sin escalar: scrollHeight del contenedor flex refleja el alto
+        // real del contenido (incluido el desborde) tal como se renderiza.
+        sidebarFit.style.setProperty("--sidebar-scale", 1);
+        const cs = getComputedStyle(sidebarEl);
+        const available =
+          sidebarEl.clientHeight -
+          parseFloat(cs.paddingTop) -
+          parseFloat(cs.paddingBottom);
+        const natural = sidebarFit.scrollHeight;
+        // 1px de margen para evitar desbordes por redondeo subpíxel.
+        const scale = natural > available ? (available - 1) / natural : 1;
+        sidebarFit.style.setProperty("--sidebar-scale", scale);
       }
 
       function syncUI() {
@@ -797,6 +825,12 @@
       });
 
       syncUI();
+
+      // Ajuste inicial del escalado de la sidebar y recálculo ante cambios
+      // de tamaño o cuando terminan de cargar las fuentes web.
+      fitSidebar();
+      document.fonts.ready.then(fitSidebar);
+      window.addEventListener("resize", fitSidebar);
 
       // Scrollspy: marca el nav-link de la sección visible.
       const navLinks = document.querySelectorAll(".sidebar__nav .nav-link");
