@@ -282,10 +282,24 @@
   --font-body: "Press Start 2P", monospace;
   --font-mono: "Press Start 2P", monospace;
 
-  /* Line height alto para que Press Start 2P respire */
-  --lh-tight: 1.8;
-  --lh-snug: 2;
-  --lh-normal: 2.4;
+  /* Press Start 2P es mucho mas ancha y alta por caracter que las demas
+     fuentes: se reduce la escala tipografica (manteniendo las proporciones
+     internas) para que el cuerpo tenga dimensiones simetricas a los otros
+     temas. La sidebar ajusta su propia escala aparte (ver layout.css). */
+  --fs-xs: 0.46rem;
+  --fs-sm: 0.55rem;
+  --fs-base: 0.62rem;
+  --fs-md: 0.68rem;
+  --fs-lg: 0.82rem;
+  --fs-xl: 1.05rem;
+  --fs-2xl: 1.45rem;
+  --fs-3xl: 2.1rem;
+
+  /* Line height algo mayor que el resto de temas (para que respire) pero sin
+     inflar el alto como antes (era 1.8/2/2.4). */
+  --lh-tight: 1.5;
+  --lh-snug: 1.6;
+  --lh-normal: 1.7;
 
   --radius-sm: 0px;
   --radius-md: 0px;

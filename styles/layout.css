@@ -135,13 +135,14 @@
   letter-spacing: var(--tracking-wide);
 }
 
-/* En pixel8, Press Start 2P infla todo el texto y la sidebar desbordaría.
-   Reducimos la escala tipográfica solo dentro de la sidebar (redefiniendo
-   las variables en este scope), sin afectar el contenido principal. */
+/* En pixel8 la sidebar usa una escala propia (mayor que la del cuerpo): sus
+   textos son cortos y no sufren el wrapping del contenido, así que pueden ser
+   más grandes para verse comparables a la sidebar de los otros temas. El
+   escalado dinámico (fitSidebar) se encarga de que igual entre todo. */
 [data-theme="pixel8"] .sidebar {
-  --fs-md: 0.7rem;
-  --fs-sm: 0.5rem;
-  --fs-xs: 0.4rem;
+  --fs-md: 0.82rem;
+  --fs-sm: 0.68rem;
+  --fs-xs: 0.55rem;
 }
 
 /* ---------- Main ---------- */
