@@ -330,6 +330,7 @@ Consideración importante: los JSONs con `fetch()` requieren servidor local (`py
 - **Fuente Fraunces italic** solo en `section__title` y `.hero__name em` — no saturar.
 - **Eyebrow pattern**: línea horizontal + texto en mono uppercase + color acento.
 - **Sin Tailwind, sin React, sin build step** en Fase 1. Fase 2 mantiene ese espíritu.
+- **Sidebar sin barra de desplazamiento visible** — el objetivo es que el contenido (brand + nav + footer) entre completo en `100vh` sin barra. Como "todo entra + sin barra" es imposible de garantizar para *cualquier* altura, el enfoque es híbrido: `.sidebar` usa `overflow-y: auto` con la barra **oculta** (`scrollbar-width: none` + `::-webkit-scrollbar { display: none }`). Así nunca se ve barra y, en pantallas muy bajas, el scroll queda como red de seguridad en vez de cortar contenido. La nav (`flex: 1`) absorbe el espacio sobrante. Si un tema infla el texto (caso `pixel8` con Press Start 2P) se reduce la escala tipográfica **solo dentro de `.sidebar`** redefiniendo `--fs-md/sm/xs` en ese scope (ver `layout.css`), nunca el contenido principal. Medido con fuentes reales: el contenido entra sin scroll con alto de viewport ≥ ~690px en los 5 temas (peor caso `retro-term`/`dnd35` = 688px; `pixel8` = 620px). Al añadir un tema con tipografía grande, verificar que la sidebar siga entrando.
 
 ---
 

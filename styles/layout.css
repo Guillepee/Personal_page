@@ -18,20 +18,30 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: var(--sp-7) var(--sp-5);
+  padding: var(--sp-6) var(--sp-5);
   background: var(--color-bg-elevated);
   border-right: 1px solid var(--color-border);
+  /* El contenido entra completo en cualquier tema en pantallas estándar
+     (alto >= ~690px). En pantallas muy bajas permitimos scroll como red de
+     seguridad, pero ocultamos la barra para que nunca se vea (sin cortar
+     contenido, que es lo que pasaría con overflow:hidden). */
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
   transition:
     background-color var(--transition-base),
     border-color var(--transition-base);
+}
+
+/* Oculta la barra de scroll de la sidebar en Webkit (Chrome/Safari) */
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar__brand {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-7);
+  margin-bottom: var(--sp-6);
   padding: 0 var(--sp-2);
 }
 
@@ -94,8 +104,8 @@
 }
 
 .sidebar__footer {
-  margin-top: var(--sp-5);
-  padding-top: var(--sp-5);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
   border-top: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -119,6 +129,15 @@
   font-size: var(--fs-xs);
   color: var(--color-text-faint);
   letter-spacing: var(--tracking-wide);
+}
+
+/* En pixel8, Press Start 2P infla todo el texto y la sidebar desbordaría.
+   Reducimos la escala tipográfica solo dentro de la sidebar (redefiniendo
+   las variables en este scope), sin afectar el contenido principal. */
+[data-theme="pixel8"] .sidebar {
+  --fs-md: 0.7rem;
+  --fs-sm: 0.5rem;
+  --fs-xs: 0.4rem;
 }
 
 /* ---------- Main ---------- */
