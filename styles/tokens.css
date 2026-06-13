@@ -215,6 +215,43 @@
   --radius-full: 0px;
 }
 
+/* ============================================================
+   D&D 3.5 — Manual del Jugador
+   Pergamino envejecido, tinta oscura, carmesí del emblema.
+   Tipografía romana (Cinzel) para display, serif clásico para cuerpo.
+   ============================================================ */
+[data-theme="dnd35"] {
+  --color-bg: #f7edd8;
+  --color-bg-elevated: #ede0c4;
+  --color-bg-deep: #d4b896;
+  --color-surface: #f2e4c8;
+  --color-surface-hover: #e8d4ae;
+  --color-border: #c9a96e;
+  --color-border-strong: #9b7a3b;
+
+  --color-text: #1c0f0a;
+  --color-text-muted: #5c3d2e;
+  --color-text-faint: #8b6346;
+
+  /* Carmesí del logotipo D&D */
+  --color-accent: #8b1a1a;
+  --color-accent-hover: #b22222;
+  --color-accent-soft: rgba(139, 26, 26, 0.12);
+  --color-link: #8b1a1a;
+
+  --shadow-sm: 0 1px 3px rgba(28, 15, 10, 0.12);
+  --shadow-md: 0 4px 16px rgba(28, 15, 10, 0.16);
+  --shadow-lg: 0 12px 40px rgba(28, 15, 10, 0.2);
+
+  --selection-bg: rgba(139, 26, 26, 0.2);
+  --selection-text: #1c0f0a;
+
+  /* Cinzel: capitales romanas clásicas, presente en la portada del PHB */
+  --font-display: "Cinzel", "Palatino Linotype", Georgia, serif;
+  /* Palatino: la serif del interior del manual */
+  --font-body: "Palatino Linotype", Palatino, Georgia, serif;
+}
+
 [data-theme="pixel8"] {
   --color-bg: #000000;
   --color-bg-elevated: #1a1a1a;

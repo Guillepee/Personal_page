@@ -75,14 +75,15 @@ Navegación: **scroll a anclas** con **scrollspy** activo (IntersectionObserver)
 
 ## Temas implementados
 
-El toggle del sidebar cicla entre los 4 temas. La elección persiste en `localStorage`.
+Hay 5 temas. El modelo no es un ciclo único: el toggle del sidebar alterna solo entre los dos temas **base** (`light`/`dark`), mientras que los temas **especiales** se activan/desactivan con sus propios botones (al desactivar, se vuelve al `baseTheme`). La elección persiste en `localStorage` (claves `theme` y `baseTheme`).
 
-| `data-theme` | Nombre | Descripción |
-|---|---|---|
-| `light` | Latte | Catppuccin Latte, acento mauve. **Default** |
-| `dark` | Mocha | Catppuccin Mocha, acento mauve |
-| `retro-term` | Terminal | Fondo negro, verde fósforo, scanlines CRT, todo en JetBrains Mono |
-| `pixel8` | 8-bit | Paleta NES, Press Start 2P, sombras offset rojo, estética Nintendo |
+| `data-theme` | Nombre | Tipo | Descripción |
+|---|---|---|---|
+| `light` | Latte | base | Catppuccin Latte, acento mauve. **Default** |
+| `dark` | Mocha | base | Catppuccin Mocha, acento mauve |
+| `retro-term` | Terminal | especial | Fondo negro, verde fósforo, scanlines CRT, todo en JetBrains Mono |
+| `pixel8` | 8-bit | especial | Paleta NES, Press Start 2P, sombras offset rojo, estética Nintendo |
+| `dnd35` | D&D 3.5 | especial | Pergamino envejecido, tinta oscura, carmesí del emblema, Cinzel + Palatino |
 
 Todo vive en `styles/tokens.css`. Añadir un tema nuevo = añadir un bloque `[data-theme="nuevo"]` con las variables semánticas sobreescritas.
 
@@ -108,11 +109,24 @@ Todo vive en `styles/tokens.css`. Añadir un tema nuevo = añadir un bloque `[da
 }
 ```
 
-Luego añadirlo al array del script en `index.html`:
+Luego, en el script de `index.html`, si es un tema **especial**:
 ```js
-const themes = ["light", "dark", "retro-term", "pixel8", "mi-tema"];
-const themeLabels = { ..., "mi-tema": "Label siguiente", "pixel8": "Mi tema" };
+// 1. Añadirlo al array de temas especiales
+const SPECIAL_THEMES = ["retro-term", "pixel8", "dnd35", "mi-tema"];
+
+// 2. Capturar su botón
+const miTemaBtn = document.getElementById("miTemaBtn");
+
+// 3. Reflejar su estado activo en syncUI()
+miTemaBtn.classList.toggle("is-active", current === "mi-tema");
+
+// 4. Registrar su listener (toggle on/off contra baseTheme)
+miTemaBtn.addEventListener("click", () => {
+  const current = root.getAttribute("data-theme");
+  applyTheme(current === "mi-tema" ? baseTheme : "mi-tema");
+});
 ```
+Y añadir el botón en el HTML del sidebar (`.sidebar__footer-specials`) con su clase modificadora `.theme-special-btn--mi-tema` para el dot de color (ver `styles/components.css`).
 
 ---
 

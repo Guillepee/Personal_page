@@ -9,7 +9,7 @@
   <!-- Fuentes: Fraunces (display), Inter Tight (body), JetBrains Mono (mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles/main.css" />
 </head>
@@ -105,8 +105,9 @@
           </button>
         </div>
         <div class="sidebar__footer-specials">
-          <button class="theme-special-btn" type="button" id="retroTermBtn" aria-label="Activar tema Terminal">&gt;_ Term</button>
-          <button class="theme-special-btn" type="button" id="pixel8Btn" aria-label="Activar tema 8-bit">8-bit</button>
+          <button class="theme-special-btn theme-special-btn--term" type="button" id="retroTermBtn" aria-label="Activar tema Terminal">Term</button>
+          <button class="theme-special-btn theme-special-btn--pixel8" type="button" id="pixel8Btn" aria-label="Activar tema 8-bit">8-bit</button>
+          <button class="theme-special-btn theme-special-btn--dnd35" type="button" id="dnd35Btn" aria-label="Activar tema D&D 3.5">D&D</button>
         </div>
       </div>
     </aside>
@@ -738,8 +739,9 @@
       const toggleLabel = document.getElementById("themeToggleLabel");
       const retroBtn = document.getElementById("retroTermBtn");
       const pixel8Btn = document.getElementById("pixel8Btn");
+      const dnd35Btn = document.getElementById("dnd35Btn");
 
-      const SPECIAL_THEMES = ["retro-term", "pixel8"];
+      const SPECIAL_THEMES = ["retro-term", "pixel8", "dnd35"];
 
       // baseTheme guarda el último estado del toggle light/dark
       let baseTheme = localStorage.getItem("baseTheme") || "light";
@@ -768,6 +770,7 @@
         // Estado activo de los botones especiales
         retroBtn.classList.toggle("is-active", current === "retro-term");
         pixel8Btn.classList.toggle("is-active", current === "pixel8");
+        dnd35Btn.classList.toggle("is-active", current === "dnd35");
       }
 
       // Toggle light/dark: siempre opera sobre baseTheme, descarta temas especiales
@@ -786,6 +789,11 @@
       pixel8Btn.addEventListener("click", () => {
         const current = root.getAttribute("data-theme");
         applyTheme(current === "pixel8" ? baseTheme : "pixel8");
+      });
+
+      dnd35Btn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme");
+        applyTheme(current === "dnd35" ? baseTheme : "dnd35");
       });
 
       syncUI();
