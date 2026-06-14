@@ -1,0 +1,17 @@
+# Control de versiones y meta
+.git
+.gitignore
+.github
+
+# Entornos y cachés locales (no son parte del sitio)
+.venv
+.local
+__pycache__
+
+# Documentación y archivos de proyecto (no van a la imagen)
+*.md
+Dockerfile
+.dockerignore
+
+# Datos de ejemplo / backups que no deben ir a producción
+data/content_mock.json
