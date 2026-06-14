@@ -1,4 +1,12 @@
 {
+  "sectionHeaders": {
+    "experience": { "eyebrow": "Trayectoria", "title": "Experiencia", "lede": "Roles que han moldeado cómo pienso sobre producto, sistemas y equipos." },
+    "education":  { "eyebrow": "Estudios", "title": "Formación", "lede": "La parte oficial. Lo importante lo aprendí después." },
+    "skills":     { "eyebrow": "Caja de herramientas", "title": "Habilidades", "lede": "Lo que uso cómodo a diario, agrupado por dónde encaja en el stack." },
+    "projects":   { "eyebrow": "Trabajo propio", "title": "Proyectos", "lede": "Cosas que construí porque quería usarlas." },
+    "resources":  { "eyebrow": "Hub de accesos rápidos", "title": "Recursos", "lede": "Las páginas que tengo siempre a un click. Mi escritorio en la nube." },
+    "contact":    { "eyebrow": "Conectar", "title": "Contacto", "lede": "La forma más rápida de llegarme. Respondo en 24h salvo fuegos." }
+  },
   "profile": {
     "name": "Guillermo Palmieri",
     "headline": "Full Stack Developer · Backend & IA",

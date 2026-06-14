@@ -11,14 +11,39 @@
   const toggle = document.getElementById("themeToggle");
   const toggleLabel = document.getElementById("themeToggleLabel");
   const specialsContainer = document.querySelector(".sidebar__footer-specials");
+  const portraitFrame = document.querySelector(".hero__portrait-frame");
+  // Placeholder SVG original: se usa como fallback si un tema no tiene imagen
+  // o si la imagen no se puede cargar.
+  const portraitPlaceholder = portraitFrame ? portraitFrame.innerHTML : "";
 
   let baseThemes = ["light", "dark"]; // fallback si falla el fetch
   let specialThemes = [];
+  let portraits = {}; // tema -> ruta de imagen
   let baseTheme = localStorage.getItem("baseTheme") || "light";
+
+  // Muestra el retrato del tema activo; si no hay imagen o falla la carga,
+  // deja el placeholder SVG original.
+  function applyPortrait(theme) {
+    if (!portraitFrame) return;
+    const src = portraits[theme];
+    if (!src) {
+      portraitFrame.innerHTML = portraitPlaceholder;
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      portraitFrame.innerHTML = `<img src="${src}" alt="Retrato" />`;
+    };
+    img.onerror = () => {
+      portraitFrame.innerHTML = portraitPlaceholder;
+    };
+    img.src = src;
+  }
 
   function applyTheme(theme) {
     root.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
+    applyPortrait(theme);
     syncUI();
     // El cambio de tema altera las fuentes (y la altura del sidebar): avisar
     // para que fitSidebar (en el script inline) recalcule el escalado.
@@ -73,6 +98,10 @@
     specialThemes = entries
       .filter(([, t]) => t.type === "special")
       .map(([id, t]) => ({ id, name: t.name, label: t.label || t.name, dot: t.dot || "currentColor" }));
+    portraits = {};
+    entries.forEach(([id, t]) => {
+      if (t.portrait) portraits[id] = t.portrait;
+    });
 
     // Tema base: el guardado (si es válido) o el default_mode de la config.
     const storedBase = localStorage.getItem("baseTheme");

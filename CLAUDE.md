@@ -49,14 +49,14 @@ cv-web/
 **Estructura Fase 2 (completa):**
 ```
 data/
-└── content.json          ✅ todos los datos del CV
+└── content.json          ✅ datos del CV + encabezados de sección (sectionHeaders)
 config/
 ├── site.json             ✅ idioma, switchers y secciones (label, icon, group, visible)
-└── theme.json            ✅ default_mode + themes (name, type, label, dot) + tipografía (referencia)
+└── theme.json            ✅ default_mode + themes (name, type, label, dot, portrait) + tipografía (referencia)
 scripts/
-├── content-renderer.js   ✅ fetch + render con template literals
+├── content-renderer.js   ✅ fetch + render (contenido + encabezados de sección)
 ├── site-config.js        ✅ construye el nav del sidebar y aplica visibilidad
-└── theme-loader.js       ✅ toggle + genera botones de tema desde theme.json
+└── theme-loader.js       ✅ toggle + botones de tema + retrato por tema, todo desde theme.json
 ```
 
 Notas sobre lo implementado:
@@ -64,7 +64,9 @@ Notas sobre lo implementado:
 - **theme-loader.js** (híbrido): genera los botones especiales desde `theme.json` (el dot va como var `--theme-dot`), maneja el toggle light/dark y persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
 - **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros), aplica `visible` y respeta `show_theme_switcher`.
 - **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` y `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) los escucha para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).
-- **Pendiente (Fase 3 o mejoras)**: mover encabezados de sección (eyebrow/título/lede) y reordenar el `<main>` desde `site.json`; el retrato del hero sigue siendo un placeholder SVG fijo; tipografía configurable (2.º preset).
+- **Encabezados de sección**: viven en `content.json` → `sectionHeaders` (eyebrow/título/lede por sección); el renderer los pinta en `<div class="section__head" id="{sec}Head">`. El hero (about) no tiene encabezado (usa `profile`).
+- **Retrato por tema**: cada tema en `theme.json` define `portrait` (`assets/images/portrait-{tema}.jpg`, 3:4 vertical). `theme-loader.js` muestra la imagen del tema activo y, si falta o falla la carga (404), cae al placeholder SVG. **Pendiente del usuario**: subir las 5 imágenes a `assets/images/` (hasta entonces se ve el placeholder y hay un 404 benigno en consola).
+- **Descartado por decisión**: reordenar el `<main>` desde `site.json` (se prefiere el orden actual) y el switcher de tipografía (no hay 2.º preset que justifique).
 
 ---
 

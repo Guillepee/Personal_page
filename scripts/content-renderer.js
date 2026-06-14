@@ -149,13 +149,31 @@ function renderContactItem(item) {
     </a>`;
 }
 
+// Encabezado de sección (eyebrow + título + lede).
+function renderSectionHead(head) {
+  return `
+    <p class="section__eyebrow">${head.eyebrow}</p>
+    <h2 class="section__title">${head.title}</h2>
+    <p class="section__lede">${head.lede}</p>`;
+}
+
 // Inserta el HTML generado en el contenedor con el id dado.
 function fillList(id, items, renderFn) {
   const el = document.getElementById(id);
   if (el) el.innerHTML = items.map(renderFn).join("");
 }
 
+// Puebla los encabezados de cada sección desde sectionHeaders.
+function fillHeads(headers) {
+  if (!headers) return;
+  for (const [id, head] of Object.entries(headers)) {
+    const el = document.getElementById(`${id}Head`);
+    if (el) el.innerHTML = renderSectionHead(head);
+  }
+}
+
 function renderContent(data) {
+  fillHeads(data.sectionHeaders);
   renderHero(data.profile);
   fillList("experienceList", data.experience, renderTimelineItem);
   fillList("educationList", data.education, renderTimelineItem);
