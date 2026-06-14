@@ -169,7 +169,9 @@ function renderContent(data) {
 
 async function loadContent() {
   try {
-    const response = await fetch("data/content.json");
+    // cache: "no-cache" -> el navegador revalida con el server en cada carga,
+    // así al editar el JSON se ve con un F5 normal (sin hard refresh).
+    const response = await fetch("data/content.json", { cache: "no-cache" });
     if (!response.ok) {
       // Fallar de forma visible: sin contenido la página no tiene sentido.
       throw new Error(`No se pudo cargar content.json (HTTP ${response.status})`);

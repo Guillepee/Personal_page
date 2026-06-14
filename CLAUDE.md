@@ -60,7 +60,7 @@ scripts/
 ```
 
 Notas sobre lo implementado:
-- **Carga**: los tres scripts hacen `fetch` con `defer`. Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
+- **Carga**: los tres scripts hacen `fetch` con `defer` y `cache: "no-cache"` (revalidan con el server, así al editar un JSON se ve con un `F5` normal, sin hard refresh). Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
 - **theme-loader.js** (híbrido): genera los botones especiales desde `theme.json` (el dot va como var `--theme-dot`), maneja el toggle light/dark y persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
 - **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros), aplica `visible` y respeta `show_theme_switcher`.
 - **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` y `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) los escucha para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).

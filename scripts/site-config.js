@@ -90,7 +90,9 @@ function applyConfig(config) {
 
 async function loadSiteConfig() {
   try {
-    const response = await fetch("config/site.json");
+    // cache: "no-cache" -> revalida con el server, así los cambios en el JSON
+    // se ven con un F5 normal (sin hard refresh).
+    const response = await fetch("config/site.json", { cache: "no-cache" });
     if (!response.ok) {
       throw new Error(`No se pudo cargar site.json (HTTP ${response.status})`);
     }

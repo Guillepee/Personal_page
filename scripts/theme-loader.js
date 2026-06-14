@@ -90,7 +90,9 @@
 
   async function loadTheme() {
     try {
-      const res = await fetch("config/theme.json");
+      // cache: "no-cache" -> revalida con el server, así los cambios en el JSON
+      // se ven con un F5 normal (sin hard refresh).
+      const res = await fetch("config/theme.json", { cache: "no-cache" });
       if (!res.ok) throw new Error(`No se pudo cargar theme.json (HTTP ${res.status})`);
       applyConfig(await res.json());
     } catch (error) {
