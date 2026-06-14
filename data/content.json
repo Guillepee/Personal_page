@@ -1,92 +1,123 @@
 {
   "profile": {
-    "name": "Guillermo Solano",
-    "headline": "Software Engineer · Madrid",
-    "bio": "Construyo sistemas que la gente realmente usa. Me obsesionan los detalles que se ven y los que no — desde una transición de 240ms hasta el modelo de datos que la sostiene. Trabajo en equipos pequeños donde la frontera entre producto, código y diseño se difumina.",
-    "location": "Madrid, España",
+    "name": "Guillermo Palmieri",
+    "headline": "Full Stack Developer · Backend & IA",
+    "bio": "Desarrollo software centrado en Python, servicios backend e integración de IA. Me interesa tanto la lógica que sostiene un servicio como el proceso del equipo que lo construye: he migrado herramientas de gestión, incorporado agentes de IA en flujos de trabajo reales y desplegado modelos en local cuando la privacidad lo exige. Vengo del análisis de datos, y eso se nota en cómo pienso los problemas.",
+    "location": "Málaga, España",
     "availability": "Disponible para proyectos",
     "workMode": "Remoto · Híbrido",
-    "portraitCaption": "— G.S., 2026",
+    "portraitCaption": "— G.P., 2026",
     "socials": [
       { "id": "github", "url": "#", "label": "GitHub" },
       { "id": "linkedin", "url": "#", "label": "LinkedIn" },
-      { "id": "twitter", "url": "#", "label": "Twitter" },
-      { "id": "email", "url": "#", "label": "Email" }
+      { "id": "email", "url": "mailto:guillermo.palmieri23@gmail.com", "label": "Email" }
     ]
   },
   "experience": [
     {
-      "period": "2023 — actualidad",
-      "role": "Senior Software Engineer",
-      "org": "Northwind Labs",
-      "orgMeta": "· Madrid · Híbrido",
-      "description": "Lidero el desarrollo del motor de pricing en tiempo real. Migración progresiva de monolito Rails a servicios en Go; reducción del p95 de 480ms a 90ms. Mentoría a tres juniors.",
-      "tags": ["Go", "Postgres", "Kafka", "k8s"]
+      "period": "2025 — actualidad",
+      "role": "Full Stack Developer",
+      "org": "Evestel",
+      "orgMeta": "· Málaga · Remoto",
+      "description": "Desarrollo y optimización de servicios en Python para proyectos basados en visión por computador y gestión de vídeo. Propuse e implementé la migración de la gestión de proyectos a OpenProject, y la adopción de IA en los flujos del equipo (skills y agentes a medida), incluido el despliegue de modelos en local para tareas con requisitos de privacidad.",
+      "tags": ["Python", "Computer Vision", "IA / Agentes", "OpenProject"]
     },
     {
-      "period": "2020 — 2023",
-      "role": "Software Engineer",
-      "org": "Helia Studio",
-      "orgMeta": "· Barcelona · Remoto",
-      "description": "Producto SaaS de analítica para retail. Construí desde cero el módulo de cohortes y la pipeline de eventos (10M eventos/día). Stack TypeScript end-to-end.",
-      "tags": ["TypeScript", "React", "Node", "ClickHouse"]
+      "period": "2024 — 2025",
+      "role": "Desarrollador de Software",
+      "org": "Enerclic",
+      "orgMeta": "· Málaga · Híbrido",
+      "description": "Servicios en Python y JavaScript con comunicación MQTT para dispositivos IoT. Persistencia y consulta de datos sobre SQL, y trabajo sobre la fiabilidad de la comunicación entre los dispositivos y el backend.",
+      "tags": ["Python", "JavaScript", "MQTT", "IoT", "SQL"]
     },
     {
-      "period": "2018 — 2020",
-      "role": "Junior Developer",
-      "org": "Vértice Digital",
-      "orgMeta": "· Madrid · Presencial",
-      "description": "Desarrollo de webs y APIs para clientes del sector cultural. Aprendí lo que es enviar a producción los viernes a las 18:00.",
-      "tags": ["PHP", "Laravel", "Vue"]
+      "period": "2022 — 2024",
+      "role": "Especialista en Automatización de Datos",
+      "org": "Trenes Argentinos Operaciones",
+      "orgMeta": "· Buenos Aires",
+      "description": "Desarrollo y mantenimiento de software en Python para automatizar y agilizar el procesamiento de datos. Aplicación de IA generativa (GPT, Gemini) en soluciones internas, en colaboración con distintos equipos.",
+      "tags": ["Python", "Automatización", "IA Generativa"]
+    },
+    {
+      "period": "2014 — 2022",
+      "role": "Analista de Datos · Seguridad Operacional",
+      "org": "Trenes Argentinos Operaciones",
+      "orgMeta": "· Buenos Aires",
+      "description": "Elaboración de indicadores KPI para nivel gerencial, consultas y modelado de datos en SQL, y diseño de dashboards en Power BI.",
+      "tags": ["SQL", "Power BI", "Data"]
+    },
+    {
+      "period": "2011 — 2013",
+      "role": "Analista Técnico Funcional Jr.",
+      "org": "Latin America Technology",
+      "orgMeta": "· Buenos Aires",
+      "description": "Adaptación de sistemas ERP a las necesidades de negocio de los clientes y gestión de los módulos de Stock, Proveedores y Clientes, con consultas en SQL.",
+      "tags": ["ERP", "SQL"]
     }
   ],
   "education": [
     {
-      "period": "2014 — 2018",
-      "role": "Grado en Ingeniería Informática",
-      "org": "Universidad Politécnica de Madrid",
-      "orgMeta": "· Notable alto",
-      "description": "Especialidad en Computación. TFG sobre sistemas distribuidos consistentes eventualmente."
+      "period": "2016 — 2022",
+      "role": "Licenciado en Administración",
+      "org": "Universidad Nacional de Quilmes",
+      "orgMeta": "· Apostillado (La Haya) para España",
+      "description": "Formación en administración y gestión, con título homologable en España."
     },
     {
-      "period": "2022",
-      "role": "Distributed Systems Engineering",
-      "org": "MIT 6.824",
+      "period": "2023",
+      "role": "Maestro de Python",
+      "org": "Udemy",
       "orgMeta": "· Online",
-      "description": "Curso autoguiado. Implementación de Raft, MapReduce y un KV store con sharding."
+      "description": "Curso completo de Python aplicado al desarrollo y al procesamiento de datos."
+    },
+    {
+      "period": "2023",
+      "role": "JavaScript Moderno",
+      "org": "Udemy",
+      "orgMeta": "· Online",
+      "description": "JavaScript actual: ES moderno, asincronía y desarrollo web."
+    },
+    {
+      "period": "2021",
+      "role": "SQL for Data Analysis",
+      "org": "Udemy",
+      "orgMeta": "· Online",
+      "description": "Consultas y análisis de datos con SQL."
     }
   ],
   "skills": [
-    { "category": "Lenguajes", "items": ["Go", "TypeScript", "Python", "Rust", "SQL"] },
-    { "category": "Backend", "items": ["PostgreSQL", "Redis", "Kafka", "gRPC", "REST"] },
-    { "category": "Frontend", "items": ["React", "CSS moderno", "Web Components", "Vite"] },
-    { "category": "Infra", "items": ["Docker", "Kubernetes", "Terraform", "AWS"] },
-    { "category": "Idiomas", "items": ["Español · nativo", "Inglés · C1", "Francés · B1"] }
+    { "category": "Lenguajes", "items": ["Python", "JavaScript", "SQL"] },
+    { "category": "Backend & IoT", "items": ["Servicios / APIs", "REST", "MQTT", "IoT"] },
+    { "category": "IA", "items": ["Agentes & skills", "LLMs", "Modelos en local", "Computer Vision", "IA Generativa"] },
+    { "category": "Datos", "items": ["Pandas", "NumPy", "Power BI"] },
+    { "category": "Web & Librerías", "items": ["HTML", "CSS", "Django", "Requests", "BeautifulSoup", "Tkinter", "Flet"] },
+    { "category": "Herramientas", "items": ["Git", "Contenedores", "Scrum / Ágil"] },
+    { "category": "Idiomas", "items": ["Español · nativo", "Inglés · profesional"] }
   ],
   "projects": [
     {
-      "title": "Argos",
+      "title": "Sistema de documentación interna",
       "url": "#",
-      "description": "Monitor minimalista de servidores caseros. CLI + dashboard web, escrito en Go, sin dependencias externas.",
-      "tags": ["Go", "CLI"]
+      "description": "Plataforma de documentación para materiales de formación. Conversor de Markdown a HTML autocontenido, en un único script de Python sin dependencias externas.",
+      "tags": ["Python", "Docs"]
     },
     {
-      "title": "lume",
+      "title": "Lab de IA self-hosted",
       "url": "#",
-      "description": "Generador de notas markdown estructuradas, pensado para vaults grandes de Obsidian. Plugin oficial.",
-      "tags": ["TypeScript", "Obsidian"]
+      "description": "Entorno de inferencia de IA en local: despliegue de modelos LLM sobre hardware propio con interfaz web, para tareas que priorizan la privacidad.",
+      "tags": ["IA", "Self-hosting"]
     },
     {
-      "title": "Codex",
+      "title": "Curso de Claude Code",
       "url": "#",
-      "description": "Mi colección personal de snippets, comandos y configuraciones, con búsqueda fuzzy y atajos de teclado.",
-      "tags": ["Web", "PWA"]
+      "description": "Material de formación sobre Claude Code para desarrolladores senior: configuración, skills personalizadas, subagentes e integración MCP.",
+      "tags": ["IA", "Formación"]
     },
     {
-      "title": "Titanic Faces",
+      "title": "Portfolio",
       "url": "#",
-      "description": "Experimento creativo: caricaturas estilo años 90 generadas a partir de fotos de pareja. Side-project absurdo.",
-      "tags": ["IA", "Imagen"]
+      "description": "Este sitio. Portfolio personal con arquitectura modular basada en JSON y varios temas visuales.",
+      "tags": ["Web", "Frontend"]
     }
   ],
   "resources": [
@@ -125,8 +156,8 @@
     }
   ],
   "contact": [
-    { "type": "email", "label": "Email", "value": "hola@guillermosolano.com", "url": "mailto:hola@guillermosolano.com" },
-    { "type": "linkedin", "label": "LinkedIn", "value": "linkedin.com/in/guillermosolano", "url": "#" },
-    { "type": "github", "label": "GitHub", "value": "github.com/guillermosolano", "url": "#" }
+    { "type": "email", "label": "Email", "value": "guillermo.palmieri23@gmail.com", "url": "mailto:guillermo.palmieri23@gmail.com" },
+    { "type": "linkedin", "label": "LinkedIn", "value": "linkedin.com/in/tu-perfil", "url": "#" },
+    { "type": "github", "label": "GitHub", "value": "github.com/tu-usuario", "url": "#" }
   ]
 }
