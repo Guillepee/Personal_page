@@ -1,7 +1,11 @@
 # CLAUDE.md — CV Personal + Hub de Recursos
 
 Contexto completo para continuar este proyecto en Claude Code.
-Última sesión: mayo 2026. Fase actual: **1 completada**, lista para iniciar **Fase 2**.
+Última sesión: junio 2026. Fase actual: **Fase 2 en curso**. Hecho: `content.json` + `content-renderer.js` (el contenido del CV ya sale del JSON). Pendiente: `theme.json` + `theme-loader.js` y `site.json` + `site-config.js`.
+
+**Decisiones de Fase 2 (cerradas):**
+- **Carga de datos: `fetch`** (no módulos ES — ambos requieren servidor igual; fetch es más simple y anda en GitHub Pages). En desarrollo local hay que servir: `python3 -m http.server`.
+- **Render: template literals** en JS (funciones que devuelven HTML + `innerHTML`), no `<template>` tags. Más legible; seguro porque los datos son propios.
 
 ---
 
@@ -42,18 +46,25 @@ cv-web/
     └── main.css                ✅ orquestador de imports
 ```
 
-**Aún no existen** (Fase 2):
+**Ya creados** (Fase 2):
 ```
 data/
-└── content.json
+└── content.json          ✅ todos los datos del CV (paridad con el mock original)
+scripts/
+└── content-renderer.js   ✅ fetch + render con template literals
+```
+
+**Aún no existen** (Fase 2):
+```
 config/
 ├── theme.json
 └── site.json
 scripts/
 ├── theme-loader.js
-├── content-renderer.js
 └── site-config.js
 ```
+
+Nota: los encabezados de cada sección (eyebrow/título/lede) siguen en el HTML por ahora; se moverán al parametrizar las secciones con `site.json`. El retrato del hero sigue siendo un placeholder SVG fijo en el HTML.
 
 ---
 
