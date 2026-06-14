@@ -185,6 +185,8 @@ function fillHeads(headers) {
 function renderContent(data) {
   fillHeads(data.sectionHeaders);
   renderBrand(data.profile);
+  // Antepone el nombre al título base de la pestaña ("CV & Recursos").
+  document.title = `${data.profile.name} — ${document.title}`;
   renderHero(data.profile);
   fillList("experienceList", data.experience, renderTimelineItem);
   fillList("educationList", data.education, renderTimelineItem);
