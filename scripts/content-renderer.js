@@ -42,6 +42,16 @@ function renderName(name) {
   return first ? `${first} <em>${last}</em>` : `<em>${last}</em>`;
 }
 
+// Marca del sidebar (inicial + nombre + rol), desde profile para no duplicar.
+function renderBrand(profile) {
+  const mark = document.querySelector(".sidebar__brand-mark");
+  const name = document.querySelector(".sidebar__brand-name");
+  const role = document.querySelector(".sidebar__brand-role");
+  if (mark) mark.textContent = (profile.name || "").trim().charAt(0);
+  if (name) name.textContent = profile.name || "";
+  if (role) role.textContent = profile.brandRole || "";
+}
+
 function renderHero(profile) {
   const meta = [
     { icon: "location", text: profile.location },
@@ -174,6 +184,7 @@ function fillHeads(headers) {
 
 function renderContent(data) {
   fillHeads(data.sectionHeaders);
+  renderBrand(data.profile);
   renderHero(data.profile);
   fillList("experienceList", data.experience, renderTimelineItem);
   fillList("educationList", data.education, renderTimelineItem);
