@@ -1,7 +1,7 @@
 # CLAUDE.md — CV Personal + Hub de Recursos
 
 Contexto completo para continuar este proyecto en Claude Code.
-Última sesión: junio 2026. Fase actual: **Fase 2 en curso**. Hecho: `content.json` + `content-renderer.js` (el contenido del CV ya sale del JSON). Pendiente: `theme.json` + `theme-loader.js` y `site.json` + `site-config.js`.
+Última sesión: junio 2026. Fase actual: **Fase 2 en curso**. Hecho: `content.json` + `content-renderer.js` (el contenido del CV sale del JSON) y `site.json` + `site-config.js` (el sidebar se construye desde config). Pendiente: `theme.json` + `theme-loader.js`.
 
 **Decisiones de Fase 2 (cerradas):**
 - **Carga de datos: `fetch`** (no módulos ES — ambos requieren servidor igual; fetch es más simple y anda en GitHub Pages). En desarrollo local hay que servir: `python3 -m http.server`.
@@ -50,21 +50,25 @@ cv-web/
 ```
 data/
 └── content.json          ✅ todos los datos del CV (paridad con el mock original)
+config/
+└── site.json             ✅ idioma, switchers y secciones (label, icon, group, visible)
 scripts/
-└── content-renderer.js   ✅ fetch + render con template literals
+├── content-renderer.js   ✅ fetch + render con template literals
+└── site-config.js        ✅ construye el nav del sidebar y aplica visibilidad
 ```
 
 **Aún no existen** (Fase 2):
 ```
 config/
-├── theme.json
-└── site.json
+└── theme.json
 scripts/
-├── theme-loader.js
-└── site-config.js
+└── theme-loader.js
 ```
 
-Nota: los encabezados de cada sección (eyebrow/título/lede) siguen en el HTML por ahora; se moverán al parametrizar las secciones con `site.json`. El retrato del hero sigue siendo un placeholder SVG fijo en el HTML.
+Notas sobre lo implementado:
+- `site-config.js` regenera solo el `<nav>` (brand y footer quedan fijos en el HTML, porque el footer tiene la lógica del toggle de temas). Agrupa por el campo `group` (CV/Hub/Otros), aplica `visible` (oculta nav-link + `section.hidden`) y respeta `show_theme_switcher`. `show_typography_switcher` se contemplará con `theme.json`.
+- El **scrollspy** consulta los nav-links en vivo (no los captura al inicio) porque el nav se genera async; `fitSidebar` se reengancha al evento `sidebar:rendered`.
+- Pendiente aún: mover encabezados de sección (eyebrow/título/lede) y reordenar el `<main>` desde `site.json`; el retrato del hero sigue siendo un placeholder SVG fijo.
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "language": "es",
+  "navigation_mode": "scroll",
+  "show_theme_switcher": true,
+  "show_typography_switcher": true,
+  "sections": [
+    { "id": "about",      "label": "Inicio",      "icon": "home",      "group": "CV",    "visible": true },
+    { "id": "experience", "label": "Experiencia", "icon": "briefcase", "group": "CV",    "visible": true },
+    { "id": "education",  "label": "Formación",   "icon": "education", "group": "CV",    "visible": true },
+    { "id": "skills",     "label": "Habilidades", "icon": "skills",    "group": "CV",    "visible": true },
+    { "id": "projects",   "label": "Proyectos",   "icon": "grid",      "group": "CV",    "visible": true },
+    { "id": "resources",  "label": "Recursos",    "icon": "bookmark",  "group": "Hub",   "visible": true },
+    { "id": "contact",    "label": "Contacto",    "icon": "mail",      "group": "Otros", "visible": true }
+  ]
+}
