@@ -129,6 +129,8 @@ Los **colores** de cada tema viven en `styles/tokens.css`; qué temas existen y 
 ```
 (`type: "base"` para temas que entran en el toggle light/dark; `dot` es el color del punto del botón, que el CSS lee de `--theme-dot`.)
 
+**Ocultar un tema** sin borrarlo: agregale `"visible": false` en `theme.json` (por defecto, ausente = visible). `theme-loader.js` omite su botón; si ese tema estaba activo en `localStorage`, la página cae al tema base. Aplica a temas especiales.
+
 ---
 
 ## Variables CSS semánticas (lo que el CSS consume)

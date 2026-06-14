@@ -95,8 +95,9 @@
   function applyConfig(config) {
     const entries = Object.entries(config.themes || {});
     baseThemes = entries.filter(([, t]) => t.type === "base").map(([id]) => id);
+    // visible !== false: un tema se oculta poniendo "visible": false en theme.json.
     specialThemes = entries
-      .filter(([, t]) => t.type === "special")
+      .filter(([, t]) => t.type === "special" && t.visible !== false)
       .map(([id, t]) => ({ id, name: t.name, label: t.label || t.name, dot: t.dot || "currentColor" }));
     portraits = {};
     entries.forEach(([id, t]) => {
@@ -107,10 +108,11 @@
     const storedBase = localStorage.getItem("baseTheme");
     baseTheme = baseThemes.includes(storedBase) ? storedBase : config.default_mode || "light";
 
-    // Tema activo inicial: el guardado (si existe en la config) o el base.
-    const validIds = Object.keys(config.themes || {});
+    // Tema activo inicial: el guardado, solo si está disponible (base o especial
+    // visible). Si estaba activo un tema ahora oculto, cae al tema base.
+    const availableIds = baseThemes.concat(specialThemes.map((t) => t.id));
     const storedTheme = localStorage.getItem("theme");
-    const initial = validIds.includes(storedTheme) ? storedTheme : baseTheme;
+    const initial = availableIds.includes(storedTheme) ? storedTheme : baseTheme;
 
     renderSpecialButtons();
     initToggle();
