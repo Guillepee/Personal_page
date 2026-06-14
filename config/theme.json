@@ -1,0 +1,17 @@
+{
+  "default_mode": "light",
+  "themes": {
+    "light":      { "name": "Latte",    "type": "base" },
+    "dark":       { "name": "Mocha",    "type": "base" },
+    "retro-term": { "name": "Terminal", "type": "special", "label": "Term",  "dot": "#33ff00" },
+    "pixel8":     { "name": "8-bit",    "type": "special", "label": "8-bit", "dot": "#e40058" },
+    "dnd35":      { "name": "D&D 3.5",  "type": "special", "label": "D&D",   "dot": "#8b1a1a" }
+  },
+  "typography": {
+    "active": "editorial",
+    "presets": {
+      "editorial": { "display": "Fraunces", "body": "Inter Tight", "mono": "JetBrains Mono" }
+    },
+    "_nota": "Referencia. Hoy las fuentes viven en tokens.css; no se inyectan por JS para no pisar los temas especiales (pixel8/retro/dnd redefinen --font-* por bloque [data-theme])."
+  }
+}

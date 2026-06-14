@@ -13,7 +13,16 @@
 
   <link rel="stylesheet" href="styles/main.css" />
 
-  <!-- Fase 2: configuración del sitio (sidebar) y contenido desde JSON -->
+  <!-- Aplica el tema guardado antes de pintar, para evitar parpadeo (FOUC). -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved) document.documentElement.setAttribute("data-theme", saved);
+    })();
+  </script>
+
+  <!-- Fase 2: temas, configuración del sitio (sidebar) y contenido desde JSON -->
+  <script src="scripts/theme-loader.js" defer></script>
   <script src="scripts/site-config.js" defer></script>
   <script src="scripts/content-renderer.js" defer></script>
 </head>
@@ -50,11 +59,8 @@
             <span id="themeToggleLabel">Dark</span>
           </button>
         </div>
-        <div class="sidebar__footer-specials">
-          <button class="theme-special-btn theme-special-btn--term" type="button" id="retroTermBtn" aria-label="Activar tema Terminal">Term</button>
-          <button class="theme-special-btn theme-special-btn--pixel8" type="button" id="pixel8Btn" aria-label="Activar tema 8-bit">8-bit</button>
-          <button class="theme-special-btn theme-special-btn--dnd35" type="button" id="dnd35Btn" aria-label="Activar tema D&D 3.5">D&D</button>
-        </div>
+        <!-- Los botones de temas especiales los genera theme-loader.js desde theme.json -->
+        <div class="sidebar__footer-specials"></div>
       </div>
       </div>
     </aside>
@@ -163,39 +169,12 @@
   </div>
 
   <!--
-    Script mínimo de fase 1: solo toggle light/dark + scrollspy del sidebar.
-    En fase 2 esto se moverá a /scripts/ y se acompañará de los loaders
-    de theme.json, content.json y site.json.
+    Comportamiento de layout que no depende de los JSON: escalado de la
+    sidebar (fitSidebar) y scrollspy. Los temas viven en theme-loader.js,
+    el sidebar en site-config.js y el contenido en content-renderer.js.
   -->
   <script>
     (function () {
-      const root = document.documentElement;
-      const toggle = document.getElementById("themeToggle");
-      const toggleLabel = document.getElementById("themeToggleLabel");
-      const retroBtn = document.getElementById("retroTermBtn");
-      const pixel8Btn = document.getElementById("pixel8Btn");
-      const dnd35Btn = document.getElementById("dnd35Btn");
-
-      const SPECIAL_THEMES = ["retro-term", "pixel8", "dnd35"];
-
-      // baseTheme guarda el último estado del toggle light/dark
-      let baseTheme = localStorage.getItem("baseTheme") || "light";
-
-      // Tema activo inicial: puede ser base o especial
-      const storedTheme = localStorage.getItem("theme") || "";
-      const validThemes = ["light", "dark", ...SPECIAL_THEMES];
-      const initialTheme = validThemes.includes(storedTheme) ? storedTheme : baseTheme;
-      root.setAttribute("data-theme", initialTheme);
-
-      function applyTheme(theme) {
-        root.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-        syncUI();
-        // El tema cambia las fuentes (y la altura del contenido): reajustar.
-        fitSidebar();
-        document.fonts.ready.then(fitSidebar);
-      }
-
       // Escala el contenido de la sidebar para que entre completo sin scroll.
       // Mide la altura natural (sin que flex la comprima) y la compara con el
       // alto disponible; si no entra, reduce --sidebar-scale proporcionalmente.
@@ -217,53 +196,16 @@
         sidebarFit.style.setProperty("--sidebar-scale", scale);
       }
 
-      function syncUI() {
-        const current = root.getAttribute("data-theme");
-
-        // El label del toggle refleja el próximo estado normal (opuesto del baseTheme actual)
-        toggleLabel.textContent = baseTheme === "dark" ? "Light" : "Dark";
-
-        // Clase que controla el icono sol/luna, independiente del tema especial activo
-        toggle.classList.toggle("base-dark", baseTheme === "dark");
-
-        // Estado activo de los botones especiales
-        retroBtn.classList.toggle("is-active", current === "retro-term");
-        pixel8Btn.classList.toggle("is-active", current === "pixel8");
-        dnd35Btn.classList.toggle("is-active", current === "dnd35");
-      }
-
-      // Toggle light/dark: siempre opera sobre baseTheme, descarta temas especiales
-      toggle.addEventListener("click", () => {
-        baseTheme = baseTheme === "light" ? "dark" : "light";
-        localStorage.setItem("baseTheme", baseTheme);
-        applyTheme(baseTheme);
-      });
-
-      // Botones especiales: toggle on/off; al desactivar vuelve al baseTheme
-      retroBtn.addEventListener("click", () => {
-        const current = root.getAttribute("data-theme");
-        applyTheme(current === "retro-term" ? baseTheme : "retro-term");
-      });
-
-      pixel8Btn.addEventListener("click", () => {
-        const current = root.getAttribute("data-theme");
-        applyTheme(current === "pixel8" ? baseTheme : "pixel8");
-      });
-
-      dnd35Btn.addEventListener("click", () => {
-        const current = root.getAttribute("data-theme");
-        applyTheme(current === "dnd35" ? baseTheme : "dnd35");
-      });
-
-      syncUI();
-
-      // Ajuste inicial del escalado de la sidebar y recálculo ante cambios
-      // de tamaño, al cargar las fuentes web o cuando site-config.js
-      // (re)construye el nav del sidebar.
+      // Recalcular el escalado ante cambios de tamaño, carga de fuentes web,
+      // (re)construcción del nav (site-config) o cambio de tema (theme-loader).
       fitSidebar();
       document.fonts.ready.then(fitSidebar);
       window.addEventListener("resize", fitSidebar);
       document.addEventListener("sidebar:rendered", fitSidebar);
+      document.addEventListener("theme:changed", () => {
+        fitSidebar();
+        document.fonts.ready.then(fitSidebar);
+      });
 
       // Scrollspy: marca el nav-link de la sección visible. Los nav-links los
       // genera site-config.js de forma asíncrona, así que se consultan en vivo

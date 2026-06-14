@@ -98,18 +98,16 @@
     border-color var(--transition-fast);
 }
 
-/* Dot de color que identifica el tema antes de activarlo */
+/* Dot de color que identifica el tema antes de activarlo. El color lo aporta
+   theme-loader.js como variable --theme-dot (definida en theme.json). */
 .theme-special-btn::before {
   content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
+  background: var(--theme-dot, currentColor);
 }
-
-.theme-special-btn--term::before   { background: #33ff00; }
-.theme-special-btn--pixel8::before { background: #e40058; }
-.theme-special-btn--dnd35::before  { background: #8b1a1a; }
 
 .theme-special-btn:hover {
   border-color: var(--color-accent);

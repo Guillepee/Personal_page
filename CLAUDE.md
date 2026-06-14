@@ -1,7 +1,7 @@
 # CLAUDE.md — CV Personal + Hub de Recursos
 
 Contexto completo para continuar este proyecto en Claude Code.
-Última sesión: junio 2026. Fase actual: **Fase 2 en curso**. Hecho: `content.json` + `content-renderer.js` (el contenido del CV sale del JSON) y `site.json` + `site-config.js` (el sidebar se construye desde config). Pendiente: `theme.json` + `theme-loader.js`.
+Última sesión: junio 2026. Fase actual: **Fase 2 completada**. Los tres ejes ya salen de JSON: contenido (`content.json` + `content-renderer.js`), estructura/sidebar (`site.json` + `site-config.js`) y apariencia (`theme.json` + `theme-loader.js`, enfoque híbrido: la config y los botones desde JSON, los colores en `tokens.css`).
 
 **Decisiones de Fase 2 (cerradas):**
 - **Carga de datos: `fetch`** (no módulos ES — ambos requieren servidor igual; fetch es más simple y anda en GitHub Pages). En desarrollo local hay que servir: `python3 -m http.server`.
@@ -46,29 +46,25 @@ cv-web/
     └── main.css                ✅ orquestador de imports
 ```
 
-**Ya creados** (Fase 2):
+**Estructura Fase 2 (completa):**
 ```
 data/
-└── content.json          ✅ todos los datos del CV (paridad con el mock original)
+└── content.json          ✅ todos los datos del CV
 config/
-└── site.json             ✅ idioma, switchers y secciones (label, icon, group, visible)
+├── site.json             ✅ idioma, switchers y secciones (label, icon, group, visible)
+└── theme.json            ✅ default_mode + themes (name, type, label, dot) + tipografía (referencia)
 scripts/
 ├── content-renderer.js   ✅ fetch + render con template literals
-└── site-config.js        ✅ construye el nav del sidebar y aplica visibilidad
-```
-
-**Aún no existen** (Fase 2):
-```
-config/
-└── theme.json
-scripts/
-└── theme-loader.js
+├── site-config.js        ✅ construye el nav del sidebar y aplica visibilidad
+└── theme-loader.js       ✅ toggle + genera botones de tema desde theme.json
 ```
 
 Notas sobre lo implementado:
-- `site-config.js` regenera solo el `<nav>` (brand y footer quedan fijos en el HTML, porque el footer tiene la lógica del toggle de temas). Agrupa por el campo `group` (CV/Hub/Otros), aplica `visible` (oculta nav-link + `section.hidden`) y respeta `show_theme_switcher`. `show_typography_switcher` se contemplará con `theme.json`.
-- El **scrollspy** consulta los nav-links en vivo (no los captura al inicio) porque el nav se genera async; `fitSidebar` se reengancha al evento `sidebar:rendered`.
-- Pendiente aún: mover encabezados de sección (eyebrow/título/lede) y reordenar el `<main>` desde `site.json`; el retrato del hero sigue siendo un placeholder SVG fijo.
+- **Carga**: los tres scripts hacen `fetch` con `defer`. Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
+- **theme-loader.js** (híbrido): genera los botones especiales desde `theme.json` (el dot va como var `--theme-dot`), maneja el toggle light/dark y persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
+- **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros), aplica `visible` y respeta `show_theme_switcher`.
+- **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` y `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) los escucha para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).
+- **Pendiente (Fase 3 o mejoras)**: mover encabezados de sección (eyebrow/título/lede) y reordenar el `<main>` desde `site.json`; el retrato del hero sigue siendo un placeholder SVG fijo; tipografía configurable (2.º preset).
 
 ---
 
@@ -100,11 +96,12 @@ Hay 5 temas. El modelo no es un ciclo único: el toggle del sidebar alterna solo
 | `pixel8` | 8-bit | especial | Paleta NES, Press Start 2P, sombras offset rojo, estética Nintendo |
 | `dnd35` | D&D 3.5 | especial | Pergamino envejecido, tinta oscura, carmesí del emblema, Cinzel + Palatino |
 
-Todo vive en `styles/tokens.css`. Añadir un tema nuevo = añadir un bloque `[data-theme="nuevo"]` con las variables semánticas sobreescritas.
+Los **colores** de cada tema viven en `styles/tokens.css`; qué temas existen y cómo aparecen en la UI se define en `config/theme.json`. Añadir un tema nuevo son **dos pasos, sin tocar JS ni HTML**:
 
 ### Cómo añadir un tema nuevo
+
+1. En `styles/tokens.css`, un bloque con las variables semánticas:
 ```css
-/* En styles/tokens.css */
 [data-theme="mi-tema"] {
   --color-bg: ...;
   --color-bg-elevated: ...;
@@ -124,24 +121,11 @@ Todo vive en `styles/tokens.css`. Añadir un tema nuevo = añadir un bloque `[da
 }
 ```
 
-Luego, en el script de `index.html`, si es un tema **especial**:
-```js
-// 1. Añadirlo al array de temas especiales
-const SPECIAL_THEMES = ["retro-term", "pixel8", "dnd35", "mi-tema"];
-
-// 2. Capturar su botón
-const miTemaBtn = document.getElementById("miTemaBtn");
-
-// 3. Reflejar su estado activo en syncUI()
-miTemaBtn.classList.toggle("is-active", current === "mi-tema");
-
-// 4. Registrar su listener (toggle on/off contra baseTheme)
-miTemaBtn.addEventListener("click", () => {
-  const current = root.getAttribute("data-theme");
-  applyTheme(current === "mi-tema" ? baseTheme : "mi-tema");
-});
+2. En `config/theme.json`, registrarlo dentro de `themes`. Si es **especial** (botón propio que se activa/desactiva), `theme-loader.js` genera el botón solo:
+```json
+"mi-tema": { "name": "Mi Tema", "type": "special", "label": "Mi", "dot": "#abcdef" }
 ```
-Y añadir el botón en el HTML del sidebar (`.sidebar__footer-specials`) con su clase modificadora `.theme-special-btn--mi-tema` para el dot de color (ver `styles/components.css`).
+(`type: "base"` para temas que entran en el toggle light/dark; `dot` es el color del punto del botón, que el CSS lee de `--theme-dot`.)
 
 ---
 
