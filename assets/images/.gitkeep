@@ -1,0 +1,7 @@
+# Imágenes del retrato por tema (3:4 vertical, ~750x1000, .jpg/.webp):
+#   portrait-light.jpg
+#   portrait-dark.jpg
+#   portrait-retro-term.jpg
+#   portrait-pixel8.jpg
+#   portrait-dnd35.jpg
+# Las referencia config/theme.json (campo "portrait" de cada tema).
