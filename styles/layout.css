@@ -145,6 +145,13 @@
   --fs-xs: 0.55rem;
 }
 
+/* En NYT los titulares usan blackletter (masthead gótico): la cursiva del
+   diseño base sería un faux-italic ilegible, así que se fuerza a recto. */
+[data-theme="nyt"] .section__title,
+[data-theme="nyt"] .hero__name em {
+  font-style: normal;
+}
+
 /* ---------- Main ---------- */
 
 .main {

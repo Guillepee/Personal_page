@@ -252,6 +252,51 @@
   --font-body: "Palatino Linotype", Palatino, Georgia, serif;
 }
 
+/* ============================================================
+   New York Times — periódico clásico
+   Papel crema envejecido, tinta negra, regla negra de prensa, masthead
+   gótico (blackletter, como el logo del diario) y el azul de sus enlaces.
+   ============================================================ */
+[data-theme="nyt"] {
+  --color-bg: #f3ecd8;            /* papel crema cálido (≠ gris del Latte) */
+  --color-bg-elevated: #ece1c4;   /* sidebar */
+  --color-bg-deep: #e3d7b6;
+  --color-surface: #f7f1e0;
+  --color-surface-hover: #ece1c4;
+  --color-border: #cdbf9c;        /* línea sepia */
+  --color-border-strong: #1a1a1a; /* regla negra, sello del diario */
+
+  --color-text: #1a1a1a;          /* tinta negra */
+  --color-text-muted: #5c5448;
+  --color-text-faint: #8a7f6a;
+
+  /* Acento en tinta negra (editorial); enlaces en el azul clásico del NYT */
+  --color-accent: #1a1a1a;
+  --color-accent-hover: #000000;
+  --color-accent-soft: rgba(26, 26, 26, 0.07);
+  --color-link: #326891;
+
+  /* Apariencia plana, papel impreso */
+  --shadow-sm: 0 1px 2px rgba(60, 50, 30, 0.08);
+  --shadow-md: 0 1px 3px rgba(60, 50, 30, 0.1);
+  --shadow-lg: 0 2px 10px rgba(60, 50, 30, 0.12);
+
+  --selection-bg: rgba(50, 104, 145, 0.18);
+  --selection-text: #1a1a1a;
+
+  /* Masthead gótico (blackletter); cuerpo en Georgia (serif del NYT online);
+     kickers/etiquetas (--font-mono) en sans, como en el diario. */
+  --font-display: "UnifrakturMaguntia", "Old English Text MT", serif;
+  --font-body: Georgia, "Times New Roman", serif;
+  --font-mono: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Esquinas rectas, estética de papel */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+}
+
 [data-theme="pixel8"] {
   --color-bg: #000000;
   --color-bg-elevated: #1a1a1a;
