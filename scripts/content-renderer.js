@@ -121,10 +121,30 @@ function renderProject(project) {
     </a>`;
 }
 
+// Dominio del recurso para pedir su favicon: del url si es absoluto (http/https);
+// si no, del description cuando ya es un dominio (caso actual de los recursos).
+// Devuelve null si no hay dominio utilizable (entonces se usa la letra).
+function resourceFaviconDomain(item) {
+  try {
+    if (item.url && /^https?:\/\//i.test(item.url)) return new URL(item.url).hostname;
+  } catch (_) {
+    // url malformada: se intenta el fallback por description.
+  }
+  const desc = (item.description || "").trim();
+  return /^[\w.-]+\.[a-z]{2,}$/i.test(desc) ? desc : null;
+}
+
 function renderResourceItem(item) {
+  const domain = resourceFaviconDomain(item);
+  // Favicon vía DuckDuckGo. onerror: si no carga, se reemplaza por la letra
+  // (item.icon), conservando el estilo del contenedor.
+  const icon = domain
+    ? `<img class="resource-item__favicon" src="https://icons.duckduckgo.com/ip3/${domain}.ico" ` +
+      `alt="" loading="lazy" onerror="this.parentElement.textContent='${item.icon}'" />`
+    : item.icon;
   return `
     <a href="${item.url}" class="resource-item">
-      <div class="resource-item__icon">${item.icon}</div>
+      <div class="resource-item__icon">${icon}</div>
       <div class="resource-item__body">
         <div class="resource-item__title">
           ${item.title}
