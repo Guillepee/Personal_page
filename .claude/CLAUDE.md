@@ -1,7 +1,7 @@
 # CLAUDE.md — CV Personal + Hub de Recursos
 
 Contexto completo para continuar este proyecto en Claude Code.
-Última sesión: junio 2026. Fase actual: **Fase 2 completada**. Los tres ejes ya salen de JSON: contenido (`content.json` + `content-renderer.js`), estructura/sidebar (`site.json` + `site-config.js`) y apariencia (`theme.json` + `theme-loader.js`, enfoque híbrido: la config y los botones desde JSON, los colores en `tokens.css`).
+Última sesión: junio 2026. Fase actual: **Fase 2 completada + i18n (es/en)**. Los tres ejes ya salen de JSON: contenido (`content.{idioma}.json` + `content-renderer.js`), estructura/sidebar (`site.json` + `site-config.js`) y apariencia (`theme.json` + `theme-loader.js`, enfoque híbrido: la config y los botones desde JSON, los colores en `tokens.css`). El contenido es bilingüe: un archivo por idioma, con selector ES/EN en el sidebar que cambia el idioma en vivo (sin recargar).
 
 **Decisiones de Fase 2 (cerradas):**
 - **Carga de datos: `fetch`** (no módulos ES — ambos requieren servidor igual; fetch es más simple y anda en GitHub Pages). En desarrollo local hay que servir: `python3 -m http.server`.
@@ -25,9 +25,9 @@ Inspiración visual: tema **Anuppuccin** de Obsidian (Catppuccin + tipografía e
 
 | Eje | Archivo | Responsabilidad |
 |-----|---------|----------------|
-| Contenido | `data/content.json` | CV, recursos, datos personales |
+| Contenido | `data/content.es.json` · `data/content.en.json` | CV, recursos, datos personales (uno por idioma) |
 | Apariencia | `config/theme.json` | Paletas, tipografías, tokens |
-| Estructura | `config/site.json` | Secciones, orden, visibilidad |
+| Estructura | `config/site.json` | Secciones, orden, visibilidad, idiomas |
 
 El CSS **nunca** tiene valores hardcoded: solo consume variables CSS (`--color-bg`, `--font-display`, etc.). En Fase 2, `theme-loader.js` leerá `theme.json` e inyectará esos valores en `:root` en runtime.
 
@@ -49,21 +49,23 @@ cv-web/
 **Estructura Fase 2 (completa):**
 ```
 data/
-└── content.json          ✅ datos del CV + encabezados de sección (sectionHeaders)
+├── content.es.json       ✅ datos del CV en español + encabezados de sección (sectionHeaders)
+└── content.en.json       ✅ misma estructura, contenido en inglés
 config/
-├── site.json             ✅ idioma, switchers y secciones (label, icon, group, visible)
+├── site.json             ✅ switchers, idiomas (languages/groupLabels) y secciones (label {es,en}, icon, group, visible)
 └── theme.json            ✅ default_mode + themes (name, type, label, dot, portrait) + tipografía (referencia)
 scripts/
-├── content-renderer.js   ✅ fetch + render (contenido + encabezados de sección)
-├── site-config.js        ✅ construye el nav del sidebar y aplica visibilidad
+├── content-renderer.js   ✅ fetch del idioma activo + render (contenido + encabezados de sección)
+├── site-config.js        ✅ construye el nav, aplica visibilidad y maneja el idioma (selector ES/EN)
 └── theme-loader.js       ✅ toggle + botones de tema + retrato por tema, todo desde theme.json
 ```
 
 Notas sobre lo implementado:
 - **Carga**: los tres scripts hacen `fetch` con `defer` y `cache: "no-cache"` (revalidan con el server, así al editar un JSON se ve con un `F5` normal, sin hard refresh). Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
 - **theme-loader.js** (híbrido): genera los botones especiales desde `theme.json` (el dot va como var `--theme-dot`), maneja el toggle light/dark y persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
-- **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros), aplica `visible` y respeta `show_theme_switcher`.
-- **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` y `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) los escucha para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).
+- **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros, traducidos vía `groupLabels`), aplica `visible` y respeta `show_theme_switcher`. Es además el **dueño del estado de idioma** (igual que `theme-loader` lo es del tema): genera los botones ES/EN desde `site.json` → `languages`, persiste en `localStorage` (`lang`) y dispara `language:changed`.
+- **i18n (es/en)**: el contenido vive en un archivo por idioma (`data/content.{idioma}.json`); los labels del nav y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`). El idioma activo es `localStorage.lang || "es"` (mismo patrón/fallback que el tema con `"light"`). El cambio es **en vivo, sin recargar**: `site-config` re-pinta el nav y dispara `language:changed`; `content-renderer` lo escucha y re-fetchea el JSON del nuevo idioma. Se preserva la sección activa del scrollspy al re-renderizar el nav. **Añadir un idioma** son 3 pasos en JSON, sin tocar JS/HTML: crear `content.{nuevo}.json`, agregarlo a `languages` y `groupLabels`, y añadir su clave en cada `sections[].label`. `show_language_switcher: false` oculta el selector.
+- **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` (y `language:changed`), `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) escucha los de sidebar/tema para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).
 - **Encabezados de sección**: viven en `content.json` → `sectionHeaders` (eyebrow/título/lede por sección); el renderer los pinta en `<div class="section__head" id="{sec}Head">`. El hero (about) no tiene encabezado (usa `profile`).
 - **Retrato por tema**: cada tema en `theme.json` define `portrait` (`assets/images/portrait-{tema}.jpg`, 3:4 vertical). `theme-loader.js` muestra la imagen del tema activo y, si falta o falla la carga (404), cae al placeholder SVG. **Pendiente del usuario**: subir las 5 imágenes a `assets/images/` (hasta entonces se ve el placeholder y hay un 404 benigno en consola).
 - **Descartado por decisión**: reordenar el `<main>` desde `site.json` (se prefiere el orden actual) y el switcher de tipografía (no hay 2.º preset que justifique).

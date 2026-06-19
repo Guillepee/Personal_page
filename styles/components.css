@@ -79,7 +79,8 @@
 
 /* ---------- Botones de temas especiales ---------- */
 
-.theme-special-btn {
+.theme-special-btn,
+.lang-btn {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
@@ -109,12 +110,14 @@
   background: var(--theme-dot, currentColor);
 }
 
-.theme-special-btn:hover {
+.theme-special-btn:hover,
+.lang-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
 }
 
-.theme-special-btn.is-active {
+.theme-special-btn.is-active,
+.lang-btn.is-active {
   background: var(--color-accent-soft);
   border-color: var(--color-accent);
   color: var(--color-accent);
@@ -167,8 +170,10 @@
 
 .hero__meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-5);
+  /* nowrap: los 3 datos en una sola línea en escritorio. En móvil (≤700px) se
+     vuelve a wrap, donde la columna ocupa todo el ancho. */
+  flex-wrap: nowrap;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-5);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
@@ -180,6 +185,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
+  /* Evita que un item se parta en dos líneas; el wrap (móvil) ocurre entre
+     items, no dentro de ellos. */
+  white-space: nowrap;
 }
 
 .hero__meta-item svg {
@@ -666,6 +674,11 @@
   .hero__portrait {
     order: -1;
     width: 140px;
+  }
+
+  /* La columna ya ocupa todo el ancho: dejar que los datos envuelvan si hace falta. */
+  .hero__meta {
+    flex-wrap: wrap;
   }
 
   .hero__name {

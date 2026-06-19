@@ -27,17 +27,33 @@ function navIcon(name) {
   return `<svg class="nav-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 }
 
-function renderNavLink(section, isActive) {
+// Estado de idioma: site-config es su dueño (igual que theme-loader lo es del
+// tema). Se conserva la config cargada para poder re-renderizar el nav al
+// cambiar de idioma sin volver a hacer fetch.
+let siteConfig = null;
+let activeLang = "es";
+
+// Idioma inicial: el guardado en localStorage si es uno de los declarados en
+// site.json; si no, "es" por defecto. El único que escribe localStorage.lang
+// es setLanguage (abajo), así que el valor guardado siempre es válido.
+function resolveLang(config) {
+  const stored = localStorage.getItem("lang");
+  return config.languages && config.languages[stored] ? stored : "es";
+}
+
+function renderNavLink(section, lang, isActive) {
   return `
     <a href="#${section.id}" class="nav-link${isActive ? " is-active" : ""}">
       ${navIcon(section.icon)}
-      <span>${section.label}</span>
+      <span>${section.label[lang]}</span>
     </a>`;
 }
 
 // Construye el <nav> agrupando las secciones visibles por su campo "group",
-// respetando el orden de aparición de los grupos en site.json.
-function renderNav(sections) {
+// respetando el orden de aparición de los grupos en site.json. El encabezado
+// de cada grupo se traduce vía groupLabels; activeId marca el link activo
+// (al inicio, la primera sección; al cambiar idioma, la que estuviera activa).
+function renderNav(sections, groupLabels, lang, activeId) {
   const visible = sections.filter((s) => s.visible);
   const groups = [];
   for (const section of visible) {
@@ -48,15 +64,30 @@ function renderNav(sections) {
     }
     group.items.push(section);
   }
-  // La primera sección visible arranca activa (el scrollspy la actualiza al hacer scroll).
-  const firstId = visible.length ? visible[0].id : null;
   return groups
-    .map(
-      (group) =>
-        `<span class="sidebar__nav-section">${group.name}</span>` +
-        group.items.map((s) => renderNavLink(s, s.id === firstId)).join("")
-    )
+    .map((group) => {
+      const label = groupLabels?.[group.name]?.[lang] || group.name;
+      return (
+        `<span class="sidebar__nav-section">${label}</span>` +
+        group.items.map((s) => renderNavLink(s, lang, s.id === activeId)).join("")
+      );
+    })
     .join("");
+}
+
+// Pinta el nav en el sidebar con el idioma dado, preservando qué sección está
+// activa: usa la marcada en vivo (la mueve el scrollspy) o, si no hay, la
+// primera visible.
+function renderNavInto(lang) {
+  const nav = document.querySelector(".sidebar__nav");
+  if (!nav) return;
+  const visible = siteConfig.sections.filter((s) => s.visible);
+  const currentActive = nav
+    .querySelector(".nav-link.is-active")
+    ?.getAttribute("href")
+    ?.slice(1);
+  const activeId = currentActive || (visible.length ? visible[0].id : null);
+  nav.innerHTML = renderNav(siteConfig.sections, siteConfig.groupLabels, lang, activeId);
 }
 
 // Oculta del main las secciones marcadas como no visibles.
@@ -68,11 +99,46 @@ function applySectionVisibility(sections) {
   }
 }
 
-function applyConfig(config) {
-  if (config.language) document.documentElement.lang = config.language;
+// Genera los botones de idioma (uno por idioma declarado), marcando el activo.
+// Reusan el aspecto de los botones de tema (.lang-btn comparte estilos con
+// .theme-special-btn en components.css).
+function renderLangButtons(languages, current) {
+  const container = document.querySelector(".sidebar__langs");
+  if (!container) return;
+  container.innerHTML = Object.entries(languages || {})
+    .map(
+      ([id, lang]) =>
+        `<button class="lang-btn${id === current ? " is-active" : ""}" type="button" ` +
+        `data-lang="${id}" aria-label="${lang.name}">${lang.label}</button>`
+    )
+    .join("");
+  container.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+  });
+}
 
-  const nav = document.querySelector(".sidebar__nav");
-  if (nav) nav.innerHTML = renderNav(config.sections);
+// Cambia el idioma en vivo (sin recargar): re-pinta el nav y los botones, y
+// avisa con language:changed para que content-renderer re-cargue el contenido.
+function setLanguage(lang) {
+  if (lang === activeLang || !siteConfig.languages[lang]) return;
+  activeLang = lang;
+  localStorage.setItem("lang", lang);
+  document.documentElement.lang = lang;
+
+  renderNavInto(lang);
+  renderLangButtons(siteConfig.languages, lang);
+
+  document.dispatchEvent(new CustomEvent("language:changed", { detail: { lang } }));
+  // El nav cambió de tamaño (labels de otra longitud): recalcular el escalado.
+  document.dispatchEvent(new CustomEvent("sidebar:rendered"));
+}
+
+function applyConfig(config) {
+  siteConfig = config;
+  activeLang = resolveLang(config);
+  document.documentElement.lang = activeLang;
+
+  renderNavInto(activeLang);
 
   applySectionVisibility(config.sections);
 
@@ -80,6 +146,13 @@ function applyConfig(config) {
   if (config.show_theme_switcher === false) {
     document.querySelector(".sidebar__footer-top .theme-toggle")?.remove();
     document.querySelector(".sidebar__footer-specials")?.remove();
+  }
+
+  // Selector de idioma: se omite si la config lo desactiva.
+  if (config.show_language_switcher === false) {
+    document.querySelector(".sidebar__langs")?.remove();
+  } else {
+    renderLangButtons(config.languages, activeLang);
   }
   // show_typography_switcher se contemplará al implementar theme.json
   // (todavía no existe un selector de tipografía en la UI).

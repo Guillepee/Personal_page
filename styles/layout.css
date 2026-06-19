@@ -45,8 +45,17 @@
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-6);
+  margin-bottom: var(--sp-4);
   padding: 0 var(--sp-2);
+}
+
+/* Selector de idioma: debajo del brand y sobre el nav (visible al entrar).
+   Mismo padding lateral que brand/nav para alinear, y separación con el nav. */
+.sidebar__langs {
+  display: flex;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-2);
+  margin-bottom: var(--sp-5);
 }
 
 .sidebar__brand-mark {

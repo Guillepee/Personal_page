@@ -1,15 +1,23 @@
 {
-  "language": "es",
   "navigation_mode": "scroll",
   "show_theme_switcher": true,
-  "show_typography_switcher": true,
+  "show_language_switcher": true,
+  "languages": {
+    "es": { "name": "Español", "label": "ES" },
+    "en": { "name": "English", "label": "EN" }
+  },
+  "groupLabels": {
+    "CV":    { "es": "CV",    "en": "CV" },
+    "Hub":   { "es": "Hub",   "en": "Hub" },
+    "Otros": { "es": "Otros", "en": "Other" }
+  },
   "sections": [
-    { "id": "about",      "label": "Inicio",      "icon": "home",      "group": "CV",    "visible": true },
-    { "id": "experience", "label": "Experiencia", "icon": "briefcase", "group": "CV",    "visible": true },
-    { "id": "education",  "label": "Formación",   "icon": "education", "group": "CV",    "visible": true },
-    { "id": "skills",     "label": "Habilidades", "icon": "skills",    "group": "CV",    "visible": true },
-    { "id": "projects",   "label": "Proyectos",   "icon": "grid",      "group": "CV",    "visible": true },
-    { "id": "resources",  "label": "Recursos",    "icon": "bookmark",  "group": "Hub",   "visible": true },
-    { "id": "contact",    "label": "Contacto",    "icon": "mail",      "group": "Otros", "visible": true }
+    { "id": "about",      "label": { "es": "Inicio",      "en": "Home" },        "icon": "home",      "group": "CV",    "visible": true },
+    { "id": "experience", "label": { "es": "Experiencia", "en": "Experience" },  "icon": "briefcase", "group": "CV",    "visible": true },
+    { "id": "education",  "label": { "es": "Formación",   "en": "Education" },   "icon": "education", "group": "CV",    "visible": true },
+    { "id": "skills",     "label": { "es": "Habilidades", "en": "Skills" },      "icon": "skills",    "group": "CV",    "visible": true },
+    { "id": "projects",   "label": { "es": "Proyectos",   "en": "Projects" },    "icon": "grid",      "group": "CV",    "visible": true },
+    { "id": "resources",  "label": { "es": "Recursos",    "en": "Resources" },   "icon": "bookmark",  "group": "Hub",   "visible": true },
+    { "id": "contact",    "label": { "es": "Contacto",    "en": "Contact" },     "icon": "mail",      "group": "Otros", "visible": true }
   ]
 }

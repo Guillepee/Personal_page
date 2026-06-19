@@ -1,6 +1,6 @@
 /* ============================================================
    content-renderer.js
-   Lee data/content.json y puebla las secciones del CV.
+   Lee data/content.{idioma}.json (es/en) y puebla las secciones del CV.
    Fase 2: el contenido vive en el JSON; el HTML es el esqueleto.
    Construye el markup con template literals (datos propios, no externos).
    ============================================================ */
@@ -182,11 +182,16 @@ function fillHeads(headers) {
   }
 }
 
+// Título base de la pestaña ("CV & Recursos"), capturado una sola vez al
+// cargar el script. Se guarda como constante para poder anteponer el nombre
+// en cada render sin duplicarlo al cambiar de idioma (re-render).
+const BASE_TITLE = document.title;
+
 function renderContent(data) {
   fillHeads(data.sectionHeaders);
   renderBrand(data.profile);
   // Antepone el nombre al título base de la pestaña ("CV & Recursos").
-  document.title = `${data.profile.name} — ${document.title}`;
+  document.title = `${data.profile.name} — ${BASE_TITLE}`;
   renderHero(data.profile);
   fillList("experienceList", data.experience, renderTimelineItem);
   fillList("educationList", data.education, renderTimelineItem);
@@ -198,14 +203,21 @@ function renderContent(data) {
   document.dispatchEvent(new CustomEvent("content:rendered"));
 }
 
-async function loadContent() {
+// Idioma activo: el guardado en localStorage o "es" por defecto (mismo patrón
+// y fallback que theme-loader usa con el tema). El contenido de cada idioma
+// vive en su propio archivo (content.es.json / content.en.json).
+function currentLang() {
+  return localStorage.getItem("lang") || "es";
+}
+
+async function loadContent(lang) {
   try {
     // cache: "no-cache" -> el navegador revalida con el server en cada carga,
     // así al editar el JSON se ve con un F5 normal (sin hard refresh).
-    const response = await fetch("data/content.json", { cache: "no-cache" });
+    const response = await fetch(`data/content.${lang}.json`, { cache: "no-cache" });
     if (!response.ok) {
       // Fallar de forma visible: sin contenido la página no tiene sentido.
-      throw new Error(`No se pudo cargar content.json (HTTP ${response.status})`);
+      throw new Error(`No se pudo cargar content.${lang}.json (HTTP ${response.status})`);
     }
     renderContent(await response.json());
   } catch (error) {
@@ -218,4 +230,8 @@ async function loadContent() {
   }
 }
 
-loadContent();
+// Al cambiar el idioma (site-config.js dispara el evento), re-cargar el JSON
+// del nuevo idioma y volver a pintar las secciones.
+document.addEventListener("language:changed", (e) => loadContent(e.detail.lang));
+
+loadContent(currentLang());

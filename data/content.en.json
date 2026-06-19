@@ -1,0 +1,172 @@
+{
+  "sectionHeaders": {
+    "experience": { "eyebrow": "Career", "title": "Experience", "lede": "Roles that have shaped how I think about product, systems and teams." },
+    "education":  { "eyebrow": "Studies", "title": "Education", "lede": "The official part. The important stuff I learned afterwards." },
+    "skills":     { "eyebrow": "Toolbox", "title": "Skills", "lede": "What I'm comfortable with day to day, grouped by where it fits in the stack." },
+    "projects":   { "eyebrow": "Own work", "title": "Projects", "lede": "Things I built because I wanted to use them." },
+    "resources":  { "eyebrow": "Quick-access hub", "title": "Resources", "lede": "The pages I keep one click away. My desktop in the cloud." },
+    "contact":    { "eyebrow": "Connect", "title": "Contact", "lede": "The fastest way to reach me. I reply within 24h unless there are fires." }
+  },
+  "profile": {
+    "name": "Guillermo Palmieri",
+    "brandRole": "Personal · 2026",
+    "headline": "Full Stack Developer · Backend & AI",
+    "bio": "I build software focused on Python, backend services and AI integration. I care as much about the logic that holds a service together as about the process of the team that builds it: I've migrated management tooling, brought AI agents into real workflows, and deployed models locally when privacy demands it. I come from data analysis, and it shows in how I approach problems.",
+    "location": "Málaga, Spain",
+    "availability": "Available for projects",
+    "workMode": "Remote · Hybrid",
+    "portraitCaption": "— G.P., 2026",
+    "socials": [
+      { "id": "github", "url": "#", "label": "GitHub" },
+      { "id": "linkedin", "url": "#", "label": "LinkedIn" },
+      { "id": "email", "url": "mailto:guillermo.palmieri23@gmail.com", "label": "Email" }
+    ]
+  },
+  "experience": [
+    {
+      "period": "2025 — present",
+      "role": "Full Stack Developer",
+      "org": "Evestel",
+      "orgMeta": "· Málaga · Remote",
+      "description": "Development and optimization of Python services for projects based on computer vision and video management. I proposed and led the migration of project management to OpenProject, and the adoption of AI across the team's workflows (custom skills and agents), including the local deployment of models for privacy-sensitive tasks.",
+      "tags": ["Python", "Computer Vision", "AI / Agents", "OpenProject"]
+    },
+    {
+      "period": "2024 — 2025",
+      "role": "Software Developer",
+      "org": "Enerclic",
+      "orgMeta": "· Málaga · Hybrid",
+      "description": "Python and JavaScript services with MQTT messaging for IoT devices. Data persistence and querying over SQL, and work on the reliability of the communication between the devices and the backend.",
+      "tags": ["Python", "JavaScript", "MQTT", "IoT", "SQL"]
+    },
+    {
+      "period": "2022 — 2024",
+      "role": "Data Automation Specialist",
+      "org": "Trenes Argentinos Operaciones",
+      "orgMeta": "· Buenos Aires",
+      "description": "Development and maintenance of Python software to automate and streamline data processing. Application of generative AI (GPT, Gemini) in internal solutions, in collaboration with different teams.",
+      "tags": ["Python", "Automation", "Generative AI"]
+    },
+    {
+      "period": "2014 — 2022",
+      "role": "Data Analyst · Operational Safety",
+      "org": "Trenes Argentinos Operaciones",
+      "orgMeta": "· Buenos Aires",
+      "description": "Building KPI indicators for management level, SQL data querying and modeling, and dashboard design in Power BI.",
+      "tags": ["SQL", "Power BI", "Data"]
+    },
+    {
+      "period": "2011 — 2013",
+      "role": "Jr. Functional Technical Analyst",
+      "org": "Latin America Technology",
+      "orgMeta": "· Buenos Aires",
+      "description": "Adapting ERP systems to clients' business needs and managing the Stock, Suppliers and Customers modules, with SQL queries.",
+      "tags": ["ERP", "SQL"]
+    }
+  ],
+  "education": [
+    {
+      "period": "2016 — 2022",
+      "role": "Bachelor's in Business Administration",
+      "org": "Universidad Nacional de Quilmes",
+      "orgMeta": "· Apostilled (The Hague) for Spain",
+      "description": "Training in administration and management, with a degree recognizable in Spain."
+    },
+    {
+      "period": "2023",
+      "role": "Python Master",
+      "org": "Udemy",
+      "orgMeta": "· Online",
+      "description": "Complete Python course applied to development and data processing."
+    },
+    {
+      "period": "2023",
+      "role": "Modern JavaScript",
+      "org": "Udemy",
+      "orgMeta": "· Online",
+      "description": "Current JavaScript: modern ES, asynchrony and web development."
+    },
+    {
+      "period": "2021",
+      "role": "SQL for Data Analysis",
+      "org": "Udemy",
+      "orgMeta": "· Online",
+      "description": "Data querying and analysis with SQL."
+    }
+  ],
+  "skills": [
+    { "category": "Languages", "items": ["Python", "JavaScript", "SQL"] },
+    { "category": "Backend & IoT", "items": ["Services / APIs", "REST", "MQTT", "IoT"] },
+    { "category": "AI", "items": ["Agents & skills", "LLMs", "Local models", "Computer Vision", "Generative AI"] },
+    { "category": "Data", "items": ["Pandas", "NumPy", "Power BI"] },
+    { "category": "Web & Libraries", "items": ["HTML", "CSS", "Django", "Requests", "BeautifulSoup", "Tkinter", "Flet"] },
+    { "category": "Tools", "items": ["Git", "Containers", "Scrum / Agile"] },
+    { "category": "Spoken languages", "items": ["Spanish · native", "English · professional"] }
+  ],
+  "projects": [
+    {
+      "title": "Internal documentation system",
+      "url": "#",
+      "description": "Documentation platform for training materials. A Markdown-to-self-contained-HTML converter in a single Python script with no external dependencies.",
+      "tags": ["Python", "Docs"]
+    },
+    {
+      "title": "Self-hosted AI lab",
+      "url": "#",
+      "description": "Local AI inference environment: deploying LLM models on own hardware with a web interface, for privacy-first tasks.",
+      "tags": ["AI", "Self-hosting"]
+    },
+    {
+      "title": "Claude Code course",
+      "url": "#",
+      "description": "Training material on Claude Code for senior developers: configuration, custom skills, subagents and MCP integration.",
+      "tags": ["AI", "Training"]
+    },
+    {
+      "title": "Portfolio",
+      "url": "#",
+      "description": "This site. Personal portfolio with a modular JSON-based architecture and several visual themes.",
+      "tags": ["Web", "Frontend"]
+    }
+  ],
+  "resources": [
+    {
+      "category": "Dev",
+      "items": [
+        { "icon": "G", "title": "GitHub", "url": "#", "description": "github.com" },
+        { "icon": "L", "title": "Linear", "url": "#", "description": "linear.app" },
+        { "icon": "M", "title": "MDN", "url": "#", "description": "developer.mozilla.org" },
+        { "icon": "D", "title": "DevDocs", "url": "#", "description": "devdocs.io" }
+      ]
+    },
+    {
+      "category": "AI",
+      "items": [
+        { "icon": "C", "title": "Claude", "url": "#", "description": "claude.ai" },
+        { "icon": "H", "title": "Hugging Face", "url": "#", "description": "huggingface.co" },
+        { "icon": "P", "title": "Perplexity", "url": "#", "description": "perplexity.ai" }
+      ]
+    },
+    {
+      "category": "Productivity",
+      "items": [
+        { "icon": "O", "title": "Obsidian", "url": "#", "description": "obsidian.md" },
+        { "icon": "N", "title": "Notion", "url": "#", "description": "notion.so" },
+        { "icon": "R", "title": "Raycast", "url": "#", "description": "raycast.com" }
+      ]
+    },
+    {
+      "category": "Reading",
+      "items": [
+        { "icon": "H", "title": "Hacker News", "url": "#", "description": "news.ycombinator.com" },
+        { "icon": "A", "title": "arXiv", "url": "#", "description": "arxiv.org" },
+        { "icon": "R", "title": "Read it later", "url": "#", "description": "getpocket.com" }
+      ]
+    }
+  ],
+  "contact": [
+    { "type": "email", "label": "Email", "value": "guillermo.palmieri23@gmail.com", "url": "mailto:guillermo.palmieri23@gmail.com" },
+    { "type": "linkedin", "label": "LinkedIn", "value": "linkedin.com/in/tu-perfil", "url": "#" },
+    { "type": "github", "label": "GitHub", "value": "github.com/tu-usuario", "url": "#" }
+  ]
+}
