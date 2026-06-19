@@ -132,6 +132,7 @@
   gap: var(--sp-3);
 }
 
+.sidebar__footer-modes,
 .sidebar__footer-specials {
   display: flex;
   gap: var(--sp-2);

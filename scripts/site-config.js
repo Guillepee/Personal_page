@@ -101,7 +101,7 @@ function applySectionVisibility(sections) {
 
 // Genera los botones de idioma (uno por idioma declarado), marcando el activo.
 // Reusan el aspecto de los botones de tema (.lang-btn comparte estilos con
-// .theme-special-btn en components.css).
+// .theme-btn en components.css).
 function renderLangButtons(languages, current) {
   const container = document.querySelector(".sidebar__langs");
   if (!container) return;
@@ -144,7 +144,7 @@ function applyConfig(config) {
 
   // Ocultar los controles de tema si la config lo pide.
   if (config.show_theme_switcher === false) {
-    document.querySelector(".sidebar__footer-top .theme-toggle")?.remove();
+    document.querySelector(".sidebar__footer-modes")?.remove();
     document.querySelector(".sidebar__footer-specials")?.remove();
   }
 

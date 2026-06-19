@@ -57,12 +57,12 @@ config/
 scripts/
 ├── content-renderer.js   ✅ fetch del idioma activo + render (contenido + encabezados de sección)
 ├── site-config.js        ✅ construye el nav, aplica visibilidad y maneja el idioma (selector ES/EN)
-└── theme-loader.js       ✅ toggle + botones de tema + retrato por tema, todo desde theme.json
+└── theme-loader.js       ✅ botones de tema (base Light/Dark + especiales) + retrato por tema, todo desde theme.json
 ```
 
 Notas sobre lo implementado:
 - **Carga**: los tres scripts hacen `fetch` con `defer` y `cache: "no-cache"` (revalidan con el server, así al editar un JSON se ve con un `F5` normal, sin hard refresh). Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
-- **theme-loader.js** (híbrido): genera los botones especiales desde `theme.json` (el dot va como var `--theme-dot`), maneja el toggle light/dark y persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
+- **theme-loader.js** (híbrido): genera un botón por tema desde `theme.json` (el dot va como var `--theme-dot`). Los **base** (Light/Dark) son selección directa y fijan el modo guardado; los **especiales** se activan/desactivan (al apagar, vuelven al base). Persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
 - **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros, traducidos vía `groupLabels`), aplica `visible` y respeta `show_theme_switcher`. Es además el **dueño del estado de idioma** (igual que `theme-loader` lo es del tema): genera los botones ES/EN desde `site.json` → `languages`, persiste en `localStorage` (`lang`) y dispara `language:changed`.
 - **i18n (es/en)**: el contenido vive en un archivo por idioma (`data/content.{idioma}.json`); los labels del nav y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`). El idioma activo es `localStorage.lang || "es"` (mismo patrón/fallback que el tema con `"light"`). El cambio es **en vivo, sin recargar**: `site-config` re-pinta el nav y dispara `language:changed`; `content-renderer` lo escucha y re-fetchea el JSON del nuevo idioma. Se preserva la sección activa del scrollspy al re-renderizar el nav. **Añadir un idioma** son 3 pasos en JSON, sin tocar JS/HTML: crear `content.{nuevo}.json`, agregarlo a `languages` y `groupLabels`, y añadir su clave en cada `sections[].label`. `show_language_switcher: false` oculta el selector.
 - **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` (y `language:changed`), `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) escucha los de sidebar/tema para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).
@@ -90,7 +90,7 @@ Navegación: **scroll a anclas** con **scrollspy** activo (IntersectionObserver)
 
 ## Temas implementados
 
-Hay 5 temas. El modelo no es un ciclo único: el toggle del sidebar alterna solo entre los dos temas **base** (`light`/`dark`), mientras que los temas **especiales** se activan/desactivan con sus propios botones (al desactivar, se vuelve al `baseTheme`). La elección persiste en `localStorage` (claves `theme` y `baseTheme`).
+Hay 5 temas. Cada uno tiene su botón en el footer del sidebar. Los dos temas **base** (`light`/`dark`, botones "Light"/"Dark") son de **selección directa** y fijan el `baseTheme` (el modo claro/oscuro guardado). Los temas **especiales** se activan/desactivan con sus botones (al desactivar, se vuelve al `baseTheme`). La elección persiste en `localStorage` (claves `theme` y `baseTheme`).
 
 | `data-theme` | Nombre | Tipo | Descripción |
 |---|---|---|---|
@@ -129,7 +129,7 @@ Los **colores** de cada tema viven en `styles/tokens.css`; qué temas existen y 
 ```json
 "mi-tema": { "name": "Mi Tema", "type": "special", "label": "Mi", "dot": "#abcdef" }
 ```
-(`type: "base"` para temas que entran en el toggle light/dark; `dot` es el color del punto del botón, que el CSS lee de `--theme-dot`.)
+(`type: "base"` para los temas de modo de selección directa, como Light/Dark; `dot` es el color del punto del botón, que el CSS lee de `--theme-dot`.)
 
 **Ocultar un tema** sin borrarlo: agregale `"visible": false` en `theme.json` (por defecto, ausente = visible). `theme-loader.js` omite su botón; si ese tema estaba activo en `localStorage`, la página cae al tema base. Aplica a temas especiales.
 
@@ -209,7 +209,7 @@ Los **colores** de cada tema viven en `styles/tokens.css`; qué temas existen y 
 - `.resources` + `.resource-group` + `.resource-item` — hub de links
 - `.contact` + `.contact-item`
 - `.nav-link` + `.nav-link.is-active`
-- `.theme-toggle` — botón del footer del sidebar
+- `.theme-btn` — botones de tema del footer (base Light/Dark + especiales)
 - `.social-link` — iconos de redes sociales
 
 ---
@@ -330,7 +330,7 @@ Consideración importante: los JSONs con `fetch()` requieren servidor local (`py
 - **CSS sin valores hardcoded** — toda literalidad va en `tokens.css` como variable.
 - **Scroll a anclas** (no SPA) — más simple, mejor para SEO, funciona sin JS.
 - **Scrollspy con IntersectionObserver** — sin dependencias.
-- **Toggle de tema persiste en `localStorage`** bajo la clave `"theme"`.
+- **El tema persiste en `localStorage`** (claves `"theme"` y `"baseTheme"`); los temas base (Light/Dark) son botones de selección directa, no un toggle.
 - **Retrato editorial 3:4** — no circular, esquinas casi rectas, leyenda firmada.
 - **Fuente Fraunces italic** solo en `section__title` y `.hero__name em` — no saturar.
 - **Eyebrow pattern**: línea horizontal + texto en mono uppercase + color acento.

@@ -37,49 +37,9 @@
   stroke-width: 1.5;
 }
 
-/* ---------- Theme toggle ---------- */
+/* ---------- Botones de tema (base + especiales) y de idioma ---------- */
 
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-2) var(--sp-3);
-  border-radius: var(--radius-full);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast);
-}
-
-.theme-toggle:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.theme-toggle__icon {
-  width: 14px;
-  height: 14px;
-  stroke-width: 1.5;
-}
-
-.theme-toggle__icon--sun { display: none; }
-.theme-toggle__icon--moon { display: inline-block; }
-
-/* La clase base-dark la pone JS cuando baseTheme es "dark",
-   independientemente del tema especial activo */
-.theme-toggle.base-dark .theme-toggle__icon--sun { display: inline-block; }
-.theme-toggle.base-dark .theme-toggle__icon--moon { display: none; }
-
-/* ---------- Botones de temas especiales ---------- */
-
-.theme-special-btn,
+.theme-btn,
 .lang-btn {
   display: inline-flex;
   align-items: center;
@@ -101,7 +61,7 @@
 
 /* Dot de color que identifica el tema antes de activarlo. El color lo aporta
    theme-loader.js como variable --theme-dot (definida en theme.json). */
-.theme-special-btn::before {
+.theme-btn::before {
   content: "";
   width: 6px;
   height: 6px;
@@ -110,13 +70,13 @@
   background: var(--theme-dot, currentColor);
 }
 
-.theme-special-btn:hover,
+.theme-btn:hover,
 .lang-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
 }
 
-.theme-special-btn.is-active,
+.theme-btn.is-active,
 .lang-btn.is-active {
   background: var(--color-accent-soft);
   border-color: var(--color-accent);

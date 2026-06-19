@@ -1,8 +1,8 @@
 {
   "default_mode": "light",
   "themes": {
-    "light":      { "name": "Latte",    "type": "base",    "visible": true, "portrait": "assets/images/portrait-light.jpg" },
-    "dark":       { "name": "Mocha",    "type": "base",    "visible": true, "portrait": "assets/images/portrait-dark.jpg" },
+    "light":      { "name": "Latte",    "type": "base",    "visible": true, "label": "Light", "dot": "#f9e2af", "portrait": "assets/images/portrait-light.jpg" },
+    "dark":       { "name": "Mocha",    "type": "base",    "visible": true, "label": "Dark",  "dot": "#b4befe", "portrait": "assets/images/portrait-dark.jpg" },
     "retro-term": { "name": "Terminal", "type": "special", "visible": true, "label": "Term",  "dot": "#33ff00", "portrait": "assets/images/portrait-retro-term.jpg" },
     "pixel8":     { "name": "8-bit",    "type": "special", "visible": true, "label": "8-bit", "dot": "#e40058", "portrait": "assets/images/portrait-pixel8.jpg" },
     "dnd35":      { "name": "D&D 3.5",  "type": "special", "visible": false, "label": "D&D",   "dot": "#8b1a1a", "portrait": "assets/images/portrait-dnd35.jpg" },
