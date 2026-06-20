@@ -34,6 +34,15 @@ const CONTACT_ICONS = { email: ICONS.email, linkedin: ICONS.linkedin, github: IC
 
 const chip = (text) => `<span class="chip">${text}</span>`;
 
+// Atributos para que un enlace a otro sitio abra en una pestaña nueva.
+// Solo aplica a URLs externas (http/https) y mailto; las anclas internas ("#…")
+// y los placeholders ("#") navegan en la misma ventana, como corresponde.
+// rel="noopener noreferrer" evita que la pestaña nueva acceda a window.opener.
+function externalLinkAttrs(url) {
+  const isExternal = /^(https?:|mailto:)/i.test(url || "");
+  return isExternal ? ` target="_blank" rel="noopener noreferrer"` : "";
+}
+
 // Estiliza el apellido (última palabra) en cursiva, como en el diseño original.
 function renderName(name) {
   const parts = name.trim().split(" ");
@@ -74,7 +83,7 @@ function renderHero(profile) {
       ${profile.socials
         .map(
           (s) =>
-            `<a href="${s.url}" class="social-link" aria-label="${s.label}">${ICONS[s.id] || ""}</a>`
+            `<a href="${s.url}"${externalLinkAttrs(s.url)} class="social-link" aria-label="${s.label}">${ICONS[s.id] || ""}</a>`
         )
         .join("")}
     </div>`;
@@ -111,7 +120,7 @@ function renderSkillGroup(group) {
 
 function renderProject(project) {
   return `
-    <a href="${project.url}" class="project-card">
+    <a href="${project.url}"${externalLinkAttrs(project.url)} class="project-card">
       <div class="project-card__head">
         <h3 class="project-card__title">${project.title}</h3>
         <span class="project-card__arrow">${ARROW}</span>
@@ -143,7 +152,7 @@ function renderResourceItem(item) {
       `alt="" loading="lazy" onerror="this.parentElement.textContent='${item.icon}'" />`
     : item.icon;
   return `
-    <a href="${item.url}" class="resource-item">
+    <a href="${item.url}"${externalLinkAttrs(item.url)} class="resource-item">
       <div class="resource-item__icon">${icon}</div>
       <div class="resource-item__body">
         <div class="resource-item__title">
@@ -170,7 +179,7 @@ function renderResourceGroup(group) {
 
 function renderContactItem(item) {
   return `
-    <a href="${item.url}" class="contact-item">
+    <a href="${item.url}"${externalLinkAttrs(item.url)} class="contact-item">
       <div class="contact-item__icon">${CONTACT_ICONS[item.type] || ""}</div>
       <div>
         <div class="contact-item__label">${item.label}</div>
