@@ -6,6 +6,9 @@
     "es": { "name": "Español", "label": "ES" },
     "en": { "name": "English", "label": "EN" }
   },
+  "actions": {
+    "downloadCv": { "es": "Descargar CV en PDF", "en": "Download CV as PDF" }
+  },
   "groupLabels": {
     "CV":    { "es": "CV",    "en": "CV" },
     "Hub":   { "es": "Hub",   "en": "Hub" },

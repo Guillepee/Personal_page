@@ -48,6 +48,10 @@
   <script src="scripts/theme-loader.js" defer></script>
   <script src="scripts/site-config.js" defer></script>
   <script src="scripts/content-renderer.js" defer></script>
+
+  <!-- Exportación del CV a PDF: html2pdf.js (vendored) + el script que lo usa -->
+  <script src="vendor/html2pdf.bundle.min.js" defer></script>
+  <script src="scripts/pdf-export.js" defer></script>
 </head>
 <body>
   <div class="app">
@@ -71,6 +75,15 @@
       <div class="sidebar__langs"></div>
 
       <nav class="sidebar__nav" aria-label="Navegación principal"></nav>
+
+      <!-- Descarga del CV en PDF (pdf-export.js, vía html2pdf.js).
+           El texto lo traduce site-config.js según el idioma activo. -->
+      <button class="sidebar__download" type="button" id="downloadCv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12M7 11l5 5 5-5M5 21h14" />
+        </svg>
+        <span id="downloadCvLabel">Descargar CV en PDF</span>
+      </button>
 
       <div class="sidebar__footer">
         <div class="sidebar__footer-top">

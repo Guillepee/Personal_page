@@ -117,6 +117,13 @@ function renderLangButtons(languages, current) {
   });
 }
 
+// Traduce el texto del botón de descarga del CV según el idioma activo.
+function applyActionLabels(lang) {
+  const label = document.getElementById("downloadCvLabel");
+  const text = siteConfig.actions?.downloadCv?.[lang];
+  if (label && text) label.textContent = text;
+}
+
 // Cambia el idioma en vivo (sin recargar): re-pinta el nav y los botones, y
 // avisa con language:changed para que content-renderer re-cargue el contenido.
 function setLanguage(lang) {
@@ -127,6 +134,7 @@ function setLanguage(lang) {
 
   renderNavInto(lang);
   renderLangButtons(siteConfig.languages, lang);
+  applyActionLabels(lang);
 
   document.dispatchEvent(new CustomEvent("language:changed", { detail: { lang } }));
   // El nav cambió de tamaño (labels de otra longitud): recalcular el escalado.
@@ -139,6 +147,7 @@ function applyConfig(config) {
   document.documentElement.lang = activeLang;
 
   renderNavInto(activeLang);
+  applyActionLabels(activeLang);
 
   applySectionVisibility(config.sections);
 
