@@ -267,6 +267,13 @@
   display: none;
 }
 
+/* En la exportación a PDF se oculta la línea conectora de la timeline: al
+   rasterizar queda como una raya vertical en el margen. La clase la pone
+   pdf-export.js solo durante la captura. */
+.is-pdf-export .timeline-item::before {
+  display: none;
+}
+
 .timeline-item::after {
   content: "";
   position: absolute;

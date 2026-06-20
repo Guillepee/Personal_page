@@ -47,12 +47,18 @@
     // Feedback: evitar doble clic mientras se genera.
     button.disabled = true;
     button.classList.add("is-loading");
+    // Clase solo para la captura: html2pdf rasteriza el DOM real (no usa
+    // @media print), así que los ajustes exclusivos del PDF se aplican con
+    // esta clase y se revierten al terminar. Hoy: oculta la línea conectora
+    // de la timeline, que en el PDF se ve como una raya en el margen.
+    target.classList.add("is-pdf-export");
     try {
       await html2pdf().set(buildOptions()).from(target).save();
     } catch (error) {
       // No silenciar: si la generación falla, dejar rastro para diagnosticar.
       console.error("Error generando el PDF del CV:", error);
     } finally {
+      target.classList.remove("is-pdf-export");
       button.disabled = false;
       button.classList.remove("is-loading");
     }
