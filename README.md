@@ -4,11 +4,11 @@
 
 **Una página personal (CV navegable + hub de enlaces) totalmente modular, multi-tema y sin build step.**
 
-Editás tres archivos JSON y tenés tu propia página. Sin frameworks, sin compilación, sin dependencias.
+Editás tres archivos JSON y tenés tu propia página. Sin frameworks ni compilación; la única dependencia es **html2pdf.js** (incluida en el repo) para exportar el CV a PDF.
 
 ![Build](https://img.shields.io/badge/build-ninguno-22c55e?style=flat-square)
 ![Vanilla JS](https://img.shields.io/badge/Vanilla-JS-f7df1e?style=flat-square)
-![Sin dependencias](https://img.shields.io/badge/dependencias-0-8b5cf6?style=flat-square)
+![Dependencias](https://img.shields.io/badge/dependencias-1%20(html2pdf.js)-8b5cf6?style=flat-square)
 ![Temas](https://img.shields.io/badge/temas-5-e11d48?style=flat-square)
 ![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages%20%C2%B7%20Docker-222?style=flat-square)
 
@@ -54,7 +54,8 @@ Inspiración visual: el tema **Anuppuccin** de Obsidian (Catppuccin + tipografí
 - 🖼️ **Retrato por tema** — cada tema puede mostrar su propia imagen.
 - 🧭 **Sidebar dinámica** — se construye desde config; secciones y temas se activan/desactivan con un flag.
 - 📐 **Sin scroll en la sidebar** — el contenido se autoescala para entrar completo en cualquier alto de pantalla.
-- ⚡ **Sin build, sin dependencias** — HTML + CSS + JavaScript vanilla. Abre con un servidor estático.
+- 📄 **Descargar CV en PDF** — botón en el sidebar que genera un PDF del CV respetando el tema activo (vía html2pdf.js, incluida en el repo).
+- ⚡ **Sin build** — HTML + CSS + JavaScript vanilla. Abre con un servidor estático; la única dependencia (html2pdf.js) viene incluida.
 - ♿ **Accesible** — respeta `prefers-reduced-motion`, navegación por teclado y `aria-label`.
 
 ---
@@ -105,15 +106,19 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 ├── scripts/
 │   ├── content-renderer.js    # Rellena el contenido del idioma activo (template literals)
 │   ├── site-config.js         # Construye el sidebar y maneja el selector de idioma
-│   └── theme-loader.js        # Botones de tema (Light/Dark + especiales) + retrato
+│   ├── theme-loader.js        # Botones de tema (Light/Dark + especiales) + retrato
+│   └── pdf-export.js          # Exporta el CV a PDF (usa html2pdf.js)
 ├── styles/
 │   ├── tokens.css             # Variables + paletas de los 5 temas
 │   ├── base.css               # Reset y estilos globales
 │   ├── layout.css             # Sidebar + main + responsive
 │   ├── components.css         # Componentes (hero, timeline, chips…)
 │   └── main.css               # Orquestador de @import
+├── vendor/
+│   └── html2pdf.bundle.min.js # Dependencia para exportar a PDF (incluida)
 └── assets/
-    └── images/                # ← Tus retratos: portrait-<tema>.jpg
+    ├── images/                # ← Tus retratos: portrait-<tema>.jpg
+    └── icons/                 # Favicons locales de los recursos (<dominio>.png)
 ```
 
 > Lo que editás vos está marcado con ←. **El resto no se toca** para personalizar tu página.
@@ -338,6 +343,16 @@ No es una SPA: es scroll a secciones con anclas, con un `IntersectionObserver` q
 <summary><strong>Coordinación entre scripts por eventos</strong></summary>
 
 Los tres scripts son independientes y se comunican por eventos del DOM: `site-config` emite `sidebar:rendered` y `theme-loader` emite `theme:changed`; el escalado de la sidebar escucha ambos para recalcularse. Así nadie depende del orden de carga del otro.
+</details>
+
+<details>
+<summary><strong>Exportación a PDF con html2pdf.js (vendored) y favicons locales</strong></summary>
+
+El botón "Descargar CV en PDF" usa **html2pdf.js**, que rasteriza el DOM (html2canvas) y lo arma en un PDF (jsPDF). Se eligió frente a la impresión nativa (`window.print`) por la descarga directa de un clic. La librería se incluye en `vendor/` (no por CDN) para que funcione offline y sin depender de un tercero en runtime.
+
+Dos consecuencias de rasterizar el DOM:
+- **Favicons locales**: html2canvas no puede capturar imágenes de otro origen (CORS), así que los favicons de los recursos se sirven desde `assets/icons/` (mismo origen) en vez de un servicio externo. Así aparecen también en el PDF.
+- **Ajustes solo-PDF por clase**: como no se usa `@media print`, los retoques exclusivos del PDF se aplican con la clase `is-pdf-export` (la pone `pdf-export.js` solo durante la captura y la quita al terminar). Hoy se usa para ocultar la línea de la timeline, que rasterizada quedaba como una raya en el margen.
 </details>
 
 ---
