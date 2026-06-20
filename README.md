@@ -49,6 +49,7 @@ Inspiración visual: el tema **Anuppuccin** de Obsidian (Catppuccin + tipografí
 ## ✨ Características
 
 - 🧩 **100% modular** — contenido, estructura y temas separados en JSON.
+- 🌐 **Bilingüe (es/en)** — un archivo de contenido por idioma y un selector ES/EN en el sidebar que cambia el idioma en vivo, sin recargar. Persiste en `localStorage`.
 - 🎨 **5 temas** — Latte (claro), Mocha (oscuro), Terminal (CRT), 8-bit (NES) y D&D 3.5 (pergamino). Persisten en `localStorage`.
 - 🖼️ **Retrato por tema** — cada tema puede mostrar su propia imagen.
 - 🧭 **Sidebar dinámica** — se construye desde config; secciones y temas se activan/desactivan con un flag.
@@ -70,9 +71,9 @@ El principio rector es **máxima modularidad**: tres ejes completamente desacopl
                                       │ fetch()  (cache: no-cache)
           ┌───────────────────────────┼───────────────────────────┐
           ▼                           ▼                           ▼
-   data/content.json           config/site.json           config/theme.json
+  data/content.{es,en}.json    config/site.json           config/theme.json
      CONTENIDO                  ESTRUCTURA                  APARIENCIA
-   (CV, hub, textos)        (secciones, sidebar)        (temas, retratos)
+   (CV, hub, textos)      (secciones, sidebar, idiomas)   (temas, retratos)
           │                           │                           │
           ▼                           ▼                           ▼
  content-renderer.js          site-config.js              theme-loader.js
@@ -80,8 +81,8 @@ El principio rector es **máxima modularidad**: tres ejes completamente desacopl
 
 | Eje | Archivo | Lo lee | Responsabilidad |
 |-----|---------|--------|-----------------|
-| **Contenido** | `data/content.json` | `content-renderer.js` | Perfil, experiencia, formación, skills, proyectos, recursos, contacto y encabezados |
-| **Estructura** | `config/site.json` | `site-config.js` | Qué secciones existen, su orden, grupos y visibilidad; idioma; switchers |
+| **Contenido** | `data/content.es.json` · `data/content.en.json` | `content-renderer.js` | Perfil, experiencia, formación, skills, proyectos, recursos, contacto y encabezados (un archivo por idioma) |
+| **Estructura** | `config/site.json` | `site-config.js` | Qué secciones existen, su orden, grupos y visibilidad; idiomas y selector; switchers |
 | **Apariencia** | `config/theme.json` | `theme-loader.js` | Temas disponibles, tema por defecto, retratos, botones |
 
 > **¿Por qué separar en tres?** Para que cada tipo de cambio tenga **un único lugar**: actualizar tu CV no toca la apariencia; agregar un tema no toca el contenido; reordenar el menú no toca nada de lo demás. El HTML y el CSS quedan estables; los datos cambian por su cuenta. Es el patrón de *separación de responsabilidades* llevado a archivos de configuración.
@@ -96,14 +97,15 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 .
 ├── index.html                 # Esqueleto + carga de scripts y CSS
 ├── data/
-│   └── content.json           # ← Tu CV y tus enlaces
+│   ├── content.es.json        # ← Tu CV y tus enlaces (español)
+│   └── content.en.json        # ← Tu CV y tus enlaces (inglés)
 ├── config/
-│   ├── site.json              # ← Secciones, sidebar, visibilidad
+│   ├── site.json              # ← Secciones, sidebar, visibilidad, idiomas
 │   └── theme.json             # ← Temas, tema por defecto, retratos
 ├── scripts/
-│   ├── content-renderer.js    # Rellena el contenido (template literals)
-│   ├── site-config.js         # Construye la navegación del sidebar
-│   └── theme-loader.js        # Toggle de temas + botones + retrato
+│   ├── content-renderer.js    # Rellena el contenido del idioma activo (template literals)
+│   ├── site-config.js         # Construye el sidebar y maneja el selector de idioma
+│   └── theme-loader.js        # Botones de tema (Light/Dark + especiales) + retrato
 ├── styles/
 │   ├── tokens.css             # Variables + paletas de los 5 temas
 │   ├── base.css               # Reset y estilos globales
@@ -121,8 +123,8 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 ## 🛠️ Cómo armar tu propia página
 
 1. **Cloná o usá este repo como plantilla.**
-2. **Editá `data/content.json`** con tus datos: nombre, bio, experiencia, formación, skills, proyectos, recursos y contacto.
-3. **Ajustá `config/site.json`** si querés cambiar etiquetas del menú, agrupaciones o esconder secciones.
+2. **Editá `data/content.es.json`** (y `content.en.json` si querés versión en inglés) con tus datos: nombre, bio, experiencia, formación, skills, proyectos, recursos y contacto.
+3. **Ajustá `config/site.json`** si querés cambiar etiquetas del menú, agrupaciones, esconder secciones o configurar los idiomas.
 4. **Personalizá `config/theme.json`**: elegí el tema por defecto, ocultá los que no quieras.
 5. **Subí tus retratos** a `assets/images/` (uno por tema, ver [retratos](#retratos-por-tema)).
 6. **Levantá un servidor** (ver [Despliegue](#-despliegue)) — recordá que **no funciona abriendo el `.html` con doble clic** (ver [por qué](#por-qué-hace-falta-un-servidor)).
@@ -238,8 +240,23 @@ Otros flags globales en `site.json`:
 
 | Flag | Efecto |
 |------|--------|
-| `language` | Atributo `lang` del documento (`es`, `en`, …) |
 | `show_theme_switcher` | `false` esconde **todos** los controles de tema |
+| `show_language_switcher` | `false` esconde el selector de idioma |
+
+### Idiomas (es / en)
+
+El contenido vive en un archivo por idioma (`data/content.es.json`, `data/content.en.json`), ambos con la **misma estructura**. El idioma activo se guarda en `localStorage` (`es` por defecto) y se cambia con el selector del sidebar, **en vivo, sin recargar**. Las etiquetas del menú y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`).
+
+**Añadir un idioma** son 3 pasos en JSON, sin tocar JS ni HTML:
+
+1. Creá `data/content.<idioma>.json` (copiá uno existente y traducí los textos).
+2. En `site.json`, agregalo a `languages` y a cada entrada de `groupLabels`:
+   ```json
+   "languages": { "es": { "name": "Español", "label": "ES" }, "fr": { "name": "Français", "label": "FR" } }
+   ```
+3. En `site.json`, añadí su clave en cada `sections[].label` (ej. `"label": { "es": "Inicio", "fr": "Accueil" }`).
+
+> `show_language_switcher: false` oculta el selector (la página queda en el idioma guardado).
 
 ### Activar / desactivar temas
 
@@ -249,7 +266,7 @@ En `config/theme.json`, cada tema también tiene `visible`:
 "dnd35": { "name": "D&D 3.5", "type": "special", "visible": false, "label": "D&D", "dot": "#8b1a1a", "portrait": "assets/images/portrait-dnd35.jpg" }
 ```
 
-- `type`: `base` (entra en el toggle claro/oscuro) o `special` (botón propio).
+- `type`: `base` (botón de modo de selección directa, como Light/Dark) o `special` (botón propio que se activa/desactiva).
 - `visible: false`: oculta el botón. Si alguien lo tenía activo, la página cae sola al tema base.
 - `dot`: color del puntito identificador del botón.
 - `default_mode` (raíz del archivo): tema con el que arranca la página.
