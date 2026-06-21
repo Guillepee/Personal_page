@@ -105,10 +105,10 @@
   ],
   "projects": [
     {
-      "title": "Sistema de documentación interna",
-      "url": "#",
-      "description": "Plataforma de documentación para materiales de formación. Conversor de Markdown a HTML autocontenido, en un único script de Python sin dependencias externas.",
-      "tags": ["Python", "Docs"]
+      "title": "Conversor Markdown->HTML",
+      "url": "https://guillepee.github.io/markdown-to-html/",
+      "description": "Herramienta web para convertir Markdown a HTML, aplicar estilos predefinidos y previsualizar el resultado en tiempo real." ,
+      "tags": ["js", "Docs"]
     },
     {
       "title": "Lab de IA self-hosted",
