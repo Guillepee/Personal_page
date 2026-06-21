@@ -144,7 +144,7 @@
       "items": [
         { "icon": "C", "title": "Claude", "url": "https://claude.ai", "description": "claude.ai" },
         { "icon": "H", "title": "Hugging Face", "url": "https://huggingface.co", "description": "huggingface.co" },
-        { "icon": "P", "title": "Perplexity", "url": "https://perplexity.ai", "description": "perplexity.ai" }
+        { "icon": "N", "title": "Notebooklm", "url": "https://notebooklm.google/", "description": "notebooklm.google" }
       ]
     },
     {
