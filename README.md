@@ -117,8 +117,7 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 ├── vendor/
 │   └── html2pdf.bundle.min.js # Dependencia para exportar a PDF (incluida)
 └── assets/
-    ├── images/                # ← Tus retratos: portrait-<tema>.jpg
-    └── icons/                 # Favicons locales de los recursos (<dominio>.png)
+    └── images/                # ← Tus retratos: portrait-<tema>.jpg
 ```
 
 > Lo que editás vos está marcado con ←. **El resto no se toca** para personalizar tu página.
@@ -346,12 +345,13 @@ Los tres scripts son independientes y se comunican por eventos del DOM: `site-co
 </details>
 
 <details>
-<summary><strong>Exportación a PDF con html2pdf.js (vendored) y favicons locales</strong></summary>
+<summary><strong>Exportación a PDF con html2pdf.js (vendored)</strong></summary>
 
 El botón "Descargar CV en PDF" usa **html2pdf.js**, que rasteriza el DOM (html2canvas) y lo arma en un PDF (jsPDF). Se eligió frente a la impresión nativa (`window.print`) por la descarga directa de un clic. La librería se incluye en `vendor/` (no por CDN) para que funcione offline y sin depender de un tercero en runtime.
 
-Dos consecuencias de rasterizar el DOM:
-- **Favicons locales**: html2canvas no puede capturar imágenes de otro origen (CORS), así que los favicons de los recursos se sirven desde `assets/icons/` (mismo origen) en vez de un servicio externo. Así aparecen también en el PDF.
+Consecuencias de rasterizar el DOM:
+- **Favicons con CORS**: html2canvas no puede capturar imágenes de otro origen salvo que el servidor mande cabeceras CORS. Por eso los favicons de los recursos se cargan de **icon.horse** (que responde con `Access-Control-Allow-Origin: *`) con `crossorigin="anonymous"`: así se ven en pantalla **y** en el PDF, sin descargar ni mantener archivos. Agregar un recurso con su `url` basta para que aparezca su icono.
+- **Esperar las imágenes**: `pdf-export.js` espera a que las imágenes terminen de cargar antes de capturar; si html2canvas mide el alto con favicons a medias, la paginación se rompe (páginas en blanco).
 - **Ajustes solo-PDF por clase**: como no se usa `@media print`, los retoques exclusivos del PDF se aplican con la clase `is-pdf-export` (la pone `pdf-export.js` solo durante la captura y la quita al terminar). Hoy se usa para ocultar la línea de la timeline, que rasterizada quedaba como una raya en el margen.
 </details>
 
