@@ -145,12 +145,14 @@ function resourceFaviconDomain(item) {
 
 function renderResourceItem(item) {
   const domain = resourceFaviconDomain(item);
-  // Favicon local (assets/icons/<dominio>.png): same-origin, así se ve también
-  // en el PDF (html2pdf no puede con imágenes cross-origin por CORS). onerror:
-  // si falta el archivo, se reemplaza por la letra (item.icon).
+  // Favicon automático vía icon.horse, derivado del dominio del url: agregar un
+  // recurso (con su url) basta para que aparezca su icono, sin descargar nada.
+  // El servicio responde con CORS (Access-Control-Allow-Origin: *), por eso
+  // crossorigin="anonymous": así html2canvas puede rasterizarlo y el icono sale
+  // también en el PDF. onerror: si no carga, se reemplaza por la letra (icon).
   const icon = domain
-    ? `<img class="resource-item__favicon" src="assets/icons/${domain}.png" ` +
-      `alt="" loading="lazy" onerror="this.parentElement.textContent='${item.icon}'" />`
+    ? `<img class="resource-item__favicon" src="https://icon.horse/icon/${domain}" ` +
+      `crossorigin="anonymous" alt="" onerror="this.parentElement.textContent='${item.icon}'" />`
     : item.icon;
   return `
     <a href="${item.url}"${externalLinkAttrs(item.url)} class="resource-item">

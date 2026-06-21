@@ -38,6 +38,22 @@
     };
   }
 
+  // Espera a que todas las imágenes del nodo estén cargadas. html2canvas mide
+  // el alto para partir las páginas; si lo hace con imágenes a medio cargar
+  // (p. ej. favicons remotos), la paginación se rompe (páginas en blanco).
+  function waitForImages(node) {
+    const pending = Array.from(node.querySelectorAll("img")).filter((img) => !img.complete);
+    return Promise.all(
+      pending.map(
+        (img) =>
+          new Promise((resolve) => {
+            img.addEventListener("load", resolve, { once: true });
+            img.addEventListener("error", resolve, { once: true });
+          })
+      )
+    );
+  }
+
   async function exportPdf() {
     if (typeof html2pdf === "undefined") {
       // Falla visible: sin la librería no se puede generar el PDF.
@@ -53,6 +69,7 @@
     // de la timeline, que en el PDF se ve como una raya en el margen.
     target.classList.add("is-pdf-export");
     try {
+      await waitForImages(target);
       await html2pdf().set(buildOptions()).from(target).save();
     } catch (error) {
       // No silenciar: si la generación falla, dejar rastro para diagnosticar.
