@@ -105,6 +105,12 @@
   ],
   "projects": [
     {
+      "title": "FocusTube",
+      "url": "https://chromewebstore.google.com/detail/focustube/dodeiiadlbjimajdeamgocihdeganlbk",
+      "description": "Chromium browser extension (Manifest V3) that brings deliberate use back to YouTube: hides Shorts, the home feed, suggested videos and comments. Built with WXT and TypeScript, with business logic decoupled from the framework and React scoped to the popup. No analytics, no tracking.",
+      "tags": ["TypeScript", "WXT", "Manifest V3"]
+    },
+    {
       "title": "Markdown to HTML Converter",
       "url": "https://guillepee.github.io/markdown-to-html/",
       "description": "Web tool for converting Markdown to HTML, applying predefined styles, and previewing the result in real time.",
@@ -121,12 +127,6 @@
       "url": "#",
       "description": "Training material on Claude Code for senior developers: configuration, custom skills, subagents and MCP integration.",
       "tags": ["AI", "Training"]
-    },
-    {
-      "title": "Portfolio",
-      "url": "#",
-      "description": "This site. Personal portfolio with a modular JSON-based architecture and several visual themes.",
-      "tags": ["Web", "Frontend"]
     }
   ],
   "resources": [
