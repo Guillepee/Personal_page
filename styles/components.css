@@ -274,6 +274,14 @@
   display: none;
 }
 
+/* El PDF llega solo hasta Proyectos: Recursos y Contacto no aportan a un
+   reclutador y sobran en un CV descargable. Se ocultan solo durante la
+   captura (la página en pantalla los sigue mostrando). */
+.is-pdf-export #resources,
+.is-pdf-export #contact {
+  display: none;
+}
+
 .timeline-item::after {
   content: "";
   position: absolute;

@@ -70,7 +70,9 @@
     // Clase solo para la captura: html2pdf rasteriza el DOM real (no usa
     // @media print), así que los ajustes exclusivos del PDF se aplican con
     // esta clase y se revierten al terminar. Hoy: oculta la línea conectora
-    // de la timeline, que en el PDF se ve como una raya en el margen.
+    // de la timeline (se ve como una raya en el margen) y las secciones de
+    // Recursos/Contacto, que no aportan a un reclutador (el PDF llega hasta
+    // Proyectos).
     target.classList.add("is-pdf-export");
     // Se scrollea al tope antes de capturar (complementa scrollX/scrollY:0 de
     // html2canvas) y se restaura la posición del usuario al terminar.
