@@ -28,7 +28,11 @@
       image: { type: "jpeg", quality: 0.98 },
       // scale 2 -> nitidez (el contenido se rasteriza). useCORS para intentar
       // cargar imágenes externas (favicons); las que no permitan CORS se omiten.
-      html2canvas: { scale: 2, backgroundColor: background, useCORS: true },
+      // scrollX/scrollY en 0: si no se fijan, html2canvas captura respetando el
+      // scroll real de la ventana y, como el botón de descarga vive en la sidebar
+      // (siempre visible por ser sticky), un clic con el CV scrolleado generaba un
+      // espacio en blanco al inicio del PDF equivalente a ese offset.
+      html2canvas: { scale: 2, backgroundColor: background, useCORS: true, scrollX: 0, scrollY: 0 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       // Evita cortar un bloque entre páginas (equivalente a break-inside: avoid).
       pagebreak: {
@@ -68,8 +72,14 @@
     // esta clase y se revierten al terminar. Hoy: oculta la línea conectora
     // de la timeline, que en el PDF se ve como una raya en el margen.
     target.classList.add("is-pdf-export");
+    // Se scrollea al tope antes de capturar (complementa scrollX/scrollY:0 de
+    // html2canvas) y se restaura la posición del usuario al terminar.
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    window.scrollTo(0, 0);
     try {
       await waitForImages(target);
+      await new Promise((resolve) => requestAnimationFrame(resolve));
       await html2pdf().set(buildOptions()).from(target).save();
     } catch (error) {
       // No silenciar: si la generación falla, dejar rastro para diagnosticar.
@@ -78,6 +88,7 @@
       target.classList.remove("is-pdf-export");
       button.disabled = false;
       button.classList.remove("is-loading");
+      window.scrollTo(scrollX, scrollY);
     }
   }
 
