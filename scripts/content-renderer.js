@@ -1,6 +1,6 @@
 /* ============================================================
    content-renderer.js
-   Lee data/content.{idioma}.json (es/en) y puebla las secciones del CV.
+   Lee me/content.{idioma}.json (es/en) y puebla las secciones del CV.
    Fase 2: el contenido vive en el JSON; el HTML es el esqueleto.
    Construye el markup con template literals (datos propios, no externos).
    ============================================================ */
@@ -246,7 +246,7 @@ async function loadContent(lang) {
   try {
     // cache: "no-cache" -> el navegador revalida con el server en cada carga,
     // así al editar el JSON se ve con un F5 normal (sin hard refresh).
-    const response = await fetch(`data/content.${lang}.json`, { cache: "no-cache" });
+    const response = await fetch(`me/content.${lang}.json`, { cache: "no-cache" });
     if (!response.ok) {
       // Fallar de forma visible: sin contenido la página no tiene sentido.
       throw new Error(`No se pudo cargar content.${lang}.json (HTTP ${response.status})`);

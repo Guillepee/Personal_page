@@ -3,12 +3,12 @@
 FROM nginx:alpine
 
 # Copiamos solo lo que sirve el sitio (nada de .git, entornos locales, docs).
+# me/ trae el contenido personal: textos del CV, retratos y favicons.
 COPY index.html /usr/share/nginx/html/
 COPY styles  /usr/share/nginx/html/styles
 COPY scripts /usr/share/nginx/html/scripts
-COPY data    /usr/share/nginx/html/data
 COPY config  /usr/share/nginx/html/config
-COPY assets  /usr/share/nginx/html/assets
+COPY me      /usr/share/nginx/html/me
 
 EXPOSE 80
 

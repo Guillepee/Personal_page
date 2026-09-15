@@ -25,9 +25,11 @@ Inspiración visual: tema **Anuppuccin** de Obsidian (Catppuccin + tipografía e
 
 | Eje | Archivo | Responsabilidad |
 |-----|---------|----------------|
-| Contenido | `data/content.es.json` · `data/content.en.json` | CV, recursos, datos personales (uno por idioma) |
+| Contenido | `me/content.es.json` · `me/content.en.json` | CV, recursos, datos personales (uno por idioma) |
 | Apariencia | `config/theme.json` | Paletas, tipografías, tokens |
 | Estructura | `config/site.json` | Secciones, orden, visibilidad, idiomas |
+
+**Todo el contenido personal vive en `me/`**: los `content.{idioma}.json`, los retratos y el `og-image` en `me/images/`, y los favicons. `config/` no es contenido personal sino configuración del sitio. La única excepción son las etiquetas `<title>`/`description`/Open Graph del `<head>` de `index.html`: quedan hardcodeadas porque los crawlers sociales no ejecutan JS.
 
 El CSS **nunca** tiene valores hardcoded: solo consume variables CSS (`--color-bg`, `--font-display`, etc.). En Fase 2, `theme-loader.js` leerá `theme.json` e inyectará esos valores en `:root` en runtime.
 
@@ -48,9 +50,12 @@ cv-web/
 
 **Estructura Fase 2 (completa):**
 ```
-data/
+me/
 ├── content.es.json       ✅ datos del CV en español + encabezados de sección (sectionHeaders)
-└── content.en.json       ✅ misma estructura, contenido en inglés
+├── content.en.json       ✅ misma estructura, contenido en inglés
+├── favicon-32.png        ✅ favicon del sitio
+├── favicon-180.png       ✅ icono para iOS
+└── images/               ✅ retratos por tema (portrait-<tema>.jpg) + og-image.jpg
 config/
 ├── site.json             ✅ switchers, idiomas (languages/groupLabels) y secciones (label {es,en}, icon, group, visible)
 └── theme.json            ✅ default_mode + themes (name, type, label, dot, portrait) + tipografía (referencia)
@@ -64,10 +69,10 @@ Notas sobre lo implementado:
 - **Carga**: los tres scripts hacen `fetch` con `defer` y `cache: "no-cache"` (revalidan con el server, así al editar un JSON se ve con un `F5` normal, sin hard refresh). Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
 - **theme-loader.js** (híbrido): genera un botón por tema desde `theme.json` (el dot va como var `--theme-dot`). Los **base** (Light/Dark) son selección directa y fijan el modo guardado; los **especiales** se activan/desactivan (al apagar, vuelven al base). Persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
 - **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros, traducidos vía `groupLabels`), aplica `visible` y respeta `show_theme_switcher`. Es además el **dueño del estado de idioma** (igual que `theme-loader` lo es del tema): genera los botones ES/EN desde `site.json` → `languages`, persiste en `localStorage` (`lang`) y dispara `language:changed`.
-- **i18n (es/en)**: el contenido vive en un archivo por idioma (`data/content.{idioma}.json`); los labels del nav y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`). El idioma activo es `localStorage.lang || "es"` (mismo patrón/fallback que el tema con `"light"`). El cambio es **en vivo, sin recargar**: `site-config` re-pinta el nav y dispara `language:changed`; `content-renderer` lo escucha y re-fetchea el JSON del nuevo idioma. Se preserva la sección activa del scrollspy al re-renderizar el nav. **Añadir un idioma** son 3 pasos en JSON, sin tocar JS/HTML: crear `content.{nuevo}.json`, agregarlo a `languages` y `groupLabels`, y añadir su clave en cada `sections[].label`. `show_language_switcher: false` oculta el selector.
+- **i18n (es/en)**: el contenido vive en un archivo por idioma (`me/content.{idioma}.json`); los labels del nav y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`). El idioma activo es `localStorage.lang || "es"` (mismo patrón/fallback que el tema con `"light"`). El cambio es **en vivo, sin recargar**: `site-config` re-pinta el nav y dispara `language:changed`; `content-renderer` lo escucha y re-fetchea el JSON del nuevo idioma. Se preserva la sección activa del scrollspy al re-renderizar el nav. **Añadir un idioma** son 3 pasos en JSON, sin tocar JS/HTML: crear `content.{nuevo}.json`, agregarlo a `languages` y `groupLabels`, y añadir su clave en cada `sections[].label`. `show_language_switcher: false` oculta el selector.
 - **Coordinación entre scripts** (eventos): `site-config` dispara `sidebar:rendered` (y `language:changed`), `theme-loader` dispara `theme:changed`; el script inline (que conserva `fitSidebar` + scrollspy) escucha los de sidebar/tema para recalcular el escalado. El scrollspy consulta los nav-links en vivo (se generan async).
 - **Encabezados de sección**: viven en `content.json` → `sectionHeaders` (eyebrow/título/lede por sección); el renderer los pinta en `<div class="section__head" id="{sec}Head">`. El hero (about) no tiene encabezado (usa `profile`).
-- **Retrato por tema**: cada tema en `theme.json` define `portrait` (`assets/images/portrait-{tema}.jpg`, 3:4 vertical). `theme-loader.js` muestra la imagen del tema activo y, si falta o falla la carga (404), cae al placeholder SVG. **Pendiente del usuario**: subir las 5 imágenes a `assets/images/` (hasta entonces se ve el placeholder y hay un 404 benigno en consola).
+- **Retrato por tema**: cada tema en `theme.json` define `portrait` (`me/images/portrait-{tema}.jpg`, 3:4 vertical). `theme-loader.js` muestra la imagen del tema activo y, si falta o falla la carga (404), cae al placeholder SVG.
 - **Descartado por decisión**: reordenar el `<main>` desde `site.json` (se prefiere el orden actual) y el switcher de tipografía (no hay 2.º preset que justifique).
 
 ---
@@ -219,14 +224,14 @@ Los **colores** de cada tema viven en `styles/tokens.css`; qué temas existen y 
 ### Objetivo
 Reemplazar los datos mock del HTML por tres JSONs. El HTML queda como esqueleto puro, sin contenido.
 
-### Esquema `data/content.json`
+### Esquema `me/content.json`
 ```json
 {
   "profile": {
     "name": "...",
     "headline": "...",
     "bio": "...",
-    "photo": "assets/images/portrait.jpg",
+    "photo": "me/images/portrait.jpg",
     "location": "Madrid, España",
     "availability": "Disponible para proyectos",
     "workMode": "Remoto · Híbrido",
@@ -321,7 +326,7 @@ Reemplazar los datos mock del HTML por tres JSONs. El HTML queda como esqueleto 
 ### Tecnología recomendada para Fase 2
 **Vanilla JS + `<template>` tags** — sin build step, sin framework, abre directo en navegador. Si se quiere escalar, migrar a Web Components o Astro.
 
-Consideración importante: los JSONs con `fetch()` requieren servidor local (`python3 -m http.server` o similar). Alternativa sin servidor: importarlos como módulos ES (`import data from './data/content.json' assert {type: 'json'}`), aunque el soporte varía por navegador.
+Consideración importante: los JSONs con `fetch()` requieren servidor local (`python3 -m http.server` o similar). Alternativa sin servidor: importarlos como módulos ES (`import data from './me/content.json' assert {type: 'json'}`), aunque el soporte varía por navegador.
 
 ---
 
