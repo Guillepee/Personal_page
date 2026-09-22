@@ -59,6 +59,8 @@ me/
 config/
 ├── site.json             ✅ switchers, idiomas (languages/groupLabels) y secciones (label {es,en}, icon, group, visible)
 └── theme.json            ✅ default_mode + themes (name, type, label, dot, portrait) + tipografía (referencia)
+guias/
+└── claude-code.html      ✅ guía de Claude Code (documento HTML autocontenido, enlazado desde projects)
 scripts/
 ├── content-renderer.js   ✅ fetch del idioma activo + render (contenido + encabezados de sección)
 ├── site-config.js        ✅ construye el nav, aplica visibilidad y maneja el idioma (selector ES/EN)
@@ -66,6 +68,7 @@ scripts/
 ```
 
 Notas sobre lo implementado:
+- **Documentos propios en `guias/`**: las páginas HTML autocontenidas que el CV enlaza (guías, material de formación) viven en `guias/`, no en la raíz. Se referencian con ruta relativa (`guias/claude-code.html`), que funciona igual en local y en GitHub Pages. `content-renderer.js` abre en pestaña nueva todo enlace `.html` además de los `http(s)`/`mailto`. Excepción: `focustube-privacy.html` sigue en la raíz porque su URL está publicada en la ficha de la Chrome Web Store y moverla la rompería.
 - **Carga**: los tres scripts hacen `fetch` con `defer` y `cache: "no-cache"` (revalidan con el server, así al editar un JSON se ve con un `F5` normal, sin hard refresh). Requiere servir por HTTP (`python3 -m http.server`); en GitHub Pages funciona directo.
 - **theme-loader.js** (híbrido): genera un botón por tema desde `theme.json` (el dot va como var `--theme-dot`). Los **base** (Light/Dark) son selección directa y fijan el modo guardado; los **especiales** se activan/desactivan (al apagar, vuelven al base). Persiste en `localStorage` (`theme` + `baseTheme`). Los colores y fuentes NO se inyectan (siguen en `tokens.css`) para no pisar los temas especiales ni provocar FOUC. Un script síncrono en el `<head>` aplica el tema guardado antes de pintar (anti-parpadeo). `show_typography_switcher` queda para cuando haya un 2.º preset real (hoy sería especulativo).
 - **site-config.js** regenera solo el `<nav>`; brand y footer quedan fijos en el HTML. Agrupa por `group` (CV/Hub/Otros, traducidos vía `groupLabels`), aplica `visible` y respeta `show_theme_switcher`. Es además el **dueño del estado de idioma** (igual que `theme-loader` lo es del tema): genera los botones ES/EN desde `site.json` → `languages`, persiste en `localStorage` (`lang`) y dispara `language:changed`.

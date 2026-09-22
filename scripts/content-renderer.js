@@ -34,13 +34,16 @@ const CONTACT_ICONS = { email: ICONS.email, linkedin: ICONS.linkedin, github: IC
 
 const chip = (text) => `<span class="chip">${text}</span>`;
 
-// Atributos para que un enlace a otro sitio abra en una pestaña nueva.
-// Solo aplica a URLs externas (http/https) y mailto; las anclas internas ("#…")
-// y los placeholders ("#") navegan en la misma ventana, como corresponde.
+// Atributos para que un enlace a otro documento abra en una pestaña nueva.
+// Aplica a URLs externas (http/https), mailto y a las páginas propias que no
+// son el CV (p. ej. "guias/claude-code.html"): son documentos aparte, así que
+// abrirlos en una pestaña nueva no hace perder el CV. Las anclas internas
+// ("#…") y los placeholders ("#") navegan en la misma ventana.
 // rel="noopener noreferrer" evita que la pestaña nueva acceda a window.opener.
 function externalLinkAttrs(url) {
-  const isExternal = /^(https?:|mailto:)/i.test(url || "");
-  return isExternal ? ` target="_blank" rel="noopener noreferrer"` : "";
+  const href = url || "";
+  const isOtherDocument = /^(https?:|mailto:)/i.test(href) || /\.html$/i.test(href);
+  return isOtherDocument ? ` target="_blank" rel="noopener noreferrer"` : "";
 }
 
 // Estiliza el apellido (última palabra) en cursiva, como en el diseño original.

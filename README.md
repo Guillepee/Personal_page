@@ -103,6 +103,8 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 │   ├── favicon-32.png         # ← Tu favicon
 │   ├── favicon-180.png        # ← Tu icono para iOS
 │   └── images/                # ← Tus retratos (portrait-<tema>.jpg) y og-image.jpg
+├── guias/                     # ← Documentos HTML propios enlazados desde el CV
+│   └── claude-code.html       # ← Guía de Claude Code (proyecto en #projects)
 ├── config/
 │   ├── site.json              # ← Secciones, sidebar, visibilidad, idiomas
 │   └── theme.json             # ← Temas, tema por defecto, retratos
