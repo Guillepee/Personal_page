@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Dominio Completo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   tokens.css
+   Unica fuente de verdad del design system.
+   Declara las variables semanticas que document.css consume.
+   Cada tema solo redefine variables: ninguna regla de layout o de
+   componente vive aqui. Para agregar un tema, basta un bloque
+   [data-theme="..."] nuevo y registrarlo en registry.js.
+
+   Default (:root) = Catppuccin Latte (claro). [data-theme="dark"] = Mocha.
+   ============================================================ */
+
+:root {
+  /* ---------- Tipografia ---------- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.875rem;
+  --fs-2xl: 2.5rem;
+  --fs-3xl: 3.75rem;
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.35;
+  --lh-normal: 1.6;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+
+  /* ---------- Espaciado (escala 8pt) ---------- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+  --sp-9: 6rem;
+  --sp-10: 8rem;
+
+  /* ---------- Radios ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* ---------- Layout ---------- */
+  --sidebar-width: 280px;
+  --content-max: 760px;
+  --content-padding: var(--sp-7);
+
+  /* ---------- Transiciones ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-fast: 150ms var(--ease-out);
+  --transition-base: 240ms var(--ease-out);
+  --transition-slow: 480ms var(--ease-out);
+
+  /* ============================================================
+     PALETAS CRUDAS
+     ============================================================ */
+
+  /* Latte raw colors */
+  --latte-base: #eff1f5;
+  --latte-mantle: #e6e9ef;
+  --latte-crust: #dce0e8;
+  --latte-surface0: #ccd0da;
+  --latte-surface1: #bcc0cc;
+  --latte-surface2: #acb0be;
+  --latte-overlay0: #9ca0b0;
+  --latte-overlay1: #8c8fa1;
+  --latte-overlay2: #7c7f93;
+  --latte-text: #4c4f69;
+  --latte-subtext1: #5c5f77;
+  --latte-subtext0: #6c6f85;
+  --latte-mauve: #8839ef;
+  --latte-rosewater: #dc8a78;
+  --latte-flamingo: #dd7878;
+  --latte-pink: #ea76cb;
+  --latte-red: #d20f39;
+  --latte-peach: #fe640b;
+  --latte-yellow: #df8e1d;
+  --latte-green: #40a02b;
+  --latte-teal: #179299;
+  --latte-blue: #1e66f5;
+  --latte-lavender: #7287fd;
+
+  /* Mocha raw colors */
+  --mocha-base: #1e1e2e;
+  --mocha-mantle: #181825;
+  --mocha-crust: #11111b;
+  --mocha-surface0: #313244;
+  --mocha-surface1: #45475a;
+  --mocha-surface2: #585b70;
+  --mocha-overlay0: #6c7086;
+  --mocha-overlay1: #7f849c;
+  --mocha-overlay2: #9399b2;
+  --mocha-text: #cdd6f4;
+  --mocha-subtext1: #bac2de;
+  --mocha-subtext0: #a6adc8;
+  --mocha-mauve: #cba6f7;
+  --mocha-rosewater: #f5e0dc;
+  --mocha-flamingo: #f2cdcd;
+  --mocha-pink: #f5c2e7;
+  --mocha-red: #f38ba8;
+  --mocha-peach: #fab387;
+  --mocha-yellow: #f9e2af;
+  --mocha-green: #a6e3a1;
+  --mocha-teal: #94e2d5;
+  --mocha-blue: #89b4fa;
+  --mocha-lavender: #b4befe;
+
+  /* ============================================================
+     VARIABLES SEMANTICAS (las que consume document.css)
+     Default = Latte. Cada [data-theme] las sobreescribe.
+     ============================================================ */
+  --color-bg: var(--latte-base);
+  --color-bg-elevated: var(--latte-mantle);
+  --color-bg-deep: var(--latte-crust);
+  --color-surface: var(--latte-mantle);
+  --color-surface-hover: var(--latte-surface0);
+  --color-border: var(--latte-surface0);
+  --color-border-strong: var(--latte-surface1);
+
+  --color-text: var(--latte-text);
+  --color-text-muted: var(--latte-subtext0);
+  --color-text-faint: var(--latte-overlay1);
+
+  --color-accent: var(--latte-mauve);
+  --color-accent-hover: #7c2bdb;
+  --color-accent-soft: rgba(136, 57, 239, 0.12);
+
+  --color-link: var(--latte-mauve);
+
+  /* Estados (callouts y tarjetas de comparacion) */
+  --color-success: var(--latte-green);
+  --color-warning: var(--latte-peach);
+  --color-info: var(--latte-blue);
+  --color-danger: var(--latte-red);
+
+  --shadow-sm: 0 1px 2px rgba(76, 79, 105, 0.06);
+  --shadow-md: 0 4px 16px rgba(76, 79, 105, 0.08);
+  --shadow-lg: 0 12px 40px rgba(76, 79, 105, 0.12);
+
+  --selection-bg: rgba(136, 57, 239, 0.2);
+  --selection-text: var(--latte-text);
+}
+
+[data-theme="dark"] {
+  --color-bg: var(--mocha-base);
+  --color-bg-elevated: var(--mocha-mantle);
+  --color-bg-deep: var(--mocha-crust);
+  --color-surface: var(--mocha-mantle);
+  --color-surface-hover: var(--mocha-surface0);
+  --color-border: var(--mocha-surface0);
+  --color-border-strong: var(--mocha-surface1);
+
+  --color-text: var(--mocha-text);
+  --color-text-muted: var(--mocha-subtext0);
+  --color-text-faint: var(--mocha-overlay1);
+
+  --color-accent: var(--mocha-mauve);
+  --color-accent-hover: #d9bcff;
+  --color-accent-soft: rgba(203, 166, 247, 0.14);
+
+  --color-link: var(--mocha-mauve);
+
+  --color-success: var(--mocha-green);
+  --color-warning: var(--mocha-peach);
+  --color-info: var(--mocha-blue);
+  --color-danger: var(--mocha-red);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  --selection-bg: rgba(203, 166, 247, 0.25);
+  --selection-text: var(--mocha-text);
+}
+
+[data-theme="retro-term"] {
+  --color-bg: #0a0a0a;
+  --color-bg-elevated: #0f0f0f;
+  --color-bg-deep: #000000;
+  --color-surface: #111111;
+  --color-surface-hover: #1a1a1a;
+  --color-border: #1a3d1a;
+  --color-border-strong: #2d6b2d;
+
+  --color-text: #33ff00;
+  --color-text-muted: #1fcc00;
+  --color-text-faint: #0d8a00;
+
+  --color-accent: #39ff14;
+  --color-accent-hover: #57ff33;
+  --color-accent-soft: rgba(51, 255, 0, 0.1);
+  --color-link: #39ff14;
+
+  --color-success: #39ff14;
+  --color-warning: #ffb000;
+  --color-info: #00e5ff;
+  --color-danger: #ff3333;
+
+  --shadow-sm: 0 0 4px rgba(51, 255, 0, 0.2);
+  --shadow-md: 0 0 12px rgba(51, 255, 0, 0.25);
+  --shadow-lg: 0 0 28px rgba(51, 255, 0, 0.3);
+
+  --selection-bg: rgba(51, 255, 0, 0.2);
+  --selection-text: #0a0a0a;
+
+  /* Todo en mono, como una terminal real */
+  --font-display: "JetBrains Mono", monospace;
+  --font-body: "JetBrains Mono", monospace;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+}
+
+/* ============================================================
+   D&D 3.5 — Manual del Jugador
+   Pergamino envejecido, tinta oscura, carmesi del emblema.
+   ============================================================ */
+[data-theme="dnd35"] {
+  --color-bg: #f7edd8;
+  --color-bg-elevated: #ede0c4;
+  --color-bg-deep: #d4b896;
+  --color-surface: #f2e4c8;
+  --color-surface-hover: #e8d4ae;
+  --color-border: #c9a96e;
+  --color-border-strong: #9b7a3b;
+
+  --color-text: #1c0f0a;
+  --color-text-muted: #5c3d2e;
+  --color-text-faint: #8b6346;
+
+  /* Carmesi del logotipo D&D */
+  --color-accent: #8b1a1a;
+  --color-accent-hover: #b22222;
+  --color-accent-soft: rgba(139, 26, 26, 0.12);
+  --color-link: #8b1a1a;
+
+  --color-success: #2e6b2e;
+  --color-warning: #9b6a00;
+  --color-info: #1a5276;
+  --color-danger: #8b1a1a;
+
+  --shadow-sm: 0 1px 3px rgba(28, 15, 10, 0.12);
+  --shadow-md: 0 4px 16px rgba(28, 15, 10, 0.16);
+  --shadow-lg: 0 12px 40px rgba(28, 15, 10, 0.2);
+
+  --selection-bg: rgba(139, 26, 26, 0.2);
+  --selection-text: #1c0f0a;
+
+  /* Cinzel: capitales romanas clasicas de la portada del PHB */
+  --font-display: "Cinzel", "Palatino Linotype", Georgia, serif;
+  /* Palatino: la serif del interior del manual */
+  --font-body: "Palatino Linotype", Palatino, Georgia, serif;
+}
+
+/* ============================================================
+   New York Times — periodico clasico
+   Papel crema envejecido, tinta negra, masthead gotico, azul de enlaces.
+   ============================================================ */
+[data-theme="nyt"] {
+  --color-bg: #f3ecd8;
+  --color-bg-elevated: #ece1c4;
+  --color-bg-deep: #e3d7b6;
+  --color-surface: #f7f1e0;
+  --color-surface-hover: #ece1c4;
+  --color-border: #cdbf9c;
+  --color-border-strong: #1a1a1a;
+
+  --color-text: #1a1a1a;
+  --color-text-muted: #5c5448;
+  --color-text-faint: #8a7f6a;
+
+  /* Acento en tinta negra (editorial); enlaces en el azul clasico del NYT */
+  --color-accent: #1a1a1a;
+  --color-accent-hover: #000000;
+  --color-accent-soft: rgba(26, 26, 26, 0.07);
+  --color-link: #326891;
+
+  --color-success: #2e6b2e;
+  --color-warning: #8a6d00;
+  --color-info: #326891;
+  --color-danger: #a32638;
+
+  --shadow-sm: 0 1px 2px rgba(60, 50, 30, 0.08);
+  --shadow-md: 0 1px 3px rgba(60, 50, 30, 0.1);
+  --shadow-lg: 0 2px 10px rgba(60, 50, 30, 0.12);
+
+  --selection-bg: rgba(50, 104, 145, 0.18);
+  --selection-text: #1a1a1a;
+
+  /* Masthead gotico; cuerpo en Georgia; etiquetas (mono) en sans */
+  --font-display: "UnifrakturMaguntia", "Old English Text MT", serif;
+  --font-body: Georgia, "Times New Roman", serif;
+  --font-mono: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+}
+
+/* ============================================================
+   8-bit / NES — sprites, sombras solidas, fuente de pixeles.
+   ============================================================ */
+[data-theme="pixel8"] {
+  --color-bg: #000000;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-deep: #0d0d0d;
+  --color-surface: #1a1a1a;
+  --color-surface-hover: #262626;
+  --color-border: #3c3c3c;
+  --color-border-strong: #e40058;
+
+  --color-text: #fcfcfc;
+  --color-text-muted: #bcbcbc;
+  --color-text-faint: #7c7c7c;
+
+  --color-accent: #e40058;
+  --color-accent-hover: #ff3377;
+  --color-accent-soft: rgba(228, 0, 88, 0.15);
+  --color-link: #e40058;
+
+  --color-success: #00b800;
+  --color-warning: #f8b800;
+  --color-info: #3cbcfc;
+  --color-danger: #e40058;
+
+  /* Sombras offset estilo sprite, sin blur */
+  --shadow-sm: 3px 3px 0 #e40058;
+  --shadow-md: 4px 4px 0 #e40058;
+  --shadow-lg: 6px 6px 0 #e40058;
+
+  --selection-bg: rgba(228, 0, 88, 0.3);
+  --selection-text: #fcfcfc;
+
+  --font-display: "Press Start 2P", monospace;
+  --font-body: "Press Start 2P", monospace;
+  --font-mono: "Press Start 2P", monospace;
+
+  /* Press Start 2P es mas ancha y alta por caracter: se reduce la escala
+     tipografica para que el cuerpo tenga dimensiones comparables al resto. */
+  --fs-xs: 0.46rem;
+  --fs-sm: 0.55rem;
+  --fs-base: 0.62rem;
+  --fs-md: 0.68rem;
+  --fs-lg: 0.82rem;
+  --fs-xl: 1.05rem;
+  --fs-2xl: 1.45rem;
+  --fs-3xl: 2.1rem;
+
+  --lh-tight: 1.5;
+  --lh-snug: 1.6;
+  --lh-normal: 1.7;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 0px;
+}
+
+
+/* ============================================================
+   document.css
+   Estilos del DOCUMENTO renderizado (sidebar, hero, modulos,
+   callouts, tablas, listas, comparaciones). Consumen unicamente las
+   variables semanticas de tokens.css: por eso el documento adopta
+   cualquier tema sin tocar una sola regla de aqui.
+   Es el CSS que se embebe en el HTML descargado.
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: var(--lh-normal);
+  font-size: var(--fs-base);
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+/* --- NAV --- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--sp-6) var(--sp-5);
+  z-index: 100;
+}
+.sidebar h2 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-accent);
+  margin-bottom: var(--sp-5);
+}
+.sidebar a {
+  display: block;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  transition: var(--transition-fast);
+  margin-bottom: 2px;
+}
+.sidebar a:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
+}
+.sidebar a.module-link {
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+  margin-top: var(--sp-4);
+}
+.sidebar a.sub-link {
+  padding-left: var(--sp-5);
+  font-size: var(--fs-xs);
+}
+
+/* --- MAIN --- */
+.main {
+  margin-left: var(--sidebar-width);
+  max-width: calc(var(--sidebar-width) + var(--content-max));
+  padding: var(--sp-7) var(--sp-8) var(--sp-9);
+}
+
+/* --- HEADER --- */
+.hero {
+  margin-bottom: var(--sp-8);
+  padding-bottom: var(--sp-7);
+  border-bottom: 1px solid var(--color-border);
+}
+.hero .badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-border-strong);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--sp-5);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--sp-4);
+  background: linear-gradient(135deg, var(--color-text), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  color: var(--color-text-muted);
+  font-size: var(--fs-md);
+  max-width: 600px;
+}
+
+/* --- MODULES --- */
+.module {
+  margin-bottom: var(--sp-8);
+  scroll-margin-top: var(--sp-6);
+}
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.module-number {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-border-strong);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.module-header h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  margin: var(--sp-6) 0 var(--sp-4);
+  color: var(--color-text);
+}
+h4 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  margin: var(--sp-5) 0 var(--sp-3);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+p {
+  margin-bottom: var(--sp-4);
+  color: var(--color-text-muted);
+}
+strong {
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+}
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+/* --- CODE --- */
+pre {
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  overflow-x: auto;
+  margin: var(--sp-4) 0 var(--sp-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--color-text-muted);
+}
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
+  padding: 0.15em 0.45em;
+  border-radius: var(--radius-sm);
+  color: var(--color-accent);
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* --- CALLOUTS --- */
+.callout {
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  margin: var(--sp-5) 0;
+  border-left: 3px solid;
+}
+.callout p:last-child {
+  margin-bottom: 0;
+}
+.callout-tip {
+  background: color-mix(in srgb, var(--color-success) 8%, transparent);
+  border-color: var(--color-success);
+}
+.callout-tip strong {
+  color: var(--color-success);
+}
+.callout-warn {
+  background: color-mix(in srgb, var(--color-warning) 8%, transparent);
+  border-color: var(--color-warning);
+}
+.callout-warn strong {
+  color: var(--color-warning);
+}
+.callout-info {
+  background: color-mix(in srgb, var(--color-info) 8%, transparent);
+  border-color: var(--color-info);
+}
+.callout-info strong {
+  color: var(--color-info);
+}
+.callout-key {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+.callout-key strong {
+  color: var(--color-accent);
+}
+
+/* --- TABLE --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--sp-4) 0 var(--sp-5);
+  font-size: var(--fs-sm);
+}
+th,
+td {
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--color-border);
+}
+th {
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-family: var(--font-mono);
+}
+td {
+  color: var(--color-text-muted);
+}
+tr:hover td {
+  color: var(--color-text);
+}
+
+/* --- LISTS --- */
+ul,
+ol {
+  margin: var(--sp-2) 0 var(--sp-5) var(--sp-5);
+  color: var(--color-text-muted);
+}
+li {
+  margin-bottom: var(--sp-2);
+  padding-left: var(--sp-1);
+}
+li strong {
+  color: var(--color-text);
+}
+
+/* --- COMPARISON --- */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin: var(--sp-5) 0;
+}
+.comparison-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+}
+.comparison-card h5 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--sp-3);
+}
+.comparison-card.before h5 {
+  color: var(--color-danger);
+}
+.comparison-card.after h5 {
+  color: var(--color-success);
+}
+
+/* --- FOOTER --- */
+.doc-footer {
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-faint);
+  font-size: var(--fs-sm);
+}
+
+/* Responsive: la sidebar se oculta en pantallas estrechas. */
+@media (max-width: 1100px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+    padding: var(--sp-6) var(--sp-5) var(--sp-8);
+  }
+}
+
+/* Impresion: documento sobre fondo blanco, sin sidebar. */
+@media print {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <h2>Claude Code Training</h2>
+
+  <a href="#mod1" class="module-link">01 · ¿Qué es Claude Code?</a>
+  <a href="#mod1-arch" class="sub-link">Arquitectura y modelo mental</a>
+  <a href="#mod1-vs" class="sub-link">Claude Code vs otros enfoques</a>
+  <a href="#mod1-surfaces" class="sub-link">Dónde funciona Claude Code</a>
+  <a href="#mod2" class="module-link">02 · Instalación y Setup Inicial</a>
+  <a href="#mod2-install" class="sub-link">Métodos de instalación</a>
+  <a href="#mod2-config-dir" class="sub-link">Directorio de configuración</a>
+  <a href="#mod2-auth" class="sub-link">Autenticación</a>
+  <a href="#mod3" class="module-link">03 · Configuración</a>
+  <a href="#mod3-settings" class="sub-link">Settings y archivos de configuración</a>
+  <a href="#mod3-perms" class="sub-link">Reglas de permisos (allow / ask / deny)</a>
+  <a href="#mod3-modes" class="sub-link">Modos de permisos</a>
+  <a href="#mod4" class="module-link">04 · Uso Diario y Workflows</a>
+  <a href="#mod4-prompting" class="sub-link">Prompting efectivo</a>
+  <a href="#mod4-tasks" class="sub-link">Tareas comunes del día a día</a>
+  <a href="#mod4-planmode" class="sub-link">Plan mode — analizá antes de editar</a>
+  <a href="#mod4-git" class="sub-link">Integración con Git</a>
+  <a href="#mod5" class="module-link">05 · CLAUDE.md en Profundidad</a>
+  <a href="#mod5-anatomy" class="sub-link">Anatomía de un CLAUDE.md efectivo</a>
+  <a href="#mod5-hierarchy" class="sub-link">Jerarquía de archivos CLAUDE.md</a>
+  <a href="#mod5-rules" class="sub-link">Reglas por ruta — .claude/rules/</a>
+  <a href="#mod5-automemory" class="sub-link">Auto Memory — Claude aprende solo</a>
+  <a href="#mod5-imports" class="sub-link">Importar archivos en CLAUDE.md</a>
+  <a href="#mod6" class="module-link">06 · Custom Skills</a>
+  <a href="#mod6-what" class="sub-link">¿Qué son las Skills?</a>
+  <a href="#mod6-create" class="sub-link">Estructura de una Skill</a>
+  <a href="#mod6-args" class="sub-link">Argumentos e invocación</a>
+  <a href="#mod6-bundled" class="sub-link">Skills y comandos incluidos</a>
+  <a href="#mod7" class="module-link">07 · Subagentes y Orquestación</a>
+  <a href="#mod7-builtin" class="sub-link">Subagentes integrados</a>
+  <a href="#mod7-create" class="sub-link">Crear subagentes personalizados</a>
+  <a href="#mod7-config" class="sub-link">Configuración avanzada</a>
+  <a href="#mod7-invoke" class="sub-link">Invocar subagentes</a>
+  <a href="#mod7-examples" class="sub-link">Ejemplos prácticos</a>
+  <a href="#mod7-coordinator" class="sub-link">Patrón coordinador</a>
+  <a href="#mod8" class="module-link">08 · MCP Servers (Model Context Protocol)</a>
+  <a href="#mod8-what" class="sub-link">¿Qué es MCP?</a>
+  <a href="#mod8-config" class="sub-link">Configuración</a>
+  <a href="#mod8-servers" class="sub-link">Servers populares</a>
+  <a href="#mod9" class="module-link">09 · Modos y Comandos</a>
+  <a href="#mod9-slash" class="sub-link">Slash Commands</a>
+  <a href="#mod9-flags" class="sub-link">Flags de CLI importantes</a>
+  <a href="#mod9-modes" class="sub-link">Modos de ejecución</a>
+  <a href="#mod10" class="module-link">10 · Patrones Avanzados</a>
+  <a href="#mod10-ci" class="sub-link">Claude Code en CI/CD</a>
+  <a href="#mod10-hooks" class="sub-link">Sistema de Hooks</a>
+  <a href="#mod10-worktree" class="sub-link">Git Worktrees — aislamiento real para trabajo paralelo</a>
+  <a href="#mod10-safe" class="sub-link">Seguridad y buenas prácticas</a>
+  <a href="#ref" class="module-link">++ · Apéndice: Referencias y Recursos</a>
+  <a href="#ref-documentación-oficial" class="sub-link">Documentación oficial</a>
+  <a href="#ref-estructura-de-referencia-rápida-del-clau" class="sub-link">Estructura de referencia rápida del CLAUDE.md</a>
+</nav>
+
+<div class="main">
+
+<header class="hero">
+  <div class="badge">Material de consulta</div>
+  <h1>Claude Code<br>Dominio Completo</h1>
+  <p>Guía modular para desarrolladores. Instalación, configuración, CLAUDE.md, skills, subagentes, MCP y patrones de uso profesional.</p>
+</header>
+
+<section class="module" id="mod1">
+  <div class="module-header">
+    <div class="module-number">01</div>
+    <h2>¿Qué es Claude Code?</h2>
+  </div>
+
+  <p>Claude Code es una <strong>herramienta de coding agéntico</strong> disponible en múltiples entornos: terminal, extensión de VS Code, extensión de JetBrains, aplicación de escritorio y navegador web. No es un plugin de autocompletado ni un copilot inline: es un agente que lee tu codebase, ejecuta comandos, edita archivos, interactúa con git y orquesta tareas complejas de forma autónoma.</p>
+
+  <h3 id="mod1-arch">Arquitectura y modelo mental</h3>
+
+  <p>Para mí es equivalente a un desarrollador junior extremadamente rápido sentado al lado, en la terminal. Tiene acceso a:</p>
+
+  <ul>
+    <li><strong>Tu filesystem</strong> — lee y escribe archivos del proyecto.</li>
+    <li><strong>Bash</strong> — ejecuta comandos, corre tests, instala dependencias (con una capa de *sandbox* opcional, ver más abajo).</li>
+    <li><strong>Git</strong> — crea branches, hace commits, maneja PRs.</li>
+    <li><strong>Herramientas externas vía MCP</strong> — se conecta a APIs, bases de datos y servicios.</li>
+</ul>
+
+  <p>El flujo básico es: describís una tarea en lenguaje natural → Claude Code analiza el contexto → planifica → ejecuta pasos (editar archivos, correr tests, etc.) → te muestra el resultado y pide confirmación cuando corresponde.</p>
+
+  <div class="callout callout-key">
+    <p><strong>Concepto clave:</strong> Claude Code no "genera código y te lo muestra". Opera sobre tu proyecto real, en tu filesystem real, con tu git real. Es agéntico: toma decisiones, ejecuta acciones y se auto-corrige.</p>
+  </div>
+
+  <h3 id="mod1-vs">Claude Code vs otros enfoques</h3>
+
+  <table>
+  <thead>
+    <tr>
+<th>Aspecto</th>
+<th>Copilot / Autocompletado</th>
+<th>Chat en IDE</th>
+<th>Claude Code</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td>Interfaz</td><td>Inline en editor</td><td>Panel lateral</td><td>Terminal / IDE / web</td></tr>
+    <tr><td>Alcance</td><td>Línea / función</td><td>Archivo / selección</td><td>Proyecto completo</td></tr>
+    <tr><td>Ejecución</td><td>No ejecuta</td><td>Limitada</td><td>Bash completo</td></tr>
+    <tr><td>Autonomía</td><td>Sugerencia pasiva</td><td>Semi-interactivo</td><td>Agéntico con permisos</td></tr>
+    <tr><td>Git</td><td>No</td><td>Parcial</td><td>Completo</td></tr>
+    <tr><td>Herramientas externas</td><td>No</td><td>Limitado</td><td>MCP servers</td></tr>
+  </tbody>
+</table>
+
+  <h3 id="mod1-surfaces">Dónde funciona Claude Code</h3>
+
+  <p>La misma configuración, archivos <code>CLAUDE.md</code> y servidores MCP funcionan en todas las superficies:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Superficie</th>
+<th>Cómo accedés</th>
+<th>Ideal para</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Terminal (CLI)</strong></td><td><code>claude</code> desde cualquier directorio</td><td>Flujo principal — acceso completo a herramientas, scripts, CI/CD</td></tr>
+    <tr><td><strong>VS Code</strong></td><td>Extensión "Claude Code" en el Marketplace</td><td>Diffs inline, menciones <code>@archivo</code>, revisión de planes en el editor</td></tr>
+    <tr><td><strong>JetBrains</strong></td><td>Plugin "Claude Code"</td><td>IntelliJ, PyCharm, WebStorm — diff interactiva</td></tr>
+    <tr><td><strong>App de escritorio</strong></td><td>Descarga desde claude.ai</td><td>Sesiones paralelas, revisión visual de diffs, tareas programadas</td></tr>
+    <tr><td><strong>Web</strong></td><td><code>claude.ai/code</code></td><td>Trabajar desde cualquier browser o móvil, tareas largas sin PC encendida</td></tr>
+    <tr><td><strong>GitHub</strong></td><td>Etiquetar <code>@claude</code> en un issue o PR</td><td>Delegar tareas directamente desde el repo</td></tr>
+  </tbody>
+</table>
+
+  <div class="callout callout-info">
+    <p><strong>Sesiones transferibles:</strong> Podés iniciar una tarea en la terminal y continuarla desde el celular, o iniciarla en la web y "teleportarla" a la terminal con <code>/teleport</code>. Las sesiones no están atadas a una superficie.</p>
+  </div>
+</section>
+
+<section class="module" id="mod2">
+  <div class="module-header">
+    <div class="module-number">02</div>
+    <h2>Instalación y Setup Inicial</h2>
+  </div>
+
+  <h3 id="mod2-install">Métodos de instalación</h3>
+
+  <p>La forma recomendada de instalar ya <strong>no es npm</strong> (quedó deprecada). Se usa el instalador nativo, que trae su propio runtime y no requiere Node.js:</p>
+
+  <pre><code># macOS / Linux (recomendado)
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Homebrew (macOS / Linux)
+brew install --cask claude-code
+
+# Windows (recomendado)
+irm https://claude.ai/install.ps1 | iex
+
+# WinGet (Windows)
+winget install Anthropic.ClaudeCode
+
+# npm (DEPRECADO — requiere Node.js &gt;= 22)
+npm install -g @anthropic-ai/claude-code
+
+# Verificar
+claude --version</code></pre>
+
+  <p>Después: navegás a tu proyecto y ejecutás <code>claude</code>.</p>
+
+  <div class="callout callout-tip">
+    <p><strong>Aislamiento — buena práctica, no obstáculo:</strong> Para trabajo sensible conviene aislar lo que el agente puede tocar. Tenés dos caminos complementarios: correr Claude Code dentro de un <strong>contenedor</strong> (Docker, Dev Container, Podman) para reproducibilidad total, o usar el <strong>sandbox integrado</strong> de Claude Code, que confina los comandos Bash a nivel de filesystem y red sin salir de tu equipo. Elegí según cuánto control necesites.</p>
+  </div>
+
+  <h3 id="mod2-config-dir">Directorio de configuración</h3>
+
+  <p>Por defecto, Claude Code guarda su configuración de usuario en <strong><code>~/.claude/</code></strong>. Si preferís seguir el *XDG Base Directory Specification* (mantener la config bajo <code>~/.config</code> en vez de un directorio oculto en el home), podés reubicarla con la variable de entorno <code>CLAUDE_CONFIG_DIR</code>:</p>
+
+  <pre><code># Reubicar la config siguiendo XDG (opcional)
+export CLAUDE_CONFIG_DIR="$HOME/.config/claude"</code></pre>
+
+  <div class="callout callout-info">
+    <p><strong>Persistencia en contenedores:</strong> Si corrés Claude Code en un contenedor, montá el directorio de config del host para que la autenticación y las preferencias persistan entre ejecuciones.</p>
+  </div>
+
+  <h3 id="mod2-auth">Autenticación</h3>
+
+  <p>Claude Code soporta varias formas de autenticación:</p>
+
+  <ul>
+    <li><strong>Login interactivo:</strong> ejecutás <code>claude</code> y seguís el flujo OAuth en el browser.</li>
+    <li><strong>API key directa:</strong> seteás <code>ANTHROPIC_API_KEY</code> como variable de entorno.</li>
+    <li><strong>Planes de suscripción:</strong> usuarios con Claude Pro, Team o Enterprise se autentican con su cuenta de claude.ai.</li>
+</ul>
+</section>
+
+<section class="module" id="mod3">
+  <div class="module-header">
+    <div class="module-number">03</div>
+    <h2>Configuración</h2>
+  </div>
+
+  <h3 id="mod3-settings">Settings y archivos de configuración</h3>
+
+  <p>Claude Code maneja configuración en múltiples niveles. El comando <code>/config</code> dentro de la sesión permite ajustarla; también existe configuración por archivos:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Alcance</th>
+<th>Ubicación</th>
+<th>Uso</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td>Global (usuario)</td><td><code>~/.claude/settings.json</code></td><td>Preferencias personales, aplican a todos tus proyectos</td></tr>
+    <tr><td>Proyecto (compartido)</td><td><code>.claude/settings.json</code> en la raíz</td><td>Se commitea — configuración del equipo</td></tr>
+    <tr><td>Proyecto (local)</td><td><code>.claude/settings.local.json</code></td><td>Overrides locales, va a <code>.gitignore</code></td></tr>
+  </tbody>
+</table>
+
+  <h4>Ejemplo de settings.json de proyecto</h4>
+
+  <pre><code>{
+  "permissions": {
+    "allow": ["Read", "Edit", "Bash(npm run *)", "Bash(npx jest *)"],
+    "deny":  ["Bash(rm -rf *)", "Bash(git push *)"]
+  },
+  "env": { "NODE_ENV": "development" }
+}</code></pre>
+
+  <h3 id="mod3-perms">Reglas de permisos (allow / ask / deny)</h3>
+
+  <p>En <code>settings.json</code> definís qué puede usar Claude sin preguntar, qué requiere confirmación y qué está prohibido:</p>
+
+  <pre><code>{
+  "permissions": {
+    "allow": ["Bash(npm run *)", "Bash(npx jest *)", "Read", "Edit"],
+    "ask":   ["Bash(git push *)"],
+    "deny":  ["Bash(rm -rf *)", "Bash(git push --force *)"]
+  }
+}</code></pre>
+
+  <p>La sintaxis acepta el nombre de la herramienta sola (<code>Read</code>) o con un patrón de argumento (<code>Bash(npm run *)</code>). El orden de evaluación es <strong>deny → ask → allow</strong>: la primera regla que coincide gana.</p>
+
+  <div class="callout callout-warn">
+    <p><strong>Buena práctica para equipos:</strong> Commiteá <code>.claude/settings.json</code> con los permisos del equipo; cada dev agrega sus overrides en <code>.claude/settings.local.json</code> (gitignored). Nunca pongas credenciales en el <code>settings.json</code> compartido — usá <code>settings.local.json</code> o variables de entorno.</p>
+  </div>
+
+  <h3 id="mod3-modes">Modos de permisos</h3>
+
+  <p>Más allá de las reglas individuales, Claude Code tiene modos globales que definen el nivel de autonomía de toda la sesión. Se cambian con <strong><code>Shift+Tab</code></strong> en la CLI, o se fijan como default en el settings.json:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Modo</th>
+<th>Qué puede hacer sin preguntar</th>
+<th>Cuándo usarlo</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>default</code></td><td>Leer archivos</td><td>Trabajo sensible, primera sesión en un proyecto nuevo</td></tr>
+    <tr><td><code>acceptEdits</code></td><td>Leer y editar archivos</td><td>Iteración activa en código que estás revisando en paralelo</td></tr>
+    <tr><td><code>plan</code></td><td>Solo lectura — investiga y propone, no ejecuta cambios</td><td>Explorar un codebase, planificar una refactorización antes de aprobar</td></tr>
+    <tr><td><code>auto</code></td><td>Todas las acciones; un clasificador evalúa cada una en segundo plano</td><td>Tareas largas con mínimas interrupciones (requiere Team/Enterprise/API)</td></tr>
+    <tr><td><code>bypassPermissions</code></td><td>Todas las acciones sin verificación</td><td>Solo en entornos aislados (contenedores, VMs) — nunca en tu máquina de trabajo</td></tr>
+  </tbody>
+</table>
+
+  <p>Fijar un modo por defecto en el proyecto, o arrancar en uno específico:</p>
+
+  <pre><code>// .claude/settings.json
+{ "permissions": { "defaultMode": "acceptEdits" } }</code></pre>
+
+  <pre><code>claude --permission-mode plan</code></pre>
+
+  <div class="callout callout-info">
+    <p><strong>Modo auto:</strong> Antes de cada acción, un clasificador separado evalúa si es consistente con lo que pediste y bloquea lo que escala fuera del scope (un deploy no solicitado, un push force a main). En planes API/Enterprise el clasificador corre del lado del servidor y no cobra su overhead. Los bloqueos son configurables por el administrador del equipo.</p>
+  </div>
+</section>
+
+<section class="module" id="mod4">
+  <div class="module-header">
+    <div class="module-number">04</div>
+    <h2>Uso Diario y Workflows</h2>
+  </div>
+
+  <h3 id="mod4-prompting">Prompting efectivo</h3>
+
+  <p>Con Claude Code, la calidad del output depende de cómo estructurás el pedido: estás dirigiendo a un agente que va a tomar acciones reales.</p>
+
+  <ul>
+    <li><strong>Sé específico sobre el alcance:</strong> "Refactorizá el servicio de autenticación para usar JWT en vez de sesiones" es mejor que "mejorá la autenticación".</li>
+    <li><strong>Indicá restricciones:</strong> "No modifiques los tests existentes", "Usá el patrón repository que ya tenemos", "No instales dependencias nuevas".</li>
+    <li><strong>Pedí un plan antes de ejecutar</strong> en tareas complejas.</li>
+    <li><strong>Iterá:</strong> Claude Code mantiene contexto en la sesión; pedí ajustes sucesivos.</li>
+    <li><strong>Usá referencias concretas:</strong> "Mirá cómo lo hacemos en <code>src/services/UserService.py</code> y seguí el mismo patrón".</li>
+</ul>
+
+  <div class="comparison">
+    <div class="comparison-card before">
+      <h5>❌ Prompt débil</h5>
+      <p>Agregá tests al proyecto.</p>
+    </div>
+    <div class="comparison-card after">
+      <h5>✅ Prompt fuerte</h5>
+      <p>Agregá unit tests para <code>src/services/payment_service.py</code>. Usá pytest con el patrón que ya tenemos en <code>tests/services/</code>. Cubrí pago exitoso, tarjeta rechazada y timeout de la API. Corré los tests al final para verificar que pasen.</p>
+    </div>
+  </div>
+
+  <h3 id="mod4-tasks">Tareas comunes del día a día</h3>
+
+  <table>
+  <thead>
+    <tr>
+<th>Tarea</th>
+<th>Prompt ejemplo</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td>Explorar codebase nuevo</td><td>"Analizá la estructura y explicame la arquitectura general y los patrones de diseño que detectes"</td></tr>
+    <tr><td>Implementar feature</td><td>"Implementá un endpoint POST /api/users/invite que envíe un email de invitación. Seguí el patrón de los controllers existentes. Incluí validación y tests"</td></tr>
+    <tr><td>Fix de bug</td><td>"El test <code>pytest -k 'payment_timeout'</code> falla. Investigá por qué y arreglalo"</td></tr>
+    <tr><td>Refactoring</td><td>"Extraé la lógica de validación de <code>order_controller.py</code> a un módulo <code>order_validator.py</code>. Mantené los tests pasando"</td></tr>
+    <tr><td>Code review</td><td>"Revisá los cambios del branch <code>feature/payments</code> vs <code>main</code>: bugs, performance y violaciones de patrones"</td></tr>
+    <tr><td>Migración</td><td>"Migrá los imports de <code>lodash</code> a imports individuales para reducir el bundle size"</td></tr>
+  </tbody>
+</table>
+
+  <h3 id="mod4-planmode">Plan mode — analizá antes de editar</h3>
+
+  <p>El <strong>plan mode</strong> hace que Claude investigue el codebase y proponga un plan sin ejecutar ninguna edición. Puede leer archivos y correr comandos de exploración, pero no toca el código hasta que aprobás. Ideal antes de tareas que afectan muchos archivos, o cuando querés entender el impacto antes de comprometerte.</p>
+
+  <pre><code># Modo plan para toda la sesión
+claude --permission-mode plan
+
+# Durante la sesión: Shift+Tab hasta llegar a "plan"</code></pre>
+
+  <p>Cuando termina de investigar, presenta el plan y te pide cómo proceder: aprobar y continuar automático, aprobar revisando cada edición, o seguir refinando.</p>
+
+  <div class="callout callout-tip">
+    <p><strong>Cuándo más útil:</strong> Features que tocan más de 5 archivos, migraciones, refactorings que cruzan módulos, o cualquier tarea donde el costo de un error es alto. El plan mode no ejecuta acciones billables hasta que aprobás.</p>
+  </div>
+
+  <h3 id="mod4-git">Integración con Git</h3>
+
+  <p>Claude Code puede crear commits con mensajes descriptivos, manejar branches, crear PRs con título y descripción, y resolver conflictos.</p>
+
+  <div class="callout callout-warn">
+    <p><strong>Recordá:</strong> Claude Code ejecuta comandos <code>git</code> en tu sesión, como si los tipearas vos. No tiene un conector especial — hereda tu SSH key, tus credenciales, tu <code>.gitconfig</code> y tu usuario. Los commits aparecen con tu nombre. Si vos podés hacer <code>git push</code> desde esa terminal, Claude también.</p>
+  </div>
+
+  <pre><code>&gt; Commiteá los cambios con un mensaje descriptivo siguiendo Conventional Commits
+
+&gt; Creá un PR contra main con los cambios de este branch.
+  Incluí un resumen y testing instructions.</code></pre>
+</section>
+
+<section class="module" id="mod5">
+  <div class="module-header">
+    <div class="module-number">05</div>
+    <h2>CLAUDE.md en Profundidad</h2>
+  </div>
+
+  <p>El archivo <code>CLAUDE.md</code> es probablemente la herramienta más impactante para mejorar la calidad de los resultados. Es tu oportunidad de codificar el conocimiento tribal del proyecto: el equivalente a un onboarding document para un dev nuevo, pero escrito para una IA.</p>
+
+  <div class="callout callout-info">
+    <p><strong>AGENTS.md:</strong> Si el proyecto no tiene <code>CLAUDE.md</code> pero sí un <code>AGENTS.md</code> (el formato abierto que comparten varias herramientas de coding agéntico), Claude Code lo lee en su lugar. Podés elegir cuál usar desde "Project instructions" en <code>/config</code>. Práctico si ya mantenés un <code>AGENTS.md</code> para otras herramientas.</p>
+  </div>
+
+  <h3 id="mod5-anatomy">Anatomía de un CLAUDE.md efectivo</h3>
+
+  <p>Un buen <code>CLAUDE.md</code> responde las preguntas que un senior nuevo haría en su primera semana:</p>
+
+  <h4>1. Comandos de build, test y lint</h4>
+
+  <p>Sin esta sección, Claude adivina y prueba por ensayo y error. Con ella, va directo al comando correcto la primera vez.</p>
+
+  <pre><code># Comandos
+- Build: `make build`
+- Test (todos): `pytest`
+- Test (individual): `pytest path/to/test.py -k nombre`
+- Lint: `ruff check .`
+- Type check: `mypy src/`</code></pre>
+
+  <h4>2. Arquitectura y estructura</h4>
+
+  <pre><code># Arquitectura
+Monorepo con dos servicios principales:
+- `services/api` — Backend FastAPI, arquitectura hexagonal
+- `services/vision` — Servicio de computer vision (OpenCV + modelos locales)
+La comunicación entre servicios es vía cola de mensajes.</code></pre>
+
+  <h4>3. Convenciones y estilo</h4>
+
+  <pre><code># Convenciones
+- Nombres de archivos: snake_case; clases: PascalCase
+- Imports: absolutos desde la raíz del package, nunca relativos entre módulos
+- Error handling: usar el AppError propio, nunca `raise Exception()` directo
+- Commits: Conventional Commits (feat:, fix:, refactor:, ...)
+- Tests: junto al archivo fuente como `test_archivo.py`</code></pre>
+
+  <h4>4. Patrones específicos y prohibiciones</h4>
+
+  <pre><code># Patrones — crear un nuevo endpoint
+1. Definir schemas Pydantic en `schemas/`
+2. Crear el router en `api/routers/` (se registra solo si está en la carpeta)
+3. Agregar tests en el mismo directorio
+
+# Prohibiciones
+- NO usar `type: ignore` sin comentario que lo justifique
+- NO modificar archivos en `generated/` — son autogenerados
+- NO commitear archivos `.env`</code></pre>
+
+  <h3 id="mod5-hierarchy">Jerarquía de archivos CLAUDE.md</h3>
+
+  <p>Claude Code carga <code>CLAUDE.md</code> en varias ubicaciones, construyendo contexto acumulativo:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Ubicación</th>
+<th>Alcance</th>
+<th>¿Se commitea?</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>~/.claude/CLAUDE.md</code></td><td>Global — tus preferencias personales</td><td>No (personal)</td></tr>
+    <tr><td><code>./CLAUDE.md</code> (raíz del proyecto)</td><td>Proyecto — compartido con el equipo</td><td>Sí</td></tr>
+    <tr><td><code>./src/CLAUDE.md</code> (subdirectorio)</td><td>Módulo — se carga cuando Claude opera en esa carpeta</td><td>Sí</td></tr>
+  </tbody>
+</table>
+
+  <p>El contexto se construye de forma aditiva: global + proyecto + subdirectorio.</p>
+
+  <div class="callout callout-tip">
+    <p><strong>Global vs proyecto:</strong> Usá <code>~/.claude/CLAUDE.md</code> solo para preferencias genuinamente personales ("respondeme en español", "respuestas concisas"). Toda decisión de equipo (idioma de commits, convenciones de testing) va en el <code>CLAUDE.md</code> del proyecto para que sea consistente y versionable. Evitá reglas globales que contradigan las del proyecto.</p>
+  </div>
+
+  <div class="callout callout-info">
+    <p><strong>Tamaño recomendado:</strong> Apuntá a menos de 200 líneas por archivo. Los archivos largos consumen contexto y reducen la adherencia a las instrucciones. Si crece demasiado, parte del contenido debería vivir en skills o en reglas por ruta.</p>
+  </div>
+
+  <h3 id="mod5-rules">Reglas por ruta — <code>.claude/rules/</code></h3>
+
+  <p>Para proyectos grandes, organizá las instrucciones en múltiples archivos dentro de <code>.claude/rules/</code>. Cada uno puede limitarse a archivos específicos mediante frontmatter <code>paths</code> — solo se carga cuando Claude trabaja sobre archivos que coinciden:</p>
+
+  <pre><code>---
+paths:
+  - "src/api/**/*.py"
+---
+# Reglas de desarrollo de API
+- Todos los endpoints deben validar input
+- Formato de error estándar: { error, message, code }</code></pre>
+
+  <p>Las reglas sin <code>paths</code> se cargan al inicio de la sesión, como <code>CLAUDE.md</code>. Las que tienen <code>paths</code> reducen el ruido y ahorran tokens.</p>
+
+  <h3 id="mod5-automemory">Auto Memory — Claude aprende solo</h3>
+
+  <p>Auto Memory es un sistema paralelo a <code>CLAUDE.md</code> donde Claude escribe sus propias notas entre sesiones: comandos de build descubiertos, insights de debugging, convenciones observadas. Se cargan automáticamente al inicio de cada sesión (el índice <code>MEMORY.md</code>).</p>
+
+  <pre><code># Ver y gestionar la memoria de la sesión
+/memory
+
+# Pedirle que recuerde algo explícitamente
+&gt; Recordá que este proyecto usa pnpm, no npm</code></pre>
+
+  <div class="callout callout-key">
+    <p><strong>CLAUDE.md vs Auto Memory:</strong> <code>CLAUDE.md</code> es lo que <strong>vos</strong> escribís: reglas, arquitectura, convenciones. Auto Memory es lo que <strong>Claude</strong> aprende mientras trabaja: comandos que descubrió, patrones observados, bugs ya resueltos. Ambos se cargan en cada sesión y se complementan.</p>
+  </div>
+
+  <h3 id="mod5-imports">Importar archivos en CLAUDE.md</h3>
+
+  <p>Con la sintaxis <code>@ruta/archivo</code> importás otros archivos directamente. El contenido se expande en contexto al inicio de la sesión, evitando duplicar información:</p>
+
+  <pre><code># CLAUDE.md
+Consultá @README.md para el resumen y @pyproject.toml para los comandos.
+
+# Preferencias personales (no se commitea)
+@~/.claude/my-preferences.md</code></pre>
+</section>
+
+<section class="module" id="mod6">
+  <div class="module-header">
+    <div class="module-number">06</div>
+    <h2>Custom Skills</h2>
+  </div>
+
+  <h3 id="mod6-what">¿Qué son las Skills?</h3>
+
+  <p>Las <strong>skills</strong> son archivos Markdown (<code>SKILL.md</code>) con instrucciones detalladas y best practices para un tipo específico de tarea. Son "recetas" que Claude sigue cuando necesita hacer algo particular.</p>
+
+  <p>La diferencia es la que hay entre decirle a un dev "hacé un PDF" y darle un documento que explica exactamente qué librería usar, qué template seguir y cómo manejar fuentes y márgenes. Eso segundo es una skill.</p>
+
+  <h4>CLAUDE.md vs SKILL.md — ¿por qué separarlos?</h4>
+
+  <p>Técnicamente los dos son Markdown con instrucciones; lo que los separa es cuándo y a qué costo se cargan en contexto:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Aspecto</th>
+<th>CLAUDE.md</th>
+<th>SKILL.md</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td>Cuándo se carga</td><td><strong>Siempre</strong>, al inicio de cada sesión</td><td><strong>Bajo demanda</strong>, solo cuando la tarea lo requiere</td></tr>
+    <tr><td>Costo en tokens</td><td>Se paga en cada prompt</td><td>Se paga solo cuando se usa</td></tr>
+    <tr><td>Contenido ideal</td><td>Lo que todo dev necesita el día 1</td><td>Instrucciones detalladas para una tarea concreta</td></tr>
+    <tr><td>Analogía</td><td>El onboarding general</td><td>El manual que abrís solo cuando hacés esa tarea</td></tr>
+  </tbody>
+</table>
+
+  <div class="callout callout-warn">
+    <p><strong>El problema de meter todo en CLAUDE.md:</strong> Un archivo de 2000 líneas diluye todo. Las convenciones importantes se pierden entre instrucciones que no son relevantes el 95% del tiempo — y ni vos ni Claude las aprovechan bien.</p>
+  </div>
+
+  <h3 id="mod6-create">Estructura de una Skill</h3>
+
+  <p>Una skill es un directorio con, como mínimo, un <code>SKILL.md</code>. Su potencial real aparece cuando incluye <strong>templates</strong>, <strong>examples</strong> y <strong>helpers</strong> que Claude puede leer y ejecutar:</p>
+
+  <pre><code>migrar-storage-a-db/
+├── SKILL.md          # Instrucciones y proceso (obligatorio)
+├── templates/        # Scaffolding real que Claude completa
+│   └── media_storage_service.py
+├── examples/         # Cómo debería verse el output terminado
+│   └── output_service.py
+└── helpers/          # Scripts que Claude ejecuta (verificación, validación)
+    └── verify_migration.sh</code></pre>
+
+  <ul>
+    <li><strong>Templates</strong> — el esqueleto con los imports, tipos y firmas correctos del proyecto. Sin template, Claude genera desde cero con su criterio; con template, arranca desde la estructura que definió tu equipo.</li>
+    <li><strong>Examples</strong> — el resultado esperado. Especialmente útiles para output visual: Claude puede *ver* imágenes, así que una captura de referencia (<code>grafica-ok.png</code>) es infinitamente más precisa que "usá colores pastel y que se vea lindo".</li>
+    <li><strong>Helpers</strong> — scripts ejecutables que automatizan verificación (por ejemplo, comparar checksums entre el archivo original y el migrado).</li>
+</ul>
+
+  <div class="callout callout-key">
+    <p><strong>El potencial completo:</strong> Con templates + examples + helpers le das a Claude el esqueleto desde el que empieza, el estándar de cómo debería verse el resultado, y las herramientas para verificar su propio trabajo. Un dev sin eso arranca de cero; con eso, arranca sobre un setup que el equipo ya dejó armado.</p>
+  </div>
+
+  <h4>Ejemplo de SKILL.md (recortado)</h4>
+
+  <pre><code>---
+name: migrar-storage-a-db
+description: Migra módulos que almacenan archivos en filesystem local a
+  almacenamiento en base de datos (binario o referencias a object storage).
+---
+
+# Migrar Storage de Ficheros a Base de Datos
+
+## Reglas de decisión
+- Archivos &lt; 1MB (thumbnails, avatars): almacenar como `bytea` en PostgreSQL.
+- Archivos &gt;= 1MB (fotos HD, videos): subir a object storage y guardar solo
+  la URL + metadata en DB.
+- NUNCA borrar los ficheros originales hasta verificar la migración.
+
+## Proceso paso a paso
+1. Crear la migration de la tabla `media_assets`.
+2. Crear el servicio `MediaStorageService` con `migrate_file()` y `get_file()`.
+3. Crear un script batch idempotente (skip por checksum) con log de progreso.
+4. NO tocar los endpoints existentes hasta que el batch esté verificado.
+
+## Verificación
+- Comparar checksums entre original y migrado.
+- Reporte final: total, migrados, skipped, errores.
+
+## Prohibiciones
+- NO borrar archivos originales en ningún paso.
+- NO hacer la migración y el cambio de endpoints en el mismo PR.</code></pre>
+
+  <div class="callout callout-key">
+    <p><strong>Impacto:</strong> Sin skills, Claude improvisa desde conocimiento general. Con skills, sigue exactamente los patrones y procesos de tu proyecto. La consistencia del output mejora dramáticamente.</p>
+  </div>
+
+  <h3 id="mod6-args">Argumentos e invocación</h3>
+
+  <p>Las skills pueden recibir argumentos mediante <code>$ARGUMENTS</code> (o por posición: <code>$0</code>, <code>$1</code>, ...). Invocar <code>/fix-issue 347</code> inyecta "347":</p>
+
+  <pre><code>---
+name: fix-issue
+description: Fix a GitHub issue by number
+disable-model-invocation: true
+---
+Investigá y corregí el issue de GitHub número $ARGUMENTS siguiendo los
+estándares del proyecto. Escribí los tests necesarios y hacé commit.</code></pre>
+
+  <h4>Control de invocación</h4>
+
+  <table>
+  <thead>
+    <tr>
+<th>Campo</th>
+<th>Efecto</th>
+<th>Cuándo usarlo</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>disable-model-invocation: true</code></td><td>Solo el usuario invoca la skill; Claude no la activa solo</td><td>Skills con efectos secundarios: <code>/deploy</code>, <code>/commit</code></td></tr>
+    <tr><td><code>user-invocable: false</code></td><td>Solo Claude la invoca; no aparece en el menú <code>/</code></td><td>Conocimiento de fondo que Claude aplica automáticamente</td></tr>
+  </tbody>
+</table>
+
+  <h4>Ejecutar en subagente aislado (<code>context: fork</code>)</h4>
+
+  <p>Con <code>context: fork</code> en el frontmatter, la skill corre como prompt de un subagente en un contexto aislado, sin acceso al historial de la conversación. El resultado vuelve a la sesión principal:</p>
+
+  <pre><code>---
+name: deep-research
+description: Research a topic thoroughly across the codebase
+context: fork
+agent: Explore
+---
+Investigá exhaustivamente "$ARGUMENTS": encontrá archivos relevantes con
+Glob y Grep, analizá patrones, y resumí con referencias a archivo:línea.</code></pre>
+
+  <h3 id="mod6-bundled">Skills y comandos incluidos</h3>
+
+  <p>Claude Code trae skills y comandos disponibles sin configuración:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Comando</th>
+<th>Qué hace</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/batch &lt;instrucción&gt;</code></td><td>Cambios a gran escala en paralelo: descompone el trabajo, lanza un subagente por unidad en un git worktree aislado, y cada uno abre su PR</td></tr>
+    <tr><td><code>/simplify [foco]</code></td><td>Revisa archivos modificados buscando reutilización, calidad y eficiencia; aplica correcciones con agentes en paralelo</td></tr>
+    <tr><td><code>/debug [descripción]</code></td><td>Habilita logging de debug y analiza los logs para identificar la causa del problema</td></tr>
+    <tr><td><code>/loop [intervalo] &lt;prompt&gt;</code></td><td>Ejecuta un prompt repetidamente en un intervalo (monitorear un deploy, hacer polling de un estado)</td></tr>
+  </tbody>
+</table>
+
+  <div class="callout callout-info">
+    <p><strong>Plugins y marketplaces:</strong> Además de las skills sueltas, Claude Code tiene un sistema de <strong>plugins</strong>: bundles de skills, comandos, subagentes y MCP servers que se instalan desde un *marketplace* (<code>/plugin</code>). Es la forma recomendada de distribuir conjuntos de herramientas dentro de un equipo u organización.</p>
+  </div>
+</section>
+
+<section class="module" id="mod7">
+  <div class="module-header">
+    <div class="module-number">07</div>
+    <h2>Subagentes y Orquestación</h2>
+  </div>
+
+  <p>Los subagentes son asistentes especializados que Claude Code lanza para sub-tareas. Cada uno corre en su <strong>propia ventana de contexto</strong>, con system prompt propio, herramientas restringidas y, opcionalmente, un modelo distinto al de la sesión principal.</p>
+
+  <p>Ataca un problema concreto del trabajo agéntico: a medida que la conversación crece, el contexto se llena de resultados de exploración que "ensucian" la sesión. Con subagentes, esa exploración ocurre aislada y solo el resultado final vuelve al agente principal.</p>
+
+  <h3 id="mod7-builtin">Subagentes integrados</h3>
+
+  <p>Claude Code ya los usa automáticamente cuando el contexto lo amerita:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Subagente</th>
+<th>Modelo</th>
+<th>Herramientas</th>
+<th>Cuándo lo usa</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Explore</strong></td><td>Rápido/económico</td><td>Solo lectura</td><td>Buscar o entender el codebase sin hacer cambios</td></tr>
+    <tr><td><strong>Plan</strong></td><td>Hereda principal</td><td>Solo lectura</td><td>En plan mode, para investigar antes de proponer</td></tr>
+    <tr><td><strong>General-purpose</strong></td><td>Hereda principal</td><td>Todas</td><td>Tareas complejas de múltiples pasos (explorar + modificar)</td></tr>
+  </tbody>
+</table>
+
+  <div class="callout callout-info">
+    <p><strong>Importante:</strong> Los subagentes no pueden generar otros subagentes. Solo el agente principal delega. Esto evita cadenas de recursión incontrolables.</p>
+  </div>
+
+  <h3 id="mod7-create">Crear subagentes personalizados</h3>
+
+  <p>Son archivos <code>.md</code> con frontmatter YAML en <code>.claude/agents/</code> (proyecto) o <code>~/.claude/agents/</code> (usuario):</p>
+
+  <pre><code>---
+name: code-reviewer
+description: Reviews code for quality and security. Use proactively after code changes.
+model: sonnet
+tools: Read, Grep, Glob
+memory: project
+---
+Sos un code reviewer senior. Analizá el código y devolvé feedback específico
+y accionable sobre calidad, seguridad y buenas prácticas. Priorizá problemas
+reales sobre sugerencias cosméticas.</code></pre>
+
+  <div class="callout callout-tip">
+    <p><strong>El campo <code>description</code> es crítico:</strong> Claude lo usa para decidir cuándo delegar automáticamente. Frases como "use proactively after code changes" hacen que lo invoque sin que se lo pidas.</p>
+  </div>
+
+  <h4>Campos de frontmatter</h4>
+
+  <table>
+  <thead>
+    <tr>
+<th>Campo</th>
+<th>Requerido</th>
+<th>Descripción</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>name</code></td><td>Sí</td><td>Identificador único (minúsculas con guiones)</td></tr>
+    <tr><td><code>description</code></td><td>Sí</td><td>Cuándo Claude debe delegar</td></tr>
+    <tr><td><code>model</code></td><td>No</td><td><code>opus</code>, <code>sonnet</code>, <code>haiku</code>, o ID completo. Por defecto hereda el modelo de la sesión</td></tr>
+    <tr><td><code>tools</code></td><td>No</td><td>Lista blanca de herramientas. Si se omite, hereda todas</td></tr>
+    <tr><td><code>disallowedTools</code></td><td>No</td><td>Lista negra: hereda todo excepto estas</td></tr>
+    <tr><td><code>permissionMode</code></td><td>No</td><td><code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>bypassPermissions</code>, etc.</td></tr>
+    <tr><td><code>memory</code></td><td>No</td><td><code>user</code>, <code>project</code> o <code>local</code> — memoria persistente entre sesiones</td></tr>
+    <tr><td><code>skills</code></td><td>No</td><td>Skills a precargar en el subagente</td></tr>
+    <tr><td><code>mcpServers</code></td><td>No</td><td>MCP servers disponibles solo para este subagente</td></tr>
+    <tr><td><code>maxTurns</code></td><td>No</td><td>Límite de turnos antes de detenerse</td></tr>
+  </tbody>
+</table>
+
+  <h3 id="mod7-config">Configuración avanzada</h3>
+
+  <h4>Selección de modelo por tarea</h4>
+
+  <p>Enrutá cada tipo de tarea al modelo más apropiado, balanceando costo, velocidad y calidad. Usá los <strong>alias</strong> (<code>opus</code>/<code>sonnet</code>/<code>haiku</code>) en vez de versiones fijas: cada alias apunta al modelo más nuevo de su familia, así tu config no queda desactualizada:</p>
+
+  <table>
+  <thead>
+    <tr>
+<th>Alias</th>
+<th>Usar para</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>haiku</code></td><td>Exploración, búsqueda de archivos, preguntas simples — máxima velocidad y mínimo costo</td></tr>
+    <tr><td><code>sonnet</code></td><td>La mayoría de tareas de implementación, reviews, tests — balance ideal. Es el modelo por defecto en Claude Code, con ventana de contexto nativa de 1M tokens</td></tr>
+    <tr><td><code>opus</code></td><td>Auditorías de seguridad, decisiones arquitectónicas, análisis complejos — máxima calidad</td></tr>
+  </tbody>
+</table>
+
+  <h4>Restricción de herramientas</h4>
+
+  <pre><code>tools: Read, Grep, Glob            # lista blanca (más restrictivo)
+disallowedTools: Write, Edit       # lista negra (más permisivo)</code></pre>
+
+  <p>Si definís ambos, <code>disallowedTools</code> se aplica primero.</p>
+
+  <h4>Memoria persistente entre sesiones</h4>
+
+  <table>
+  <thead>
+    <tr>
+<th>Alcance</th>
+<th>Ubicación</th>
+<th>Cuándo usarlo</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>project</code></td><td><code>.claude/agent-memory/&lt;name&gt;/</code></td><td>Conocimiento del proyecto, compartible vía git</td></tr>
+    <tr><td><code>user</code></td><td><code>~/.claude/agent-memory/&lt;name&gt;/</code></td><td>Aprendizajes aplicables en todos los proyectos</td></tr>
+    <tr><td><code>local</code></td><td><code>.claude/agent-memory-local/&lt;name&gt;/</code></td><td>Específico del proyecto, sin commitear</td></tr>
+  </tbody>
+</table>
+
+  <h3 id="mod7-invoke">Invocar subagentes</h3>
+
+  <pre><code># 1. Lenguaje natural (delegación automática si el description está bien escrito)
+&gt; Usá el subagente code-reviewer para revisar los cambios del branch feature/payments
+
+# 2. @-mention (delegación garantizada)
+&gt; @code-reviewer revisá los cambios de autenticación que acabo de hacer
+
+# 3. Sesión completa como subagente
+claude --agent security-auditor</code></pre>
+
+  <p>El slash command <code>/agents</code> abre una UI interactiva para crear, editar y eliminar subagentes sin tocar archivos, e incluso generarlos a partir de una descripción en lenguaje natural.</p>
+
+  <h3 id="mod7-examples">Ejemplos prácticos</h3>
+
+  <p>Listos para agregar a <code>.claude/agents/</code>. Cada uno muestra una capacidad distinta:</p>
+
+  <p><strong>code-reviewer</strong> — review automático post-cambios, solo lectura, con memoria de proyecto:</p>
+
+  <pre><code>---
+name: code-reviewer
+description: Reviews code for quality, security and best practices. Use proactively after any code change.
+model: sonnet
+tools: Read, Grep, Glob
+memory: project
+---
+Sos un code reviewer senior. Buscá bugs, seguridad, performance y violaciones
+de patrones. Consultá tu memoria antes de empezar y actualizala al terminar
+con patrones nuevos o issues recurrentes.</code></pre>
+
+  <p><strong>fast-explorer</strong> — investigación de bajo costo con el modelo más rápido:</p>
+
+  <pre><code>---
+name: fast-explorer
+description: Quickly explores the codebase to answer questions about structure and patterns.
+model: haiku
+tools: Read, Grep, Glob, Bash
+---
+Respondé preguntas sobre la estructura del proyecto de forma rápida y concisa.
+No modificás archivos.</code></pre>
+
+  <p><strong>security-auditor</strong> — auditoría con el modelo de máxima calidad, solo lectura por diseño:</p>
+
+  <pre><code>---
+name: security-auditor
+description: Performs thorough security audits. Use when reviewing auth, data handling or external integrations.
+model: opus
+tools: Read, Grep, Glob
+memory: project
+---
+Auditá el código buscando OWASP Top 10, manejo inseguro de credenciales,
+problemas de auth e inyecciones. Explicá impacto y remediación de cada issue.</code></pre>
+
+  <h3 id="mod7-coordinator">Patrón coordinador</h3>
+
+  <p>Para tareas grandes con múltiples especialistas, un subagente coordinador orquesta a los demás. <code>tools: Agent(...)</code> define qué subagentes puede lanzar:</p>
+
+  <pre><code>---
+name: feature-coordinator
+description: Coordinates feature implementation end-to-end.
+model: sonnet
+tools: Agent(fast-explorer, test-writer), Read, Bash
+---
+1. Delegá la investigación a fast-explorer.
+2. Implementá los cambios vos mismo.
+3. Delegá los tests a test-writer.
+4. Corré el suite completo.</code></pre>
+
+  <div class="callout callout-warn">
+    <p><strong>Recordá:</strong> Como los subagentes no generan otros subagentes, el patrón coordinador solo funciona cuando el coordinador corre como agente principal: <code>claude --agent feature-coordinator</code>.</p>
+  </div>
+
+  <div class="callout callout-key">
+    <p><strong>El salto de productividad:</strong> Un equipo que define sus subagentes una vez obtiene un conjunto de "especialistas" reutilizables con <code>@nombre</code>: el code-reviewer que aprendió los patrones del proyecto, el security-auditor que recuerda las vulnerabilidades ya encontradas, el test-writer que sabe cómo escribe tests el equipo. Es conocimiento institucional empaquetado en agentes.</p>
+  </div>
+</section>
+
+<section class="module" id="mod8">
+  <div class="module-header">
+    <div class="module-number">08</div>
+    <h2>MCP Servers (Model Context Protocol)</h2>
+  </div>
+
+  <h3 id="mod8-what">¿Qué es MCP?</h3>
+
+  <p><strong>MCP</strong> es un protocolo abierto que conecta Claude Code con herramientas y servicios externos. A los MCP servers los pienso como "plugins" que le dan capacidades más allá del filesystem y bash:</p>
+
+  <ul>
+    <li>Consultar bases de datos (PostgreSQL, SQLite).</li>
+    <li>Interactuar con APIs (GitHub, Linear, Jira, Slack).</li>
+    <li>Buscar en la web o en documentación específica.</li>
+    <li>Conectar con herramientas internas de tu empresa.</li>
+</ul>
+
+  <h3 id="mod8-config">Configuración</h3>
+
+  <p>Se configuran a nivel global o de proyecto:</p>
+
+  <pre><code>// .claude/settings.json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres",
+               "postgresql://localhost:5432/midb"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "ghp_..." }
+    }
+  }
+}</code></pre>
+
+  <div class="callout callout-info">
+    <p><strong>Tipos de transporte:</strong> Los MCP servers se comunican por <strong>stdio</strong> (proceso hijo, lo más común) o por <strong>SSE/HTTP</strong> (servers remotos o cloud). El formato de configuración difiere levemente entre ambos.</p>
+  </div>
+
+  <h3 id="mod8-servers">Servers populares</h3>
+
+  <table>
+  <thead>
+    <tr>
+<th>Server</th>
+<th>Qué hace</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>server-postgres</code></td><td>Explorar schemas y hacer queries de lectura</td></tr>
+    <tr><td><code>server-github</code></td><td>Issues, PRs, buscar código, crear branches</td></tr>
+    <tr><td><code>server-filesystem</code></td><td>Acceso controlado a directorios fuera del proyecto</td></tr>
+    <tr><td><code>server-sqlite</code></td><td>Interacción con bases SQLite</td></tr>
+  </tbody>
+</table>
+
+  <div class="callout callout-warn">
+    <p><strong>Seguridad:</strong> Los MCP servers tienen acceso real a tus servicios. Usá env vars para tokens, nunca los hardcodees en el <code>settings.json</code> que se commitea. Limitá los servers al mínimo necesario y no des acceso a producción.</p>
+  </div>
+</section>
+
+<section class="module" id="mod9">
+  <div class="module-header">
+    <div class="module-number">09</div>
+    <h2>Modos y Comandos</h2>
+  </div>
+
+  <h3 id="mod9-slash">Slash Commands</h3>
+
+  <table>
+  <thead>
+    <tr>
+<th>Comando</th>
+<th>Función</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/help</code></td><td>Ayuda y comandos disponibles</td></tr>
+    <tr><td><code>/config</code></td><td>Configuración</td></tr>
+    <tr><td><code>/compact</code></td><td>Compacta el contexto de la conversación</td></tr>
+    <tr><td><code>/context</code></td><td>Estado de la ventana de contexto</td></tr>
+    <tr><td><code>/clear</code></td><td>Limpia el historial de la sesión</td></tr>
+    <tr><td><code>/cost</code></td><td>Costo acumulado de la sesión</td></tr>
+    <tr><td><code>/doctor</code></td><td>Diagnostica la instalación (alias: <code>/checkup</code>)</td></tr>
+    <tr><td><code>/init</code></td><td>Inicializa un CLAUDE.md para el proyecto</td></tr>
+    <tr><td><code>/code-review [nivel] [pr#]</code></td><td>Revisa el diff actual o un PR (<code>ultra</code> para review profunda en cloud). Alias: <code>/review</code></td></tr>
+    <tr><td><code>/security-review</code></td><td>Analiza cambios pendientes buscando vulnerabilidades</td></tr>
+    <tr><td><code>/rewind</code></td><td>Rebobina conversación y archivos a un punto anterior. Alias: <code>/undo</code></td></tr>
+    <tr><td><code>/btw &lt;pregunta&gt;</code></td><td>Pregunta rápida fuera de la conversación — no consume el contexto de la tarea</td></tr>
+    <tr><td><code>/branch [nombre]</code></td><td>Bifurca la conversación para explorar un enfoque alternativo. Alias: <code>/fork</code></td></tr>
+    <tr><td><code>/teleport</code></td><td>Mueve la sesión actual a otra superficie (p. ej. de la web a la terminal)</td></tr>
+    <tr><td><code>/vim</code></td><td>Keybindings estilo Vim</td></tr>
+  </tbody>
+</table>
+
+
+  <h3 id="mod9-flags">Flags de CLI importantes</h3>
+
+  <pre><code># Prompt directo (no interactivo)
+claude -p "explicame la arquitectura de este proyecto"
+
+# Pipe de input
+cat error.log | claude -p "analizá este log y decime qué pasó"
+
+# Continuar la última conversación / reanudar una específica
+claude --continue          # o -c
+claude --resume &lt;nombre-o-id&gt;   # sin argumento: selector interactivo
+
+# Modelo específico (preferí los alias)
+claude --model opus
+claude --model sonnet
+
+# Output JSON (scripting)
+claude -p "listá los archivos .py" --output-format json
+
+# Profundidad de razonamiento
+claude --effort high       # low | medium | high | max  (también /effort en sesión)
+
+# Modo bare: sin CLAUDE.md, hooks, MCP ni auto memory
+claude --bare -p "query"
+
+# Límites para pipelines
+claude -p "..." --max-budget-usd 2.00
+claude -p "..." --max-turns 10</code></pre>
+
+  <div class="callout callout-info">
+    <p><strong>¿Qué es un turno?:</strong> Un turno es un ciclo completo del agente: recibe input → razona → ejecuta herramientas (pueden ser muchas) → devuelve respuesta. <code>--max-turns 10</code> permite hasta 10 de esos ciclos. El mismo concepto aparece en <code>maxTurns</code> de los subagentes.</p>
+  </div>
+
+  <h3 id="mod9-modes">Modos de ejecución</h3>
+
+  <ul>
+    <li><strong>Interactivo (default):</strong> REPL conversacional. Claude pide permisos, aprobás, iterás.</li>
+    <li><strong>One-shot (<code>-p</code>):</strong> ejecuta un prompt y responde sin interactividad. Ideal para scripts.</li>
+    <li><strong>Pipe:</strong> recibe input por stdin, combinable con <code>-p</code>, integrable en pipelines de shell.</li>
+    <li><strong>Headless (CI/CD):</strong> sin interactividad ni confirmaciones. Ver módulo siguiente.</li>
+</ul>
+
+  <pre><code>git diff main | claude -p "revisá este diff buscando bugs potenciales"</code></pre>
+</section>
+
+<section class="module" id="mod10">
+  <div class="module-header">
+    <div class="module-number">10</div>
+    <h2>Patrones Avanzados</h2>
+  </div>
+
+  <h3 id="mod10-ci">Claude Code en CI/CD</h3>
+
+  <h4>Code review automatizado en PRs</h4>
+
+  <pre><code># GitHub Actions — ejemplo conceptual
+name: Claude Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - run: curl -fsSL https://claude.ai/install.sh | bash
+      - run: |
+          git diff origin/main...HEAD | claude -p \
+            "Revisá este diff como reviewer senior. Buscá bugs, seguridad,
+             performance y violaciones de patrones. Formato: archivo:línea + issue." \
+            --output-format json
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}</code></pre>
+
+  <h4>Otros usos headless</h4>
+
+  <pre><code># Changelog a partir de commits
+git log --oneline v1.2.0..HEAD | claude -p \
+  "Generá un changelog agrupado por Features, Fixes, Breaking Changes. Markdown."
+
+# Actualización de dependencias con contexto
+claude -p "Analizá deps desactualizadas, revisá los changelogs de las major
+  versions, y actualizá las safe. Corré los tests después de cada una."</code></pre>
+
+  <h3 id="mod10-hooks">Sistema de Hooks</h3>
+
+  <p>Los hooks son handlers que se ejecutan automáticamente en puntos del ciclo de vida de Claude Code, sin intervención humana: linting tras cada edición, bloqueo de comandos destructivos, notificaciones, logging de auditoría. Se configuran en la clave <code>hooks</code> del <code>settings.json</code>:</p>
+
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write|Edit",
+      "hooks": [{ "type": "command", "command": "ruff check --fix", "timeout": 30 }]
+    }],
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{ "type": "command", "command": ".claude/hooks/block-rm.sh" }]
+    }]
+  }
+}</code></pre>
+
+  <h4>Eventos principales</h4>
+
+  <table>
+  <thead>
+    <tr>
+<th>Evento</th>
+<th>Cuándo se activa</th>
+<th>¿Puede bloquear?</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td><code>PreToolUse</code></td><td>Antes de ejecutar una herramienta</td><td>Sí — puede denegar</td></tr>
+    <tr><td><code>PostToolUse</code></td><td>Después de ejecutar exitosamente</td><td>Sí — puede revertir</td></tr>
+    <tr><td><code>SessionStart</code></td><td>Al iniciar o reanudar una sesión</td><td>No</td></tr>
+    <tr><td><code>Stop</code></td><td>Cuando Claude termina de responder</td><td>Sí — puede forzar más trabajo</td></tr>
+    <tr><td><code>Notification</code></td><td>Cuando Claude pide permiso o queda idle</td><td>No</td></tr>
+    <tr><td><code>SubagentStart/Stop</code></td><td>Al iniciar/terminar un subagente</td><td>No</td></tr>
+  </tbody>
+</table>
+
+  <p><strong>Tipos de hook:</strong> <code>command</code> (script de shell; exit code 2 bloquea), <code>http</code> (POST a una URL), <code>prompt</code> (evalúa con un prompt a Claude), <code>agent</code> (lanza un subagente para decidir). Usá <code>/hooks</code> para ver los configurados.</p>
+
+  <h3 id="mod10-worktree">Git Worktrees — aislamiento real para trabajo paralelo</h3>
+
+  <p>La forma recomendada para trabajo paralelo con múltiples instancias no es abrir terminales en el mismo directorio, sino usar <strong>git worktrees</strong>: cada instancia trabaja en su propio directorio y su propia rama, sin conflictos.</p>
+
+  <pre><code># Crear un worktree aislado e iniciar Claude en él
+claude --worktree feature-auth      # alias: -w
+
+# Dos instancias completamente aisladas
+claude -w feature-payments          # Terminal 1
+claude -w bugfix-login              # Terminal 2
+
+# Sin nombre: genera uno automáticamente
+claude -w</code></pre>
+
+  <p>Los worktrees se ramifican desde <code>origin/HEAD</code>. Al salir: si no hubo cambios, el worktree se elimina; si hubo, Claude pregunta si querés mantenerlo.</p>
+
+  <div class="callout callout-tip">
+    <p><strong>Archivos .env:</strong> Los worktrees son copias limpias — no incluyen gitignored como <code>.env</code>. Para copiarlos automáticamente, creá un <code>.worktreeinclude</code> en la raíz (misma sintaxis que <code>.gitignore</code>).</p>
+  </div>
+
+  <h3 id="mod10-safe">Seguridad y buenas prácticas</h3>
+
+  <ul>
+    <li><strong>Commiteá <code>.claude/settings.json</code></strong> con los permisos del equipo; <code>settings.local.json</code> para overrides personales.</li>
+    <li><strong>Nunca auto-aprobar <code>git push</code></strong> — requerí confirmación humana.</li>
+    <li><strong>Revisá diffs antes de commitear</strong> — <code>git diff</code> después de que Claude trabaje. Confiá pero verificá.</li>
+    <li><strong>Usá branches (o worktrees)</strong> para el trabajo de Claude, y revisá el PR.</li>
+    <li><strong>Limitá los MCP servers al mínimo</strong> — no des acceso a producción.</li>
+    <li><strong>API keys rotadas y con scopes</strong> — nunca uses tu key de admin para CI/CD.</li>
+</ul>
+
+  <h4>Gestión de costos</h4>
+
+  <ul>
+    <li><code>/cost</code> durante la sesión para ver el gasto.</li>
+    <li><code>/compact</code> para reducir tokens en conversaciones largas.</li>
+    <li>Prompts específicos &gt; prompts vagos: un prompt vago genera idas y vueltas que consumen tokens.</li>
+    <li>Modelos apropiados: <code>haiku</code> para exploración, <code>sonnet</code> para tareas rutinarias, <code>opus</code> cuando necesitás máxima calidad de razonamiento.</li>
+</ul>
+</section>
+
+<section class="module" id="ref">
+  <div class="module-header">
+    <div class="module-number">++</div>
+    <h2>Apéndice: Referencias y Recursos</h2>
+  </div>
+
+  <h3 id="ref-documentación-oficial">Documentación oficial</h3>
+
+  <table>
+  <thead>
+    <tr>
+<th>Recurso</th>
+<th>URL</th>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td>Claude Code — Documentación</td><td><code>code.claude.com/docs</code></td></tr>
+    <tr><td>Claude Code — Setup</td><td><code>code.claude.com/docs/en/setup</code></td></tr>
+    <tr><td>Claude Code — npm</td><td><code>npmjs.com/package/@anthropic-ai/claude-code</code></td></tr>
+    <tr><td>Claude Code — Repo (issues)</td><td><code>github.com/anthropics/claude-code</code></td></tr>
+    <tr><td>MCP — Especificación</td><td><code>modelcontextprotocol.io</code></td></tr>
+    <tr><td>MCP — Servidores oficiales</td><td><code>github.com/modelcontextprotocol/servers</code></td></tr>
+    <tr><td>Claude API — Docs</td><td><code>docs.claude.com</code></td></tr>
+    <tr><td>Anthropic — Blog/News</td><td><code>anthropic.com/news</code></td></tr>
+  </tbody>
+</table>
+
+  <h3 id="ref-estructura-de-referencia-rápida-del-clau">Estructura de referencia rápida del CLAUDE.md</h3>
+
+  <pre><code># [Nombre del Proyecto]
+
+## Comandos
+- Build / Test / Lint: `...`
+
+## Arquitectura
+[Frameworks, patrones, estructura de directorios]
+
+## Convenciones de código
+[Naming, imports, error handling]
+
+## Patrones del proyecto
+[Cómo crear X, cómo hacer Y]
+
+## Prohibiciones
+[Lo que NO debe hacer]
+
+## Skills
+[Referencias a skills específicas]</code></pre>
+
+  <div class="doc-footer">
+    <p>Elaborado por <a href="https://www.linkedin.com/in/guillermo-palmieri-/" target="_blank" rel="noopener noreferrer">Guillermo Palmieri</a></p>
+  </div>
+</section>
+
+</div>
+<script type="text/markdown" id="md-source" data-theme-id="dark">LS0tCnRpdGxlOiBDbGF1ZGUgQ29kZTxicj5Eb21pbmlvIENvbXBsZXRvCnN1YnRpdGxlOiBHdcOtYSBtb2R1bGFyIHBhcmEgZGVzYXJyb2xsYWRvcmVzLiBJbnN0YWxhY2nDs24sIGNvbmZpZ3VyYWNpw7NuLCBDTEFVREUubWQsIHNraWxscywgc3ViYWdlbnRlcywgTUNQIHkgcGF0cm9uZXMgZGUgdXNvIHByb2Zlc2lvbmFsLgpuYXZfdGl0bGU6IENsYXVkZSBDb2RlIFRyYWluaW5nCmZvb3RlcjogRWxhYm9yYWRvIHBvciBbR3VpbGxlcm1vIFBhbG1pZXJpXShodHRwczovL3d3dy5saW5rZWRpbi5jb20vaW4vZ3VpbGxlcm1vLXBhbG1pZXJpLS8pCi0tLQoKPCEtLSBSZWZlcmVuY2lhOiBDbGF1ZGUgQ29kZSB2Mi4xLnggwrcgdmVyaWZpY2FkbyBjb250cmEgZWwgcGFxdWV0ZSBucG0gcHVibGljYWRvIHkgZWwgQ0hBTkdFTE9HIG9maWNpYWwgKHNlcHQgMjAyNikuIExvcyBuw7ptZXJvcyBkZSB2ZXJzacOzbiBkZSBtb2RlbG9zIGV2b2x1Y2lvbmFuIHLDoXBpZG86IHByZWZlcsOtIGxvcyBhbGlhcyAob3B1cy9zb25uZXQvaGFpa3UpIGFudGVzIHF1ZSBoYXJkY29kZWFyIHVuYSB2ZXJzacOzbi4gLS0+CgojIMK/UXXDqSBlcyBDbGF1ZGUgQ29kZT8KCkNsYXVkZSBDb2RlIGVzIHVuYSAqKmhlcnJhbWllbnRhIGRlIGNvZGluZyBhZ8OpbnRpY28qKiBkaXNwb25pYmxlIGVuIG3Dumx0aXBsZXMgZW50b3Jub3M6IHRlcm1pbmFsLCBleHRlbnNpw7NuIGRlIFZTIENvZGUsIGV4dGVuc2nDs24gZGUgSmV0QnJhaW5zLCBhcGxpY2FjacOzbiBkZSBlc2NyaXRvcmlvIHkgbmF2ZWdhZG9yIHdlYi4gTm8gZXMgdW4gcGx1Z2luIGRlIGF1dG9jb21wbGV0YWRvIG5pIHVuIGNvcGlsb3QgaW5saW5lOiBlcyB1biBhZ2VudGUgcXVlIGxlZSB0dSBjb2RlYmFzZSwgZWplY3V0YSBjb21hbmRvcywgZWRpdGEgYXJjaGl2b3MsIGludGVyYWN0w7phIGNvbiBnaXQgeSBvcnF1ZXN0YSB0YXJlYXMgY29tcGxlamFzIGRlIGZvcm1hIGF1dMOzbm9tYS4KCiMjIEFycXVpdGVjdHVyYSB5IG1vZGVsbyBtZW50YWwge2lkPW1vZDEtYXJjaH0KClBhcmEgbcOtIGVzIGVxdWl2YWxlbnRlIGEgdW4gZGVzYXJyb2xsYWRvciBqdW5pb3IgZXh0cmVtYWRhbWVudGUgcsOhcGlkbyBzZW50YWRvIGFsIGxhZG8sIGVuIGxhIHRlcm1pbmFsLiBUaWVuZSBhY2Nlc28gYToKCi0gKipUdSBmaWxlc3lzdGVtKiog4oCUIGxlZSB5IGVzY3JpYmUgYXJjaGl2b3MgZGVsIHByb3llY3RvLgotICoqQmFzaCoqIOKAlCBlamVjdXRhIGNvbWFuZG9zLCBjb3JyZSB0ZXN0cywgaW5zdGFsYSBkZXBlbmRlbmNpYXMgKGNvbiB1bmEgY2FwYSBkZSAqc2FuZGJveCogb3BjaW9uYWwsIHZlciBtw6FzIGFiYWpvKS4KLSAqKkdpdCoqIOKAlCBjcmVhIGJyYW5jaGVzLCBoYWNlIGNvbW1pdHMsIG1hbmVqYSBQUnMuCi0gKipIZXJyYW1pZW50YXMgZXh0ZXJuYXMgdsOtYSBNQ1AqKiDigJQgc2UgY29uZWN0YSBhIEFQSXMsIGJhc2VzIGRlIGRhdG9zIHkgc2VydmljaW9zLgoKRWwgZmx1am8gYsOhc2ljbyBlczogZGVzY3JpYsOtcyB1bmEgdGFyZWEgZW4gbGVuZ3VhamUgbmF0dXJhbCDihpIgQ2xhdWRlIENvZGUgYW5hbGl6YSBlbCBjb250ZXh0byDihpIgcGxhbmlmaWNhIOKGkiBlamVjdXRhIHBhc29zIChlZGl0YXIgYXJjaGl2b3MsIGNvcnJlciB0ZXN0cywgZXRjLikg4oaSIHRlIG11ZXN0cmEgZWwgcmVzdWx0YWRvIHkgcGlkZSBjb25maXJtYWNpw7NuIGN1YW5kbyBjb3JyZXNwb25kZS4KCj4gWyFLRVldIENvbmNlcHRvIGNsYXZlCj4gQ2xhdWRlIENvZGUgbm8gImdlbmVyYSBjw7NkaWdvIHkgdGUgbG8gbXVlc3RyYSIuIE9wZXJhIHNvYnJlIHR1IHByb3llY3RvIHJlYWwsIGVuIHR1IGZpbGVzeXN0ZW0gcmVhbCwgY29uIHR1IGdpdCByZWFsLiBFcyBhZ8OpbnRpY286IHRvbWEgZGVjaXNpb25lcywgZWplY3V0YSBhY2Npb25lcyB5IHNlIGF1dG8tY29ycmlnZS4KCiMjIENsYXVkZSBDb2RlIHZzIG90cm9zIGVuZm9xdWVzIHtpZD1tb2QxLXZzfQoKfCBBc3BlY3RvIHwgQ29waWxvdCAvIEF1dG9jb21wbGV0YWRvIHwgQ2hhdCBlbiBJREUgfCBDbGF1ZGUgQ29kZSB8CnwgLS0tIHwgLS0tIHwgLS0tIHwgLS0tIHwKfCBJbnRlcmZheiB8IElubGluZSBlbiBlZGl0b3IgfCBQYW5lbCBsYXRlcmFsIHwgVGVybWluYWwgLyBJREUgLyB3ZWIgfAp8IEFsY2FuY2UgfCBMw61uZWEgLyBmdW5jacOzbiB8IEFyY2hpdm8gLyBzZWxlY2Npw7NuIHwgUHJveWVjdG8gY29tcGxldG8gfAp8IEVqZWN1Y2nDs24gfCBObyBlamVjdXRhIHwgTGltaXRhZGEgfCBCYXNoIGNvbXBsZXRvIHwKfCBBdXRvbm9tw61hIHwgU3VnZXJlbmNpYSBwYXNpdmEgfCBTZW1pLWludGVyYWN0aXZvIHwgQWfDqW50aWNvIGNvbiBwZXJtaXNvcyB8CnwgR2l0IHwgTm8gfCBQYXJjaWFsIHwgQ29tcGxldG8gfAp8IEhlcnJhbWllbnRhcyBleHRlcm5hcyB8IE5vIHwgTGltaXRhZG8gfCBNQ1Agc2VydmVycyB8CgojIyBEw7NuZGUgZnVuY2lvbmEgQ2xhdWRlIENvZGUge2lkPW1vZDEtc3VyZmFjZXN9CgpMYSBtaXNtYSBjb25maWd1cmFjacOzbiwgYXJjaGl2b3MgYENMQVVERS5tZGAgeSBzZXJ2aWRvcmVzIE1DUCBmdW5jaW9uYW4gZW4gdG9kYXMgbGFzIHN1cGVyZmljaWVzOgoKfCBTdXBlcmZpY2llIHwgQ8OzbW8gYWNjZWTDqXMgfCBJZGVhbCBwYXJhIHwKfCAtLS0gfCAtLS0gfCAtLS0gfAp8ICoqVGVybWluYWwgKENMSSkqKiB8IGBjbGF1ZGVgIGRlc2RlIGN1YWxxdWllciBkaXJlY3RvcmlvIHwgRmx1am8gcHJpbmNpcGFsIOKAlCBhY2Nlc28gY29tcGxldG8gYSBoZXJyYW1pZW50YXMsIHNjcmlwdHMsIENJL0NEIHwKfCAqKlZTIENvZGUqKiB8IEV4dGVuc2nDs24gIkNsYXVkZSBDb2RlIiBlbiBlbCBNYXJrZXRwbGFjZSB8IERpZmZzIGlubGluZSwgbWVuY2lvbmVzIGBAYXJjaGl2b2AsIHJldmlzacOzbiBkZSBwbGFuZXMgZW4gZWwgZWRpdG9yIHwKfCAqKkpldEJyYWlucyoqIHwgUGx1Z2luICJDbGF1ZGUgQ29kZSIgfCBJbnRlbGxpSiwgUHlDaGFybSwgV2ViU3Rvcm0g4oCUIGRpZmYgaW50ZXJhY3RpdmEgfAp8ICoqQXBwIGRlIGVzY3JpdG9yaW8qKiB8IERlc2NhcmdhIGRlc2RlIGNsYXVkZS5haSB8IFNlc2lvbmVzIHBhcmFsZWxhcywgcmV2aXNpw7NuIHZpc3VhbCBkZSBkaWZmcywgdGFyZWFzIHByb2dyYW1hZGFzIHwKfCAqKldlYioqIHwgYGNsYXVkZS5haS9jb2RlYCB8IFRyYWJhamFyIGRlc2RlIGN1YWxxdWllciBicm93c2VyIG8gbcOzdmlsLCB0YXJlYXMgbGFyZ2FzIHNpbiBQQyBlbmNlbmRpZGEgfAp8ICoqR2l0SHViKiogfCBFdGlxdWV0YXIgYEBjbGF1ZGVgIGVuIHVuIGlzc3VlIG8gUFIgfCBEZWxlZ2FyIHRhcmVhcyBkaXJlY3RhbWVudGUgZGVzZGUgZWwgcmVwbyB8Cgo+IFshSU5GT10gU2VzaW9uZXMgdHJhbnNmZXJpYmxlcwo+IFBvZMOpcyBpbmljaWFyIHVuYSB0YXJlYSBlbiBsYSB0ZXJtaW5hbCB5IGNvbnRpbnVhcmxhIGRlc2RlIGVsIGNlbHVsYXIsIG8gaW5pY2lhcmxhIGVuIGxhIHdlYiB5ICJ0ZWxlcG9ydGFybGEiIGEgbGEgdGVybWluYWwgY29uIGAvdGVsZXBvcnRgLiBMYXMgc2VzaW9uZXMgbm8gZXN0w6FuIGF0YWRhcyBhIHVuYSBzdXBlcmZpY2llLgoKIyBJbnN0YWxhY2nDs24geSBTZXR1cCBJbmljaWFsCgojIyBNw6l0b2RvcyBkZSBpbnN0YWxhY2nDs24ge2lkPW1vZDItaW5zdGFsbH0KCkxhIGZvcm1hIHJlY29tZW5kYWRhIGRlIGluc3RhbGFyIHlhICoqbm8gZXMgbnBtKiogKHF1ZWTDsyBkZXByZWNhZGEpLiBTZSB1c2EgZWwgaW5zdGFsYWRvciBuYXRpdm8sIHF1ZSB0cmFlIHN1IHByb3BpbyBydW50aW1lIHkgbm8gcmVxdWllcmUgTm9kZS5qczoKCmBgYAojIG1hY09TIC8gTGludXggKHJlY29tZW5kYWRvKQpjdXJsIC1mc1NMIGh0dHBzOi8vY2xhdWRlLmFpL2luc3RhbGwuc2ggfCBiYXNoCgojIEhvbWVicmV3IChtYWNPUyAvIExpbnV4KQpicmV3IGluc3RhbGwgLS1jYXNrIGNsYXVkZS1jb2RlCgojIFdpbmRvd3MgKHJlY29tZW5kYWRvKQppcm0gaHR0cHM6Ly9jbGF1ZGUuYWkvaW5zdGFsbC5wczEgfCBpZXgKCiMgV2luR2V0IChXaW5kb3dzKQp3aW5nZXQgaW5zdGFsbCBBbnRocm9waWMuQ2xhdWRlQ29kZQoKIyBucG0gKERFUFJFQ0FETyDigJQgcmVxdWllcmUgTm9kZS5qcyA+PSAyMikKbnBtIGluc3RhbGwgLWcgQGFudGhyb3BpYy1haS9jbGF1ZGUtY29kZQoKIyBWZXJpZmljYXIKY2xhdWRlIC0tdmVyc2lvbgpgYGAKCkRlc3B1w6lzOiBuYXZlZ8OhcyBhIHR1IHByb3llY3RvIHkgZWplY3V0w6FzIGBjbGF1ZGVgLgoKPiBbIVRJUF0gQWlzbGFtaWVudG8g4oCUIGJ1ZW5hIHByw6FjdGljYSwgbm8gb2JzdMOhY3Vsbwo+IFBhcmEgdHJhYmFqbyBzZW5zaWJsZSBjb252aWVuZSBhaXNsYXIgbG8gcXVlIGVsIGFnZW50ZSBwdWVkZSB0b2Nhci4gVGVuw6lzIGRvcyBjYW1pbm9zIGNvbXBsZW1lbnRhcmlvczogY29ycmVyIENsYXVkZSBDb2RlIGRlbnRybyBkZSB1biAqKmNvbnRlbmVkb3IqKiAoRG9ja2VyLCBEZXYgQ29udGFpbmVyLCBQb2RtYW4pIHBhcmEgcmVwcm9kdWNpYmlsaWRhZCB0b3RhbCwgbyB1c2FyIGVsICoqc2FuZGJveCBpbnRlZ3JhZG8qKiBkZSBDbGF1ZGUgQ29kZSwgcXVlIGNvbmZpbmEgbG9zIGNvbWFuZG9zIEJhc2ggYSBuaXZlbCBkZSBmaWxlc3lzdGVtIHkgcmVkIHNpbiBzYWxpciBkZSB0dSBlcXVpcG8uIEVsZWfDrSBzZWfDum4gY3XDoW50byBjb250cm9sIG5lY2VzaXRlcy4KCiMjIERpcmVjdG9yaW8gZGUgY29uZmlndXJhY2nDs24ge2lkPW1vZDItY29uZmlnLWRpcn0KClBvciBkZWZlY3RvLCBDbGF1ZGUgQ29kZSBndWFyZGEgc3UgY29uZmlndXJhY2nDs24gZGUgdXN1YXJpbyBlbiAqKmB+Ly5jbGF1ZGUvYCoqLiBTaSBwcmVmZXLDrXMgc2VndWlyIGVsICpYREcgQmFzZSBEaXJlY3RvcnkgU3BlY2lmaWNhdGlvbiogKG1hbnRlbmVyIGxhIGNvbmZpZyBiYWpvIGB+Ly5jb25maWdgIGVuIHZleiBkZSB1biBkaXJlY3RvcmlvIG9jdWx0byBlbiBlbCBob21lKSwgcG9kw6lzIHJldWJpY2FybGEgY29uIGxhIHZhcmlhYmxlIGRlIGVudG9ybm8gYENMQVVERV9DT05GSUdfRElSYDoKCmBgYAojIFJldWJpY2FyIGxhIGNvbmZpZyBzaWd1aWVuZG8gWERHIChvcGNpb25hbCkKZXhwb3J0IENMQVVERV9DT05GSUdfRElSPSIkSE9NRS8uY29uZmlnL2NsYXVkZSIKYGBgCgo+IFshSU5GT10gUGVyc2lzdGVuY2lhIGVuIGNvbnRlbmVkb3Jlcwo+IFNpIGNvcnLDqXMgQ2xhdWRlIENvZGUgZW4gdW4gY29udGVuZWRvciwgbW9udMOhIGVsIGRpcmVjdG9yaW8gZGUgY29uZmlnIGRlbCBob3N0IHBhcmEgcXVlIGxhIGF1dGVudGljYWNpw7NuIHkgbGFzIHByZWZlcmVuY2lhcyBwZXJzaXN0YW4gZW50cmUgZWplY3VjaW9uZXMuCgojIyBBdXRlbnRpY2FjacOzbiB7aWQ9bW9kMi1hdXRofQoKQ2xhdWRlIENvZGUgc29wb3J0YSB2YXJpYXMgZm9ybWFzIGRlIGF1dGVudGljYWNpw7NuOgoKLSAqKkxvZ2luIGludGVyYWN0aXZvOioqIGVqZWN1dMOhcyBgY2xhdWRlYCB5IHNlZ3XDrXMgZWwgZmx1am8gT0F1dGggZW4gZWwgYnJvd3Nlci4KLSAqKkFQSSBrZXkgZGlyZWN0YToqKiBzZXRlw6FzIGBBTlRIUk9QSUNfQVBJX0tFWWAgY29tbyB2YXJpYWJsZSBkZSBlbnRvcm5vLgotICoqUGxhbmVzIGRlIHN1c2NyaXBjacOzbjoqKiB1c3VhcmlvcyBjb24gQ2xhdWRlIFBybywgVGVhbSBvIEVudGVycHJpc2Ugc2UgYXV0ZW50aWNhbiBjb24gc3UgY3VlbnRhIGRlIGNsYXVkZS5haS4KCiMgQ29uZmlndXJhY2nDs24KCiMjIFNldHRpbmdzIHkgYXJjaGl2b3MgZGUgY29uZmlndXJhY2nDs24ge2lkPW1vZDMtc2V0dGluZ3N9CgpDbGF1ZGUgQ29kZSBtYW5lamEgY29uZmlndXJhY2nDs24gZW4gbcO6bHRpcGxlcyBuaXZlbGVzLiBFbCBjb21hbmRvIGAvY29uZmlnYCBkZW50cm8gZGUgbGEgc2VzacOzbiBwZXJtaXRlIGFqdXN0YXJsYTsgdGFtYmnDqW4gZXhpc3RlIGNvbmZpZ3VyYWNpw7NuIHBvciBhcmNoaXZvczoKCnwgQWxjYW5jZSB8IFViaWNhY2nDs24gfCBVc28gfAp8IC0tLSB8IC0tLSB8IC0tLSB8CnwgR2xvYmFsICh1c3VhcmlvKSB8IGB+Ly5jbGF1ZGUvc2V0dGluZ3MuanNvbmAgfCBQcmVmZXJlbmNpYXMgcGVyc29uYWxlcywgYXBsaWNhbiBhIHRvZG9zIHR1cyBwcm95ZWN0b3MgfAp8IFByb3llY3RvIChjb21wYXJ0aWRvKSB8IGAuY2xhdWRlL3NldHRpbmdzLmpzb25gIGVuIGxhIHJhw616IHwgU2UgY29tbWl0ZWEg4oCUIGNvbmZpZ3VyYWNpw7NuIGRlbCBlcXVpcG8gfAp8IFByb3llY3RvIChsb2NhbCkgfCBgLmNsYXVkZS9zZXR0aW5ncy5sb2NhbC5qc29uYCB8IE92ZXJyaWRlcyBsb2NhbGVzLCB2YSBhIGAuZ2l0aWdub3JlYCB8CgojIyMgRWplbXBsbyBkZSBzZXR0aW5ncy5qc29uIGRlIHByb3llY3RvCgpgYGAKewogICJwZXJtaXNzaW9ucyI6IHsKICAgICJhbGxvdyI6IFsiUmVhZCIsICJFZGl0IiwgIkJhc2gobnBtIHJ1biAqKSIsICJCYXNoKG5weCBqZXN0ICopIl0sCiAgICAiZGVueSI6ICBbIkJhc2gocm0gLXJmICopIiwgIkJhc2goZ2l0IHB1c2ggKikiXQogIH0sCiAgImVudiI6IHsgIk5PREVfRU5WIjogImRldmVsb3BtZW50IiB9Cn0KYGBgCgojIyBSZWdsYXMgZGUgcGVybWlzb3MgKGFsbG93IC8gYXNrIC8gZGVueSkge2lkPW1vZDMtcGVybXN9CgpFbiBgc2V0dGluZ3MuanNvbmAgZGVmaW7DrXMgcXXDqSBwdWVkZSB1c2FyIENsYXVkZSBzaW4gcHJlZ3VudGFyLCBxdcOpIHJlcXVpZXJlIGNvbmZpcm1hY2nDs24geSBxdcOpIGVzdMOhIHByb2hpYmlkbzoKCmBgYAp7CiAgInBlcm1pc3Npb25zIjogewogICAgImFsbG93IjogWyJCYXNoKG5wbSBydW4gKikiLCAiQmFzaChucHggamVzdCAqKSIsICJSZWFkIiwgIkVkaXQiXSwKICAgICJhc2siOiAgIFsiQmFzaChnaXQgcHVzaCAqKSJdLAogICAgImRlbnkiOiAgWyJCYXNoKHJtIC1yZiAqKSIsICJCYXNoKGdpdCBwdXNoIC0tZm9yY2UgKikiXQogIH0KfQpgYGAKCkxhIHNpbnRheGlzIGFjZXB0YSBlbCBub21icmUgZGUgbGEgaGVycmFtaWVudGEgc29sYSAoYFJlYWRgKSBvIGNvbiB1biBwYXRyw7NuIGRlIGFyZ3VtZW50byAoYEJhc2gobnBtIHJ1biAqKWApLiBFbCBvcmRlbiBkZSBldmFsdWFjacOzbiBlcyAqKmRlbnkg4oaSIGFzayDihpIgYWxsb3cqKjogbGEgcHJpbWVyYSByZWdsYSBxdWUgY29pbmNpZGUgZ2FuYS4KCj4gWyFXQVJOSU5HXSBCdWVuYSBwcsOhY3RpY2EgcGFyYSBlcXVpcG9zCj4gQ29tbWl0ZcOhIGAuY2xhdWRlL3NldHRpbmdzLmpzb25gIGNvbiBsb3MgcGVybWlzb3MgZGVsIGVxdWlwbzsgY2FkYSBkZXYgYWdyZWdhIHN1cyBvdmVycmlkZXMgZW4gYC5jbGF1ZGUvc2V0dGluZ3MubG9jYWwuanNvbmAgKGdpdGlnbm9yZWQpLiBOdW5jYSBwb25nYXMgY3JlZGVuY2lhbGVzIGVuIGVsIGBzZXR0aW5ncy5qc29uYCBjb21wYXJ0aWRvIOKAlCB1c8OhIGBzZXR0aW5ncy5sb2NhbC5qc29uYCBvIHZhcmlhYmxlcyBkZSBlbnRvcm5vLgoKIyMgTW9kb3MgZGUgcGVybWlzb3Mge2lkPW1vZDMtbW9kZXN9CgpNw6FzIGFsbMOhIGRlIGxhcyByZWdsYXMgaW5kaXZpZHVhbGVzLCBDbGF1ZGUgQ29kZSB0aWVuZSBtb2RvcyBnbG9iYWxlcyBxdWUgZGVmaW5lbiBlbCBuaXZlbCBkZSBhdXRvbm9tw61hIGRlIHRvZGEgbGEgc2VzacOzbi4gU2UgY2FtYmlhbiBjb24gKipgU2hpZnQrVGFiYCoqIGVuIGxhIENMSSwgbyBzZSBmaWphbiBjb21vIGRlZmF1bHQgZW4gZWwgc2V0dGluZ3MuanNvbjoKCnwgTW9kbyB8IFF1w6kgcHVlZGUgaGFjZXIgc2luIHByZWd1bnRhciB8IEN1w6FuZG8gdXNhcmxvIHwKfCAtLS0gfCAtLS0gfCAtLS0gfAp8IGBkZWZhdWx0YCB8IExlZXIgYXJjaGl2b3MgfCBUcmFiYWpvIHNlbnNpYmxlLCBwcmltZXJhIHNlc2nDs24gZW4gdW4gcHJveWVjdG8gbnVldm8gfAp8IGBhY2NlcHRFZGl0c2AgfCBMZWVyIHkgZWRpdGFyIGFyY2hpdm9zIHwgSXRlcmFjacOzbiBhY3RpdmEgZW4gY8OzZGlnbyBxdWUgZXN0w6FzIHJldmlzYW5kbyBlbiBwYXJhbGVsbyB8CnwgYHBsYW5gIHwgU29sbyBsZWN0dXJhIOKAlCBpbnZlc3RpZ2EgeSBwcm9wb25lLCBubyBlamVjdXRhIGNhbWJpb3MgfCBFeHBsb3JhciB1biBjb2RlYmFzZSwgcGxhbmlmaWNhciB1bmEgcmVmYWN0b3JpemFjacOzbiBhbnRlcyBkZSBhcHJvYmFyIHwKfCBgYXV0b2AgfCBUb2RhcyBsYXMgYWNjaW9uZXM7IHVuIGNsYXNpZmljYWRvciBldmFsw7phIGNhZGEgdW5hIGVuIHNlZ3VuZG8gcGxhbm8gfCBUYXJlYXMgbGFyZ2FzIGNvbiBtw61uaW1hcyBpbnRlcnJ1cGNpb25lcyAocmVxdWllcmUgVGVhbS9FbnRlcnByaXNlL0FQSSkgfAp8IGBieXBhc3NQZXJtaXNzaW9uc2AgfCBUb2RhcyBsYXMgYWNjaW9uZXMgc2luIHZlcmlmaWNhY2nDs24gfCBTb2xvIGVuIGVudG9ybm9zIGFpc2xhZG9zIChjb250ZW5lZG9yZXMsIFZNcykg4oCUIG51bmNhIGVuIHR1IG3DoXF1aW5hIGRlIHRyYWJham8gfAoKRmlqYXIgdW4gbW9kbyBwb3IgZGVmZWN0byBlbiBlbCBwcm95ZWN0bywgbyBhcnJhbmNhciBlbiB1bm8gZXNwZWPDrWZpY286CgpgYGAKLy8gLmNsYXVkZS9zZXR0aW5ncy5qc29uCnsgInBlcm1pc3Npb25zIjogeyAiZGVmYXVsdE1vZGUiOiAiYWNjZXB0RWRpdHMiIH0gfQpgYGAKCmBgYApjbGF1ZGUgLS1wZXJtaXNzaW9uLW1vZGUgcGxhbgpgYGAKCj4gWyFJTkZPXSBNb2RvIGF1dG8KPiBBbnRlcyBkZSBjYWRhIGFjY2nDs24sIHVuIGNsYXNpZmljYWRvciBzZXBhcmFkbyBldmFsw7phIHNpIGVzIGNvbnNpc3RlbnRlIGNvbiBsbyBxdWUgcGVkaXN0ZSB5IGJsb3F1ZWEgbG8gcXVlIGVzY2FsYSBmdWVyYSBkZWwgc2NvcGUgKHVuIGRlcGxveSBubyBzb2xpY2l0YWRvLCB1biBwdXNoIGZvcmNlIGEgbWFpbikuIEVuIHBsYW5lcyBBUEkvRW50ZXJwcmlzZSBlbCBjbGFzaWZpY2Fkb3IgY29ycmUgZGVsIGxhZG8gZGVsIHNlcnZpZG9yIHkgbm8gY29icmEgc3Ugb3ZlcmhlYWQuIExvcyBibG9xdWVvcyBzb24gY29uZmlndXJhYmxlcyBwb3IgZWwgYWRtaW5pc3RyYWRvciBkZWwgZXF1aXBvLgoKIyBVc28gRGlhcmlvIHkgV29ya2Zsb3dzCgojIyBQcm9tcHRpbmcgZWZlY3Rpdm8ge2lkPW1vZDQtcHJvbXB0aW5nfQoKQ29uIENsYXVkZSBDb2RlLCBsYSBjYWxpZGFkIGRlbCBvdXRwdXQgZGVwZW5kZSBkZSBjw7NtbyBlc3RydWN0dXLDoXMgZWwgcGVkaWRvOiBlc3TDoXMgZGlyaWdpZW5kbyBhIHVuIGFnZW50ZSBxdWUgdmEgYSB0b21hciBhY2Npb25lcyByZWFsZXMuCgotICoqU8OpIGVzcGVjw61maWNvIHNvYnJlIGVsIGFsY2FuY2U6KiogIlJlZmFjdG9yaXrDoSBlbCBzZXJ2aWNpbyBkZSBhdXRlbnRpY2FjacOzbiBwYXJhIHVzYXIgSldUIGVuIHZleiBkZSBzZXNpb25lcyIgZXMgbWVqb3IgcXVlICJtZWpvcsOhIGxhIGF1dGVudGljYWNpw7NuIi4KLSAqKkluZGljw6EgcmVzdHJpY2Npb25lczoqKiAiTm8gbW9kaWZpcXVlcyBsb3MgdGVzdHMgZXhpc3RlbnRlcyIsICJVc8OhIGVsIHBhdHLDs24gcmVwb3NpdG9yeSBxdWUgeWEgdGVuZW1vcyIsICJObyBpbnN0YWxlcyBkZXBlbmRlbmNpYXMgbnVldmFzIi4KLSAqKlBlZMOtIHVuIHBsYW4gYW50ZXMgZGUgZWplY3V0YXIqKiBlbiB0YXJlYXMgY29tcGxlamFzLgotICoqSXRlcsOhOioqIENsYXVkZSBDb2RlIG1hbnRpZW5lIGNvbnRleHRvIGVuIGxhIHNlc2nDs247IHBlZMOtIGFqdXN0ZXMgc3VjZXNpdm9zLgotICoqVXPDoSByZWZlcmVuY2lhcyBjb25jcmV0YXM6KiogIk1pcsOhIGPDs21vIGxvIGhhY2Vtb3MgZW4gYHNyYy9zZXJ2aWNlcy9Vc2VyU2VydmljZS5weWAgeSBzZWd1w60gZWwgbWlzbW8gcGF0csOzbiIuCgo6OjogY29tcGFyaXNvbgpAYmVmb3JlIOKdjCBQcm9tcHQgZMOpYmlsCkFncmVnw6EgdGVzdHMgYWwgcHJveWVjdG8uCkBhZnRlciDinIUgUHJvbXB0IGZ1ZXJ0ZQpBZ3JlZ8OhIHVuaXQgdGVzdHMgcGFyYSBgc3JjL3NlcnZpY2VzL3BheW1lbnRfc2VydmljZS5weWAuIFVzw6EgcHl0ZXN0IGNvbiBlbCBwYXRyw7NuIHF1ZSB5YSB0ZW5lbW9zIGVuIGB0ZXN0cy9zZXJ2aWNlcy9gLiBDdWJyw60gcGFnbyBleGl0b3NvLCB0YXJqZXRhIHJlY2hhemFkYSB5IHRpbWVvdXQgZGUgbGEgQVBJLiBDb3Jyw6kgbG9zIHRlc3RzIGFsIGZpbmFsIHBhcmEgdmVyaWZpY2FyIHF1ZSBwYXNlbi4KOjo6CgojIyBUYXJlYXMgY29tdW5lcyBkZWwgZMOtYSBhIGTDrWEge2lkPW1vZDQtdGFza3N9Cgp8IFRhcmVhIHwgUHJvbXB0IGVqZW1wbG8gfAp8IC0tLSB8IC0tLSB8CnwgRXhwbG9yYXIgY29kZWJhc2UgbnVldm8gfCAiQW5hbGl6w6EgbGEgZXN0cnVjdHVyYSB5IGV4cGxpY2FtZSBsYSBhcnF1aXRlY3R1cmEgZ2VuZXJhbCB5IGxvcyBwYXRyb25lcyBkZSBkaXNlw7FvIHF1ZSBkZXRlY3RlcyIgfAp8IEltcGxlbWVudGFyIGZlYXR1cmUgfCAiSW1wbGVtZW50w6EgdW4gZW5kcG9pbnQgUE9TVCAvYXBpL3VzZXJzL2ludml0ZSBxdWUgZW52w61lIHVuIGVtYWlsIGRlIGludml0YWNpw7NuLiBTZWd1w60gZWwgcGF0csOzbiBkZSBsb3MgY29udHJvbGxlcnMgZXhpc3RlbnRlcy4gSW5jbHXDrSB2YWxpZGFjacOzbiB5IHRlc3RzIiB8CnwgRml4IGRlIGJ1ZyB8ICJFbCB0ZXN0IGBweXRlc3QgLWsgJ3BheW1lbnRfdGltZW91dCdgIGZhbGxhLiBJbnZlc3RpZ8OhIHBvciBxdcOpIHkgYXJyZWdsYWxvIiB8CnwgUmVmYWN0b3JpbmcgfCAiRXh0cmHDqSBsYSBsw7NnaWNhIGRlIHZhbGlkYWNpw7NuIGRlIGBvcmRlcl9jb250cm9sbGVyLnB5YCBhIHVuIG3Ds2R1bG8gYG9yZGVyX3ZhbGlkYXRvci5weWAuIE1hbnRlbsOpIGxvcyB0ZXN0cyBwYXNhbmRvIiB8CnwgQ29kZSByZXZpZXcgfCAiUmV2aXPDoSBsb3MgY2FtYmlvcyBkZWwgYnJhbmNoIGBmZWF0dXJlL3BheW1lbnRzYCB2cyBgbWFpbmA6IGJ1Z3MsIHBlcmZvcm1hbmNlIHkgdmlvbGFjaW9uZXMgZGUgcGF0cm9uZXMiIHwKfCBNaWdyYWNpw7NuIHwgIk1pZ3LDoSBsb3MgaW1wb3J0cyBkZSBgbG9kYXNoYCBhIGltcG9ydHMgaW5kaXZpZHVhbGVzIHBhcmEgcmVkdWNpciBlbCBidW5kbGUgc2l6ZSIgfAoKIyMgUGxhbiBtb2RlIOKAlCBhbmFsaXrDoSBhbnRlcyBkZSBlZGl0YXIge2lkPW1vZDQtcGxhbm1vZGV9CgpFbCAqKnBsYW4gbW9kZSoqIGhhY2UgcXVlIENsYXVkZSBpbnZlc3RpZ3VlIGVsIGNvZGViYXNlIHkgcHJvcG9uZ2EgdW4gcGxhbiBzaW4gZWplY3V0YXIgbmluZ3VuYSBlZGljacOzbi4gUHVlZGUgbGVlciBhcmNoaXZvcyB5IGNvcnJlciBjb21hbmRvcyBkZSBleHBsb3JhY2nDs24sIHBlcm8gbm8gdG9jYSBlbCBjw7NkaWdvIGhhc3RhIHF1ZSBhcHJvYsOhcy4gSWRlYWwgYW50ZXMgZGUgdGFyZWFzIHF1ZSBhZmVjdGFuIG11Y2hvcyBhcmNoaXZvcywgbyBjdWFuZG8gcXVlcsOpcyBlbnRlbmRlciBlbCBpbXBhY3RvIGFudGVzIGRlIGNvbXByb21ldGVydGUuCgpgYGAKIyBNb2RvIHBsYW4gcGFyYSB0b2RhIGxhIHNlc2nDs24KY2xhdWRlIC0tcGVybWlzc2lvbi1tb2RlIHBsYW4KCiMgRHVyYW50ZSBsYSBzZXNpw7NuOiBTaGlmdCtUYWIgaGFzdGEgbGxlZ2FyIGEgInBsYW4iCmBgYAoKQ3VhbmRvIHRlcm1pbmEgZGUgaW52ZXN0aWdhciwgcHJlc2VudGEgZWwgcGxhbiB5IHRlIHBpZGUgY8OzbW8gcHJvY2VkZXI6IGFwcm9iYXIgeSBjb250aW51YXIgYXV0b23DoXRpY28sIGFwcm9iYXIgcmV2aXNhbmRvIGNhZGEgZWRpY2nDs24sIG8gc2VndWlyIHJlZmluYW5kby4KCj4gWyFUSVBdIEN1w6FuZG8gbcOhcyDDunRpbAo+IEZlYXR1cmVzIHF1ZSB0b2NhbiBtw6FzIGRlIDUgYXJjaGl2b3MsIG1pZ3JhY2lvbmVzLCByZWZhY3RvcmluZ3MgcXVlIGNydXphbiBtw7NkdWxvcywgbyBjdWFscXVpZXIgdGFyZWEgZG9uZGUgZWwgY29zdG8gZGUgdW4gZXJyb3IgZXMgYWx0by4gRWwgcGxhbiBtb2RlIG5vIGVqZWN1dGEgYWNjaW9uZXMgYmlsbGFibGVzIGhhc3RhIHF1ZSBhcHJvYsOhcy4KCiMjIEludGVncmFjacOzbiBjb24gR2l0IHtpZD1tb2Q0LWdpdH0KCkNsYXVkZSBDb2RlIHB1ZWRlIGNyZWFyIGNvbW1pdHMgY29uIG1lbnNhamVzIGRlc2NyaXB0aXZvcywgbWFuZWphciBicmFuY2hlcywgY3JlYXIgUFJzIGNvbiB0w610dWxvIHkgZGVzY3JpcGNpw7NuLCB5IHJlc29sdmVyIGNvbmZsaWN0b3MuCgo+IFshV0FSTklOR10gUmVjb3Jkw6EKPiBDbGF1ZGUgQ29kZSBlamVjdXRhIGNvbWFuZG9zIGBnaXRgIGVuIHR1IHNlc2nDs24sIGNvbW8gc2kgbG9zIHRpcGVhcmFzIHZvcy4gTm8gdGllbmUgdW4gY29uZWN0b3IgZXNwZWNpYWwg4oCUIGhlcmVkYSB0dSBTU0gga2V5LCB0dXMgY3JlZGVuY2lhbGVzLCB0dSBgLmdpdGNvbmZpZ2AgeSB0dSB1c3VhcmlvLiBMb3MgY29tbWl0cyBhcGFyZWNlbiBjb24gdHUgbm9tYnJlLiBTaSB2b3MgcG9kw6lzIGhhY2VyIGBnaXQgcHVzaGAgZGVzZGUgZXNhIHRlcm1pbmFsLCBDbGF1ZGUgdGFtYmnDqW4uCgpgYGAKPiBDb21taXRlw6EgbG9zIGNhbWJpb3MgY29uIHVuIG1lbnNhamUgZGVzY3JpcHRpdm8gc2lndWllbmRvIENvbnZlbnRpb25hbCBDb21taXRzCgo+IENyZcOhIHVuIFBSIGNvbnRyYSBtYWluIGNvbiBsb3MgY2FtYmlvcyBkZSBlc3RlIGJyYW5jaC4KICBJbmNsdcOtIHVuIHJlc3VtZW4geSB0ZXN0aW5nIGluc3RydWN0aW9ucy4KYGBgCgojIENMQVVERS5tZCBlbiBQcm9mdW5kaWRhZAoKRWwgYXJjaGl2byBgQ0xBVURFLm1kYCBlcyBwcm9iYWJsZW1lbnRlIGxhIGhlcnJhbWllbnRhIG3DoXMgaW1wYWN0YW50ZSBwYXJhIG1lam9yYXIgbGEgY2FsaWRhZCBkZSBsb3MgcmVzdWx0YWRvcy4gRXMgdHUgb3BvcnR1bmlkYWQgZGUgY29kaWZpY2FyIGVsIGNvbm9jaW1pZW50byB0cmliYWwgZGVsIHByb3llY3RvOiBlbCBlcXVpdmFsZW50ZSBhIHVuIG9uYm9hcmRpbmcgZG9jdW1lbnQgcGFyYSB1biBkZXYgbnVldm8sIHBlcm8gZXNjcml0byBwYXJhIHVuYSBJQS4KCj4gWyFJTkZPXSBBR0VOVFMubWQKPiBTaSBlbCBwcm95ZWN0byBubyB0aWVuZSBgQ0xBVURFLm1kYCBwZXJvIHPDrSB1biBgQUdFTlRTLm1kYCAoZWwgZm9ybWF0byBhYmllcnRvIHF1ZSBjb21wYXJ0ZW4gdmFyaWFzIGhlcnJhbWllbnRhcyBkZSBjb2RpbmcgYWfDqW50aWNvKSwgQ2xhdWRlIENvZGUgbG8gbGVlIGVuIHN1IGx1Z2FyLiBQb2TDqXMgZWxlZ2lyIGN1w6FsIHVzYXIgZGVzZGUgIlByb2plY3QgaW5zdHJ1Y3Rpb25zIiBlbiBgL2NvbmZpZ2AuIFByw6FjdGljbyBzaSB5YSBtYW50ZW7DqXMgdW4gYEFHRU5UUy5tZGAgcGFyYSBvdHJhcyBoZXJyYW1pZW50YXMuCgojIyBBbmF0b23DrWEgZGUgdW4gQ0xBVURFLm1kIGVmZWN0aXZvIHtpZD1tb2Q1LWFuYXRvbXl9CgpVbiBidWVuIGBDTEFVREUubWRgIHJlc3BvbmRlIGxhcyBwcmVndW50YXMgcXVlIHVuIHNlbmlvciBudWV2byBoYXLDrWEgZW4gc3UgcHJpbWVyYSBzZW1hbmE6CgojIyMgMS4gQ29tYW5kb3MgZGUgYnVpbGQsIHRlc3QgeSBsaW50CgpTaW4gZXN0YSBzZWNjacOzbiwgQ2xhdWRlIGFkaXZpbmEgeSBwcnVlYmEgcG9yIGVuc2F5byB5IGVycm9yLiBDb24gZWxsYSwgdmEgZGlyZWN0byBhbCBjb21hbmRvIGNvcnJlY3RvIGxhIHByaW1lcmEgdmV6LgoKYGBgCiMgQ29tYW5kb3MKLSBCdWlsZDogYG1ha2UgYnVpbGRgCi0gVGVzdCAodG9kb3MpOiBgcHl0ZXN0YAotIFRlc3QgKGluZGl2aWR1YWwpOiBgcHl0ZXN0IHBhdGgvdG8vdGVzdC5weSAtayBub21icmVgCi0gTGludDogYHJ1ZmYgY2hlY2sgLmAKLSBUeXBlIGNoZWNrOiBgbXlweSBzcmMvYApgYGAKCiMjIyAyLiBBcnF1aXRlY3R1cmEgeSBlc3RydWN0dXJhCgpgYGAKIyBBcnF1aXRlY3R1cmEKTW9ub3JlcG8gY29uIGRvcyBzZXJ2aWNpb3MgcHJpbmNpcGFsZXM6Ci0gYHNlcnZpY2VzL2FwaWAg4oCUIEJhY2tlbmQgRmFzdEFQSSwgYXJxdWl0ZWN0dXJhIGhleGFnb25hbAotIGBzZXJ2aWNlcy92aXNpb25gIOKAlCBTZXJ2aWNpbyBkZSBjb21wdXRlciB2aXNpb24gKE9wZW5DViArIG1vZGVsb3MgbG9jYWxlcykKTGEgY29tdW5pY2FjacOzbiBlbnRyZSBzZXJ2aWNpb3MgZXMgdsOtYSBjb2xhIGRlIG1lbnNhamVzLgpgYGAKCiMjIyAzLiBDb252ZW5jaW9uZXMgeSBlc3RpbG8KCmBgYAojIENvbnZlbmNpb25lcwotIE5vbWJyZXMgZGUgYXJjaGl2b3M6IHNuYWtlX2Nhc2U7IGNsYXNlczogUGFzY2FsQ2FzZQotIEltcG9ydHM6IGFic29sdXRvcyBkZXNkZSBsYSByYcOteiBkZWwgcGFja2FnZSwgbnVuY2EgcmVsYXRpdm9zIGVudHJlIG3Ds2R1bG9zCi0gRXJyb3IgaGFuZGxpbmc6IHVzYXIgZWwgQXBwRXJyb3IgcHJvcGlvLCBudW5jYSBgcmFpc2UgRXhjZXB0aW9uKClgIGRpcmVjdG8KLSBDb21taXRzOiBDb252ZW50aW9uYWwgQ29tbWl0cyAoZmVhdDosIGZpeDosIHJlZmFjdG9yOiwgLi4uKQotIFRlc3RzOiBqdW50byBhbCBhcmNoaXZvIGZ1ZW50ZSBjb21vIGB0ZXN0X2FyY2hpdm8ucHlgCmBgYAoKIyMjIDQuIFBhdHJvbmVzIGVzcGVjw61maWNvcyB5IHByb2hpYmljaW9uZXMKCmBgYAojIFBhdHJvbmVzIOKAlCBjcmVhciB1biBudWV2byBlbmRwb2ludAoxLiBEZWZpbmlyIHNjaGVtYXMgUHlkYW50aWMgZW4gYHNjaGVtYXMvYAoyLiBDcmVhciBlbCByb3V0ZXIgZW4gYGFwaS9yb3V0ZXJzL2AgKHNlIHJlZ2lzdHJhIHNvbG8gc2kgZXN0w6EgZW4gbGEgY2FycGV0YSkKMy4gQWdyZWdhciB0ZXN0cyBlbiBlbCBtaXNtbyBkaXJlY3RvcmlvCgojIFByb2hpYmljaW9uZXMKLSBOTyB1c2FyIGB0eXBlOiBpZ25vcmVgIHNpbiBjb21lbnRhcmlvIHF1ZSBsbyBqdXN0aWZpcXVlCi0gTk8gbW9kaWZpY2FyIGFyY2hpdm9zIGVuIGBnZW5lcmF0ZWQvYCDigJQgc29uIGF1dG9nZW5lcmFkb3MKLSBOTyBjb21taXRlYXIgYXJjaGl2b3MgYC5lbnZgCmBgYAoKIyMgSmVyYXJxdcOtYSBkZSBhcmNoaXZvcyBDTEFVREUubWQge2lkPW1vZDUtaGllcmFyY2h5fQoKQ2xhdWRlIENvZGUgY2FyZ2EgYENMQVVERS5tZGAgZW4gdmFyaWFzIHViaWNhY2lvbmVzLCBjb25zdHJ1eWVuZG8gY29udGV4dG8gYWN1bXVsYXRpdm86Cgp8IFViaWNhY2nDs24gfCBBbGNhbmNlIHwgwr9TZSBjb21taXRlYT8gfAp8IC0tLSB8IC0tLSB8IC0tLSB8CnwgYH4vLmNsYXVkZS9DTEFVREUubWRgIHwgR2xvYmFsIOKAlCB0dXMgcHJlZmVyZW5jaWFzIHBlcnNvbmFsZXMgfCBObyAocGVyc29uYWwpIHwKfCBgLi9DTEFVREUubWRgIChyYcOteiBkZWwgcHJveWVjdG8pIHwgUHJveWVjdG8g4oCUIGNvbXBhcnRpZG8gY29uIGVsIGVxdWlwbyB8IFPDrSB8CnwgYC4vc3JjL0NMQVVERS5tZGAgKHN1YmRpcmVjdG9yaW8pIHwgTcOzZHVsbyDigJQgc2UgY2FyZ2EgY3VhbmRvIENsYXVkZSBvcGVyYSBlbiBlc2EgY2FycGV0YSB8IFPDrSB8CgpFbCBjb250ZXh0byBzZSBjb25zdHJ1eWUgZGUgZm9ybWEgYWRpdGl2YTogZ2xvYmFsICsgcHJveWVjdG8gKyBzdWJkaXJlY3RvcmlvLgoKPiBbIVRJUF0gR2xvYmFsIHZzIHByb3llY3RvCj4gVXPDoSBgfi8uY2xhdWRlL0NMQVVERS5tZGAgc29sbyBwYXJhIHByZWZlcmVuY2lhcyBnZW51aW5hbWVudGUgcGVyc29uYWxlcyAoInJlc3BvbmRlbWUgZW4gZXNwYcOxb2wiLCAicmVzcHVlc3RhcyBjb25jaXNhcyIpLiBUb2RhIGRlY2lzacOzbiBkZSBlcXVpcG8gKGlkaW9tYSBkZSBjb21taXRzLCBjb252ZW5jaW9uZXMgZGUgdGVzdGluZykgdmEgZW4gZWwgYENMQVVERS5tZGAgZGVsIHByb3llY3RvIHBhcmEgcXVlIHNlYSBjb25zaXN0ZW50ZSB5IHZlcnNpb25hYmxlLiBFdml0w6EgcmVnbGFzIGdsb2JhbGVzIHF1ZSBjb250cmFkaWdhbiBsYXMgZGVsIHByb3llY3RvLgoKPiBbIUlORk9dIFRhbWHDsW8gcmVjb21lbmRhZG8KPiBBcHVudMOhIGEgbWVub3MgZGUgMjAwIGzDrW5lYXMgcG9yIGFyY2hpdm8uIExvcyBhcmNoaXZvcyBsYXJnb3MgY29uc3VtZW4gY29udGV4dG8geSByZWR1Y2VuIGxhIGFkaGVyZW5jaWEgYSBsYXMgaW5zdHJ1Y2Npb25lcy4gU2kgY3JlY2UgZGVtYXNpYWRvLCBwYXJ0ZSBkZWwgY29udGVuaWRvIGRlYmVyw61hIHZpdmlyIGVuIHNraWxscyBvIGVuIHJlZ2xhcyBwb3IgcnV0YS4KCiMjIFJlZ2xhcyBwb3IgcnV0YSDigJQgYC5jbGF1ZGUvcnVsZXMvYCB7aWQ9bW9kNS1ydWxlc30KClBhcmEgcHJveWVjdG9zIGdyYW5kZXMsIG9yZ2FuaXrDoSBsYXMgaW5zdHJ1Y2Npb25lcyBlbiBtw7psdGlwbGVzIGFyY2hpdm9zIGRlbnRybyBkZSBgLmNsYXVkZS9ydWxlcy9gLiBDYWRhIHVubyBwdWVkZSBsaW1pdGFyc2UgYSBhcmNoaXZvcyBlc3BlY8OtZmljb3MgbWVkaWFudGUgZnJvbnRtYXR0ZXIgYHBhdGhzYCDigJQgc29sbyBzZSBjYXJnYSBjdWFuZG8gQ2xhdWRlIHRyYWJhamEgc29icmUgYXJjaGl2b3MgcXVlIGNvaW5jaWRlbjoKCmBgYAotLS0KcGF0aHM6CiAgLSAic3JjL2FwaS8qKi8qLnB5IgotLS0KIyBSZWdsYXMgZGUgZGVzYXJyb2xsbyBkZSBBUEkKLSBUb2RvcyBsb3MgZW5kcG9pbnRzIGRlYmVuIHZhbGlkYXIgaW5wdXQKLSBGb3JtYXRvIGRlIGVycm9yIGVzdMOhbmRhcjogeyBlcnJvciwgbWVzc2FnZSwgY29kZSB9CmBgYAoKTGFzIHJlZ2xhcyBzaW4gYHBhdGhzYCBzZSBjYXJnYW4gYWwgaW5pY2lvIGRlIGxhIHNlc2nDs24sIGNvbW8gYENMQVVERS5tZGAuIExhcyBxdWUgdGllbmVuIGBwYXRoc2AgcmVkdWNlbiBlbCBydWlkbyB5IGFob3JyYW4gdG9rZW5zLgoKIyMgQXV0byBNZW1vcnkg4oCUIENsYXVkZSBhcHJlbmRlIHNvbG8ge2lkPW1vZDUtYXV0b21lbW9yeX0KCkF1dG8gTWVtb3J5IGVzIHVuIHNpc3RlbWEgcGFyYWxlbG8gYSBgQ0xBVURFLm1kYCBkb25kZSBDbGF1ZGUgZXNjcmliZSBzdXMgcHJvcGlhcyBub3RhcyBlbnRyZSBzZXNpb25lczogY29tYW5kb3MgZGUgYnVpbGQgZGVzY3ViaWVydG9zLCBpbnNpZ2h0cyBkZSBkZWJ1Z2dpbmcsIGNvbnZlbmNpb25lcyBvYnNlcnZhZGFzLiBTZSBjYXJnYW4gYXV0b23DoXRpY2FtZW50ZSBhbCBpbmljaW8gZGUgY2FkYSBzZXNpw7NuIChlbCDDrW5kaWNlIGBNRU1PUlkubWRgKS4KCmBgYAojIFZlciB5IGdlc3Rpb25hciBsYSBtZW1vcmlhIGRlIGxhIHNlc2nDs24KL21lbW9yeQoKIyBQZWRpcmxlIHF1ZSByZWN1ZXJkZSBhbGdvIGV4cGzDrWNpdGFtZW50ZQo+IFJlY29yZMOhIHF1ZSBlc3RlIHByb3llY3RvIHVzYSBwbnBtLCBubyBucG0KYGBgCgo+IFshS0VZXSBDTEFVREUubWQgdnMgQXV0byBNZW1vcnkKPiBgQ0xBVURFLm1kYCBlcyBsbyBxdWUgKip2b3MqKiBlc2NyaWLDrXM6IHJlZ2xhcywgYXJxdWl0ZWN0dXJhLCBjb252ZW5jaW9uZXMuIEF1dG8gTWVtb3J5IGVzIGxvIHF1ZSAqKkNsYXVkZSoqIGFwcmVuZGUgbWllbnRyYXMgdHJhYmFqYTogY29tYW5kb3MgcXVlIGRlc2N1YnJpw7MsIHBhdHJvbmVzIG9ic2VydmFkb3MsIGJ1Z3MgeWEgcmVzdWVsdG9zLiBBbWJvcyBzZSBjYXJnYW4gZW4gY2FkYSBzZXNpw7NuIHkgc2UgY29tcGxlbWVudGFuLgoKIyMgSW1wb3J0YXIgYXJjaGl2b3MgZW4gQ0xBVURFLm1kIHtpZD1tb2Q1LWltcG9ydHN9CgpDb24gbGEgc2ludGF4aXMgYEBydXRhL2FyY2hpdm9gIGltcG9ydMOhcyBvdHJvcyBhcmNoaXZvcyBkaXJlY3RhbWVudGUuIEVsIGNvbnRlbmlkbyBzZSBleHBhbmRlIGVuIGNvbnRleHRvIGFsIGluaWNpbyBkZSBsYSBzZXNpw7NuLCBldml0YW5kbyBkdXBsaWNhciBpbmZvcm1hY2nDs246CgpgYGAKIyBDTEFVREUubWQKQ29uc3VsdMOhIEBSRUFETUUubWQgcGFyYSBlbCByZXN1bWVuIHkgQHB5cHJvamVjdC50b21sIHBhcmEgbG9zIGNvbWFuZG9zLgoKIyBQcmVmZXJlbmNpYXMgcGVyc29uYWxlcyAobm8gc2UgY29tbWl0ZWEpCkB+Ly5jbGF1ZGUvbXktcHJlZmVyZW5jZXMubWQKYGBgCgojIEN1c3RvbSBTa2lsbHMKCiMjIMK/UXXDqSBzb24gbGFzIFNraWxscz8ge2lkPW1vZDYtd2hhdH0KCkxhcyAqKnNraWxscyoqIHNvbiBhcmNoaXZvcyBNYXJrZG93biAoYFNLSUxMLm1kYCkgY29uIGluc3RydWNjaW9uZXMgZGV0YWxsYWRhcyB5IGJlc3QgcHJhY3RpY2VzIHBhcmEgdW4gdGlwbyBlc3BlY8OtZmljbyBkZSB0YXJlYS4gU29uICJyZWNldGFzIiBxdWUgQ2xhdWRlIHNpZ3VlIGN1YW5kbyBuZWNlc2l0YSBoYWNlciBhbGdvIHBhcnRpY3VsYXIuCgpMYSBkaWZlcmVuY2lhIGVzIGxhIHF1ZSBoYXkgZW50cmUgZGVjaXJsZSBhIHVuIGRldiAiaGFjw6kgdW4gUERGIiB5IGRhcmxlIHVuIGRvY3VtZW50byBxdWUgZXhwbGljYSBleGFjdGFtZW50ZSBxdcOpIGxpYnJlcsOtYSB1c2FyLCBxdcOpIHRlbXBsYXRlIHNlZ3VpciB5IGPDs21vIG1hbmVqYXIgZnVlbnRlcyB5IG3DoXJnZW5lcy4gRXNvIHNlZ3VuZG8gZXMgdW5hIHNraWxsLgoKIyMjIENMQVVERS5tZCB2cyBTS0lMTC5tZCDigJQgwr9wb3IgcXXDqSBzZXBhcmFybG9zPwoKVMOpY25pY2FtZW50ZSBsb3MgZG9zIHNvbiBNYXJrZG93biBjb24gaW5zdHJ1Y2Npb25lczsgbG8gcXVlIGxvcyBzZXBhcmEgZXMgY3XDoW5kbyB5IGEgcXXDqSBjb3N0byBzZSBjYXJnYW4gZW4gY29udGV4dG86Cgp8IEFzcGVjdG8gfCBDTEFVREUubWQgfCBTS0lMTC5tZCB8CnwgLS0tIHwgLS0tIHwgLS0tIHwKfCBDdcOhbmRvIHNlIGNhcmdhIHwgKipTaWVtcHJlKiosIGFsIGluaWNpbyBkZSBjYWRhIHNlc2nDs24gfCAqKkJham8gZGVtYW5kYSoqLCBzb2xvIGN1YW5kbyBsYSB0YXJlYSBsbyByZXF1aWVyZSB8CnwgQ29zdG8gZW4gdG9rZW5zIHwgU2UgcGFnYSBlbiBjYWRhIHByb21wdCB8IFNlIHBhZ2Egc29sbyBjdWFuZG8gc2UgdXNhIHwKfCBDb250ZW5pZG8gaWRlYWwgfCBMbyBxdWUgdG9kbyBkZXYgbmVjZXNpdGEgZWwgZMOtYSAxIHwgSW5zdHJ1Y2Npb25lcyBkZXRhbGxhZGFzIHBhcmEgdW5hIHRhcmVhIGNvbmNyZXRhIHwKfCBBbmFsb2fDrWEgfCBFbCBvbmJvYXJkaW5nIGdlbmVyYWwgfCBFbCBtYW51YWwgcXVlIGFicsOtcyBzb2xvIGN1YW5kbyBoYWPDqXMgZXNhIHRhcmVhIHwKCj4gWyFXQVJOSU5HXSBFbCBwcm9ibGVtYSBkZSBtZXRlciB0b2RvIGVuIENMQVVERS5tZAo+IFVuIGFyY2hpdm8gZGUgMjAwMCBsw61uZWFzIGRpbHV5ZSB0b2RvLiBMYXMgY29udmVuY2lvbmVzIGltcG9ydGFudGVzIHNlIHBpZXJkZW4gZW50cmUgaW5zdHJ1Y2Npb25lcyBxdWUgbm8gc29uIHJlbGV2YW50ZXMgZWwgOTUlIGRlbCB0aWVtcG8g4oCUIHkgbmkgdm9zIG5pIENsYXVkZSBsYXMgYXByb3ZlY2hhbiBiaWVuLgoKIyMgRXN0cnVjdHVyYSBkZSB1bmEgU2tpbGwge2lkPW1vZDYtY3JlYXRlfQoKVW5hIHNraWxsIGVzIHVuIGRpcmVjdG9yaW8gY29uLCBjb21vIG3DrW5pbW8sIHVuIGBTS0lMTC5tZGAuIFN1IHBvdGVuY2lhbCByZWFsIGFwYXJlY2UgY3VhbmRvIGluY2x1eWUgKip0ZW1wbGF0ZXMqKiwgKipleGFtcGxlcyoqIHkgKipoZWxwZXJzKiogcXVlIENsYXVkZSBwdWVkZSBsZWVyIHkgZWplY3V0YXI6CgpgYGAKbWlncmFyLXN0b3JhZ2UtYS1kYi8K4pSc4pSA4pSAIFNLSUxMLm1kICAgICAgICAgICMgSW5zdHJ1Y2Npb25lcyB5IHByb2Nlc28gKG9ibGlnYXRvcmlvKQrilJzilIDilIAgdGVtcGxhdGVzLyAgICAgICAgIyBTY2FmZm9sZGluZyByZWFsIHF1ZSBDbGF1ZGUgY29tcGxldGEK4pSCICAg4pSU4pSA4pSAIG1lZGlhX3N0b3JhZ2Vfc2VydmljZS5weQrilJzilIDilIAgZXhhbXBsZXMvICAgICAgICAgIyBDw7NtbyBkZWJlcsOtYSB2ZXJzZSBlbCBvdXRwdXQgdGVybWluYWRvCuKUgiAgIOKUlOKUgOKUgCBvdXRwdXRfc2VydmljZS5weQrilJTilIDilIAgaGVscGVycy8gICAgICAgICAgIyBTY3JpcHRzIHF1ZSBDbGF1ZGUgZWplY3V0YSAodmVyaWZpY2FjacOzbiwgdmFsaWRhY2nDs24pCiAgICDilJTilIDilIAgdmVyaWZ5X21pZ3JhdGlvbi5zaApgYGAKCi0gKipUZW1wbGF0ZXMqKiDigJQgZWwgZXNxdWVsZXRvIGNvbiBsb3MgaW1wb3J0cywgdGlwb3MgeSBmaXJtYXMgY29ycmVjdG9zIGRlbCBwcm95ZWN0by4gU2luIHRlbXBsYXRlLCBDbGF1ZGUgZ2VuZXJhIGRlc2RlIGNlcm8gY29uIHN1IGNyaXRlcmlvOyBjb24gdGVtcGxhdGUsIGFycmFuY2EgZGVzZGUgbGEgZXN0cnVjdHVyYSBxdWUgZGVmaW5pw7MgdHUgZXF1aXBvLgotICoqRXhhbXBsZXMqKiDigJQgZWwgcmVzdWx0YWRvIGVzcGVyYWRvLiBFc3BlY2lhbG1lbnRlIMO6dGlsZXMgcGFyYSBvdXRwdXQgdmlzdWFsOiBDbGF1ZGUgcHVlZGUgKnZlciogaW3DoWdlbmVzLCBhc8OtIHF1ZSB1bmEgY2FwdHVyYSBkZSByZWZlcmVuY2lhIChgZ3JhZmljYS1vay5wbmdgKSBlcyBpbmZpbml0YW1lbnRlIG3DoXMgcHJlY2lzYSBxdWUgInVzw6EgY29sb3JlcyBwYXN0ZWwgeSBxdWUgc2UgdmVhIGxpbmRvIi4KLSAqKkhlbHBlcnMqKiDigJQgc2NyaXB0cyBlamVjdXRhYmxlcyBxdWUgYXV0b21hdGl6YW4gdmVyaWZpY2FjacOzbiAocG9yIGVqZW1wbG8sIGNvbXBhcmFyIGNoZWNrc3VtcyBlbnRyZSBlbCBhcmNoaXZvIG9yaWdpbmFsIHkgZWwgbWlncmFkbykuCgo+IFshS0VZXSBFbCBwb3RlbmNpYWwgY29tcGxldG8KPiBDb24gdGVtcGxhdGVzICsgZXhhbXBsZXMgKyBoZWxwZXJzIGxlIGRhcyBhIENsYXVkZSBlbCBlc3F1ZWxldG8gZGVzZGUgZWwgcXVlIGVtcGllemEsIGVsIGVzdMOhbmRhciBkZSBjw7NtbyBkZWJlcsOtYSB2ZXJzZSBlbCByZXN1bHRhZG8sIHkgbGFzIGhlcnJhbWllbnRhcyBwYXJhIHZlcmlmaWNhciBzdSBwcm9waW8gdHJhYmFqby4gVW4gZGV2IHNpbiBlc28gYXJyYW5jYSBkZSBjZXJvOyBjb24gZXNvLCBhcnJhbmNhIHNvYnJlIHVuIHNldHVwIHF1ZSBlbCBlcXVpcG8geWEgZGVqw7MgYXJtYWRvLgoKIyMjIEVqZW1wbG8gZGUgU0tJTEwubWQgKHJlY29ydGFkbykKCmBgYAotLS0KbmFtZTogbWlncmFyLXN0b3JhZ2UtYS1kYgpkZXNjcmlwdGlvbjogTWlncmEgbcOzZHVsb3MgcXVlIGFsbWFjZW5hbiBhcmNoaXZvcyBlbiBmaWxlc3lzdGVtIGxvY2FsIGEKICBhbG1hY2VuYW1pZW50byBlbiBiYXNlIGRlIGRhdG9zIChiaW5hcmlvIG8gcmVmZXJlbmNpYXMgYSBvYmplY3Qgc3RvcmFnZSkuCi0tLQoKIyBNaWdyYXIgU3RvcmFnZSBkZSBGaWNoZXJvcyBhIEJhc2UgZGUgRGF0b3MKCiMjIFJlZ2xhcyBkZSBkZWNpc2nDs24KLSBBcmNoaXZvcyA8IDFNQiAodGh1bWJuYWlscywgYXZhdGFycyk6IGFsbWFjZW5hciBjb21vIGBieXRlYWAgZW4gUG9zdGdyZVNRTC4KLSBBcmNoaXZvcyA+PSAxTUIgKGZvdG9zIEhELCB2aWRlb3MpOiBzdWJpciBhIG9iamVjdCBzdG9yYWdlIHkgZ3VhcmRhciBzb2xvCiAgbGEgVVJMICsgbWV0YWRhdGEgZW4gREIuCi0gTlVOQ0EgYm9ycmFyIGxvcyBmaWNoZXJvcyBvcmlnaW5hbGVzIGhhc3RhIHZlcmlmaWNhciBsYSBtaWdyYWNpw7NuLgoKIyMgUHJvY2VzbyBwYXNvIGEgcGFzbwoxLiBDcmVhciBsYSBtaWdyYXRpb24gZGUgbGEgdGFibGEgYG1lZGlhX2Fzc2V0c2AuCjIuIENyZWFyIGVsIHNlcnZpY2lvIGBNZWRpYVN0b3JhZ2VTZXJ2aWNlYCBjb24gYG1pZ3JhdGVfZmlsZSgpYCB5IGBnZXRfZmlsZSgpYC4KMy4gQ3JlYXIgdW4gc2NyaXB0IGJhdGNoIGlkZW1wb3RlbnRlIChza2lwIHBvciBjaGVja3N1bSkgY29uIGxvZyBkZSBwcm9ncmVzby4KNC4gTk8gdG9jYXIgbG9zIGVuZHBvaW50cyBleGlzdGVudGVzIGhhc3RhIHF1ZSBlbCBiYXRjaCBlc3TDqSB2ZXJpZmljYWRvLgoKIyMgVmVyaWZpY2FjacOzbgotIENvbXBhcmFyIGNoZWNrc3VtcyBlbnRyZSBvcmlnaW5hbCB5IG1pZ3JhZG8uCi0gUmVwb3J0ZSBmaW5hbDogdG90YWwsIG1pZ3JhZG9zLCBza2lwcGVkLCBlcnJvcmVzLgoKIyMgUHJvaGliaWNpb25lcwotIE5PIGJvcnJhciBhcmNoaXZvcyBvcmlnaW5hbGVzIGVuIG5pbmfDum4gcGFzby4KLSBOTyBoYWNlciBsYSBtaWdyYWNpw7NuIHkgZWwgY2FtYmlvIGRlIGVuZHBvaW50cyBlbiBlbCBtaXNtbyBQUi4KYGBgCgo+IFshS0VZXSBJbXBhY3RvCj4gU2luIHNraWxscywgQ2xhdWRlIGltcHJvdmlzYSBkZXNkZSBjb25vY2ltaWVudG8gZ2VuZXJhbC4gQ29uIHNraWxscywgc2lndWUgZXhhY3RhbWVudGUgbG9zIHBhdHJvbmVzIHkgcHJvY2Vzb3MgZGUgdHUgcHJveWVjdG8uIExhIGNvbnNpc3RlbmNpYSBkZWwgb3V0cHV0IG1lam9yYSBkcmFtw6F0aWNhbWVudGUuCgojIyBBcmd1bWVudG9zIGUgaW52b2NhY2nDs24ge2lkPW1vZDYtYXJnc30KCkxhcyBza2lsbHMgcHVlZGVuIHJlY2liaXIgYXJndW1lbnRvcyBtZWRpYW50ZSBgJEFSR1VNRU5UU2AgKG8gcG9yIHBvc2ljacOzbjogYCQwYCwgYCQxYCwgLi4uKS4gSW52b2NhciBgL2ZpeC1pc3N1ZSAzNDdgIGlueWVjdGEgIjM0NyI6CgpgYGAKLS0tCm5hbWU6IGZpeC1pc3N1ZQpkZXNjcmlwdGlvbjogRml4IGEgR2l0SHViIGlzc3VlIGJ5IG51bWJlcgpkaXNhYmxlLW1vZGVsLWludm9jYXRpb246IHRydWUKLS0tCkludmVzdGlnw6EgeSBjb3JyZWfDrSBlbCBpc3N1ZSBkZSBHaXRIdWIgbsO6bWVybyAkQVJHVU1FTlRTIHNpZ3VpZW5kbyBsb3MKZXN0w6FuZGFyZXMgZGVsIHByb3llY3RvLiBFc2NyaWLDrSBsb3MgdGVzdHMgbmVjZXNhcmlvcyB5IGhhY8OpIGNvbW1pdC4KYGBgCgojIyMgQ29udHJvbCBkZSBpbnZvY2FjacOzbgoKfCBDYW1wbyB8IEVmZWN0byB8IEN1w6FuZG8gdXNhcmxvIHwKfCAtLS0gfCAtLS0gfCAtLS0gfAp8IGBkaXNhYmxlLW1vZGVsLWludm9jYXRpb246IHRydWVgIHwgU29sbyBlbCB1c3VhcmlvIGludm9jYSBsYSBza2lsbDsgQ2xhdWRlIG5vIGxhIGFjdGl2YSBzb2xvIHwgU2tpbGxzIGNvbiBlZmVjdG9zIHNlY3VuZGFyaW9zOiBgL2RlcGxveWAsIGAvY29tbWl0YCB8CnwgYHVzZXItaW52b2NhYmxlOiBmYWxzZWAgfCBTb2xvIENsYXVkZSBsYSBpbnZvY2E7IG5vIGFwYXJlY2UgZW4gZWwgbWVuw7ogYC9gIHwgQ29ub2NpbWllbnRvIGRlIGZvbmRvIHF1ZSBDbGF1ZGUgYXBsaWNhIGF1dG9tw6F0aWNhbWVudGUgfAoKIyMjIEVqZWN1dGFyIGVuIHN1YmFnZW50ZSBhaXNsYWRvIChgY29udGV4dDogZm9ya2ApCgpDb24gYGNvbnRleHQ6IGZvcmtgIGVuIGVsIGZyb250bWF0dGVyLCBsYSBza2lsbCBjb3JyZSBjb21vIHByb21wdCBkZSB1biBzdWJhZ2VudGUgZW4gdW4gY29udGV4dG8gYWlzbGFkbywgc2luIGFjY2VzbyBhbCBoaXN0b3JpYWwgZGUgbGEgY29udmVyc2FjacOzbi4gRWwgcmVzdWx0YWRvIHZ1ZWx2ZSBhIGxhIHNlc2nDs24gcHJpbmNpcGFsOgoKYGBgCi0tLQpuYW1lOiBkZWVwLXJlc2VhcmNoCmRlc2NyaXB0aW9uOiBSZXNlYXJjaCBhIHRvcGljIHRob3JvdWdobHkgYWNyb3NzIHRoZSBjb2RlYmFzZQpjb250ZXh0OiBmb3JrCmFnZW50OiBFeHBsb3JlCi0tLQpJbnZlc3RpZ8OhIGV4aGF1c3RpdmFtZW50ZSAiJEFSR1VNRU5UUyI6IGVuY29udHLDoSBhcmNoaXZvcyByZWxldmFudGVzIGNvbgpHbG9iIHkgR3JlcCwgYW5hbGl6w6EgcGF0cm9uZXMsIHkgcmVzdW3DrSBjb24gcmVmZXJlbmNpYXMgYSBhcmNoaXZvOmzDrW5lYS4KYGBgCgojIyBTa2lsbHMgeSBjb21hbmRvcyBpbmNsdWlkb3Mge2lkPW1vZDYtYnVuZGxlZH0KCkNsYXVkZSBDb2RlIHRyYWUgc2tpbGxzIHkgY29tYW5kb3MgZGlzcG9uaWJsZXMgc2luIGNvbmZpZ3VyYWNpw7NuOgoKfCBDb21hbmRvIHwgUXXDqSBoYWNlIHwKfCAtLS0gfCAtLS0gfAp8IGAvYmF0Y2ggPGluc3RydWNjacOzbj5gIHwgQ2FtYmlvcyBhIGdyYW4gZXNjYWxhIGVuIHBhcmFsZWxvOiBkZXNjb21wb25lIGVsIHRyYWJham8sIGxhbnphIHVuIHN1YmFnZW50ZSBwb3IgdW5pZGFkIGVuIHVuIGdpdCB3b3JrdHJlZSBhaXNsYWRvLCB5IGNhZGEgdW5vIGFicmUgc3UgUFIgfAp8IGAvc2ltcGxpZnkgW2ZvY29dYCB8IFJldmlzYSBhcmNoaXZvcyBtb2RpZmljYWRvcyBidXNjYW5kbyByZXV0aWxpemFjacOzbiwgY2FsaWRhZCB5IGVmaWNpZW5jaWE7IGFwbGljYSBjb3JyZWNjaW9uZXMgY29uIGFnZW50ZXMgZW4gcGFyYWxlbG8gfAp8IGAvZGVidWcgW2Rlc2NyaXBjacOzbl1gIHwgSGFiaWxpdGEgbG9nZ2luZyBkZSBkZWJ1ZyB5IGFuYWxpemEgbG9zIGxvZ3MgcGFyYSBpZGVudGlmaWNhciBsYSBjYXVzYSBkZWwgcHJvYmxlbWEgfAp8IGAvbG9vcCBbaW50ZXJ2YWxvXSA8cHJvbXB0PmAgfCBFamVjdXRhIHVuIHByb21wdCByZXBldGlkYW1lbnRlIGVuIHVuIGludGVydmFsbyAobW9uaXRvcmVhciB1biBkZXBsb3ksIGhhY2VyIHBvbGxpbmcgZGUgdW4gZXN0YWRvKSB8Cgo+IFshSU5GT10gUGx1Z2lucyB5IG1hcmtldHBsYWNlcwo+IEFkZW3DoXMgZGUgbGFzIHNraWxscyBzdWVsdGFzLCBDbGF1ZGUgQ29kZSB0aWVuZSB1biBzaXN0ZW1hIGRlICoqcGx1Z2lucyoqOiBidW5kbGVzIGRlIHNraWxscywgY29tYW5kb3MsIHN1YmFnZW50ZXMgeSBNQ1Agc2VydmVycyBxdWUgc2UgaW5zdGFsYW4gZGVzZGUgdW4gKm1hcmtldHBsYWNlKiAoYC9wbHVnaW5gKS4gRXMgbGEgZm9ybWEgcmVjb21lbmRhZGEgZGUgZGlzdHJpYnVpciBjb25qdW50b3MgZGUgaGVycmFtaWVudGFzIGRlbnRybyBkZSB1biBlcXVpcG8gdSBvcmdhbml6YWNpw7NuLgoKIyBTdWJhZ2VudGVzIHkgT3JxdWVzdGFjacOzbgoKTG9zIHN1YmFnZW50ZXMgc29uIGFzaXN0ZW50ZXMgZXNwZWNpYWxpemFkb3MgcXVlIENsYXVkZSBDb2RlIGxhbnphIHBhcmEgc3ViLXRhcmVhcy4gQ2FkYSB1bm8gY29ycmUgZW4gc3UgKipwcm9waWEgdmVudGFuYSBkZSBjb250ZXh0byoqLCBjb24gc3lzdGVtIHByb21wdCBwcm9waW8sIGhlcnJhbWllbnRhcyByZXN0cmluZ2lkYXMgeSwgb3BjaW9uYWxtZW50ZSwgdW4gbW9kZWxvIGRpc3RpbnRvIGFsIGRlIGxhIHNlc2nDs24gcHJpbmNpcGFsLgoKQXRhY2EgdW4gcHJvYmxlbWEgY29uY3JldG8gZGVsIHRyYWJham8gYWfDqW50aWNvOiBhIG1lZGlkYSBxdWUgbGEgY29udmVyc2FjacOzbiBjcmVjZSwgZWwgY29udGV4dG8gc2UgbGxlbmEgZGUgcmVzdWx0YWRvcyBkZSBleHBsb3JhY2nDs24gcXVlICJlbnN1Y2lhbiIgbGEgc2VzacOzbi4gQ29uIHN1YmFnZW50ZXMsIGVzYSBleHBsb3JhY2nDs24gb2N1cnJlIGFpc2xhZGEgeSBzb2xvIGVsIHJlc3VsdGFkbyBmaW5hbCB2dWVsdmUgYWwgYWdlbnRlIHByaW5jaXBhbC4KCiMjIFN1YmFnZW50ZXMgaW50ZWdyYWRvcyB7aWQ9bW9kNy1idWlsdGlufQoKQ2xhdWRlIENvZGUgeWEgbG9zIHVzYSBhdXRvbcOhdGljYW1lbnRlIGN1YW5kbyBlbCBjb250ZXh0byBsbyBhbWVyaXRhOgoKfCBTdWJhZ2VudGUgfCBNb2RlbG8gfCBIZXJyYW1pZW50YXMgfCBDdcOhbmRvIGxvIHVzYSB8CnwgLS0tIHwgLS0tIHwgLS0tIHwgLS0tIHwKfCAqKkV4cGxvcmUqKiB8IFLDoXBpZG8vZWNvbsOzbWljbyB8IFNvbG8gbGVjdHVyYSB8IEJ1c2NhciBvIGVudGVuZGVyIGVsIGNvZGViYXNlIHNpbiBoYWNlciBjYW1iaW9zIHwKfCAqKlBsYW4qKiB8IEhlcmVkYSBwcmluY2lwYWwgfCBTb2xvIGxlY3R1cmEgfCBFbiBwbGFuIG1vZGUsIHBhcmEgaW52ZXN0aWdhciBhbnRlcyBkZSBwcm9wb25lciB8CnwgKipHZW5lcmFsLXB1cnBvc2UqKiB8IEhlcmVkYSBwcmluY2lwYWwgfCBUb2RhcyB8IFRhcmVhcyBjb21wbGVqYXMgZGUgbcO6bHRpcGxlcyBwYXNvcyAoZXhwbG9yYXIgKyBtb2RpZmljYXIpIHwKCj4gWyFJTkZPXSBJbXBvcnRhbnRlCj4gTG9zIHN1YmFnZW50ZXMgbm8gcHVlZGVuIGdlbmVyYXIgb3Ryb3Mgc3ViYWdlbnRlcy4gU29sbyBlbCBhZ2VudGUgcHJpbmNpcGFsIGRlbGVnYS4gRXN0byBldml0YSBjYWRlbmFzIGRlIHJlY3Vyc2nDs24gaW5jb250cm9sYWJsZXMuCgojIyBDcmVhciBzdWJhZ2VudGVzIHBlcnNvbmFsaXphZG9zIHtpZD1tb2Q3LWNyZWF0ZX0KClNvbiBhcmNoaXZvcyBgLm1kYCBjb24gZnJvbnRtYXR0ZXIgWUFNTCBlbiBgLmNsYXVkZS9hZ2VudHMvYCAocHJveWVjdG8pIG8gYH4vLmNsYXVkZS9hZ2VudHMvYCAodXN1YXJpbyk6CgpgYGAKLS0tCm5hbWU6IGNvZGUtcmV2aWV3ZXIKZGVzY3JpcHRpb246IFJldmlld3MgY29kZSBmb3IgcXVhbGl0eSBhbmQgc2VjdXJpdHkuIFVzZSBwcm9hY3RpdmVseSBhZnRlciBjb2RlIGNoYW5nZXMuCm1vZGVsOiBzb25uZXQKdG9vbHM6IFJlYWQsIEdyZXAsIEdsb2IKbWVtb3J5OiBwcm9qZWN0Ci0tLQpTb3MgdW4gY29kZSByZXZpZXdlciBzZW5pb3IuIEFuYWxpesOhIGVsIGPDs2RpZ28geSBkZXZvbHbDqSBmZWVkYmFjayBlc3BlY8OtZmljbwp5IGFjY2lvbmFibGUgc29icmUgY2FsaWRhZCwgc2VndXJpZGFkIHkgYnVlbmFzIHByw6FjdGljYXMuIFByaW9yaXrDoSBwcm9ibGVtYXMKcmVhbGVzIHNvYnJlIHN1Z2VyZW5jaWFzIGNvc23DqXRpY2FzLgpgYGAKCj4gWyFUSVBdIEVsIGNhbXBvIGBkZXNjcmlwdGlvbmAgZXMgY3LDrXRpY28KPiBDbGF1ZGUgbG8gdXNhIHBhcmEgZGVjaWRpciBjdcOhbmRvIGRlbGVnYXIgYXV0b23DoXRpY2FtZW50ZS4gRnJhc2VzIGNvbW8gInVzZSBwcm9hY3RpdmVseSBhZnRlciBjb2RlIGNoYW5nZXMiIGhhY2VuIHF1ZSBsbyBpbnZvcXVlIHNpbiBxdWUgc2UgbG8gcGlkYXMuCgojIyMgQ2FtcG9zIGRlIGZyb250bWF0dGVyCgp8IENhbXBvIHwgUmVxdWVyaWRvIHwgRGVzY3JpcGNpw7NuIHwKfCAtLS0gfCAtLS0gfCAtLS0gfAp8IGBuYW1lYCB8IFPDrSB8IElkZW50aWZpY2Fkb3Igw7puaWNvIChtaW7DunNjdWxhcyBjb24gZ3Vpb25lcykgfAp8IGBkZXNjcmlwdGlvbmAgfCBTw60gfCBDdcOhbmRvIENsYXVkZSBkZWJlIGRlbGVnYXIgfAp8IGBtb2RlbGAgfCBObyB8IGBvcHVzYCwgYHNvbm5ldGAsIGBoYWlrdWAsIG8gSUQgY29tcGxldG8uIFBvciBkZWZlY3RvIGhlcmVkYSBlbCBtb2RlbG8gZGUgbGEgc2VzacOzbiB8CnwgYHRvb2xzYCB8IE5vIHwgTGlzdGEgYmxhbmNhIGRlIGhlcnJhbWllbnRhcy4gU2kgc2Ugb21pdGUsIGhlcmVkYSB0b2RhcyB8CnwgYGRpc2FsbG93ZWRUb29sc2AgfCBObyB8IExpc3RhIG5lZ3JhOiBoZXJlZGEgdG9kbyBleGNlcHRvIGVzdGFzIHwKfCBgcGVybWlzc2lvbk1vZGVgIHwgTm8gfCBgZGVmYXVsdGAsIGBhY2NlcHRFZGl0c2AsIGBwbGFuYCwgYGJ5cGFzc1Blcm1pc3Npb25zYCwgZXRjLiB8CnwgYG1lbW9yeWAgfCBObyB8IGB1c2VyYCwgYHByb2plY3RgIG8gYGxvY2FsYCDigJQgbWVtb3JpYSBwZXJzaXN0ZW50ZSBlbnRyZSBzZXNpb25lcyB8CnwgYHNraWxsc2AgfCBObyB8IFNraWxscyBhIHByZWNhcmdhciBlbiBlbCBzdWJhZ2VudGUgfAp8IGBtY3BTZXJ2ZXJzYCB8IE5vIHwgTUNQIHNlcnZlcnMgZGlzcG9uaWJsZXMgc29sbyBwYXJhIGVzdGUgc3ViYWdlbnRlIHwKfCBgbWF4VHVybnNgIHwgTm8gfCBMw61taXRlIGRlIHR1cm5vcyBhbnRlcyBkZSBkZXRlbmVyc2UgfAoKIyMgQ29uZmlndXJhY2nDs24gYXZhbnphZGEge2lkPW1vZDctY29uZmlnfQoKIyMjIFNlbGVjY2nDs24gZGUgbW9kZWxvIHBvciB0YXJlYQoKRW5ydXTDoSBjYWRhIHRpcG8gZGUgdGFyZWEgYWwgbW9kZWxvIG3DoXMgYXByb3BpYWRvLCBiYWxhbmNlYW5kbyBjb3N0bywgdmVsb2NpZGFkIHkgY2FsaWRhZC4gVXPDoSBsb3MgKiphbGlhcyoqIChgb3B1c2AvYHNvbm5ldGAvYGhhaWt1YCkgZW4gdmV6IGRlIHZlcnNpb25lcyBmaWphczogY2FkYSBhbGlhcyBhcHVudGEgYWwgbW9kZWxvIG3DoXMgbnVldm8gZGUgc3UgZmFtaWxpYSwgYXPDrSB0dSBjb25maWcgbm8gcXVlZGEgZGVzYWN0dWFsaXphZGE6Cgp8IEFsaWFzIHwgVXNhciBwYXJhIHwKfCAtLS0gfCAtLS0gfAp8IGBoYWlrdWAgfCBFeHBsb3JhY2nDs24sIGLDunNxdWVkYSBkZSBhcmNoaXZvcywgcHJlZ3VudGFzIHNpbXBsZXMg4oCUIG3DoXhpbWEgdmVsb2NpZGFkIHkgbcOtbmltbyBjb3N0byB8CnwgYHNvbm5ldGAgfCBMYSBtYXlvcsOtYSBkZSB0YXJlYXMgZGUgaW1wbGVtZW50YWNpw7NuLCByZXZpZXdzLCB0ZXN0cyDigJQgYmFsYW5jZSBpZGVhbC4gRXMgZWwgbW9kZWxvIHBvciBkZWZlY3RvIGVuIENsYXVkZSBDb2RlLCBjb24gdmVudGFuYSBkZSBjb250ZXh0byBuYXRpdmEgZGUgMU0gdG9rZW5zIHwKfCBgb3B1c2AgfCBBdWRpdG9yw61hcyBkZSBzZWd1cmlkYWQsIGRlY2lzaW9uZXMgYXJxdWl0ZWN0w7NuaWNhcywgYW7DoWxpc2lzIGNvbXBsZWpvcyDigJQgbcOheGltYSBjYWxpZGFkIHwKCiMjIyBSZXN0cmljY2nDs24gZGUgaGVycmFtaWVudGFzCgpgYGAKdG9vbHM6IFJlYWQsIEdyZXAsIEdsb2IgICAgICAgICAgICAjIGxpc3RhIGJsYW5jYSAobcOhcyByZXN0cmljdGl2bykKZGlzYWxsb3dlZFRvb2xzOiBXcml0ZSwgRWRpdCAgICAgICAjIGxpc3RhIG5lZ3JhIChtw6FzIHBlcm1pc2l2bykKYGBgCgpTaSBkZWZpbsOtcyBhbWJvcywgYGRpc2FsbG93ZWRUb29sc2Agc2UgYXBsaWNhIHByaW1lcm8uCgojIyMgTWVtb3JpYSBwZXJzaXN0ZW50ZSBlbnRyZSBzZXNpb25lcwoKfCBBbGNhbmNlIHwgVWJpY2FjacOzbiB8IEN1w6FuZG8gdXNhcmxvIHwKfCAtLS0gfCAtLS0gfCAtLS0gfAp8IGBwcm9qZWN0YCB8IGAuY2xhdWRlL2FnZW50LW1lbW9yeS88bmFtZT4vYCB8IENvbm9jaW1pZW50byBkZWwgcHJveWVjdG8sIGNvbXBhcnRpYmxlIHbDrWEgZ2l0IHwKfCBgdXNlcmAgfCBgfi8uY2xhdWRlL2FnZW50LW1lbW9yeS88bmFtZT4vYCB8IEFwcmVuZGl6YWplcyBhcGxpY2FibGVzIGVuIHRvZG9zIGxvcyBwcm95ZWN0b3MgfAp8IGBsb2NhbGAgfCBgLmNsYXVkZS9hZ2VudC1tZW1vcnktbG9jYWwvPG5hbWU+L2AgfCBFc3BlY8OtZmljbyBkZWwgcHJveWVjdG8sIHNpbiBjb21taXRlYXIgfAoKIyMgSW52b2NhciBzdWJhZ2VudGVzIHtpZD1tb2Q3LWludm9rZX0KCmBgYAojIDEuIExlbmd1YWplIG5hdHVyYWwgKGRlbGVnYWNpw7NuIGF1dG9tw6F0aWNhIHNpIGVsIGRlc2NyaXB0aW9uIGVzdMOhIGJpZW4gZXNjcml0bykKPiBVc8OhIGVsIHN1YmFnZW50ZSBjb2RlLXJldmlld2VyIHBhcmEgcmV2aXNhciBsb3MgY2FtYmlvcyBkZWwgYnJhbmNoIGZlYXR1cmUvcGF5bWVudHMKCiMgMi4gQC1tZW50aW9uIChkZWxlZ2FjacOzbiBnYXJhbnRpemFkYSkKPiBAY29kZS1yZXZpZXdlciByZXZpc8OhIGxvcyBjYW1iaW9zIGRlIGF1dGVudGljYWNpw7NuIHF1ZSBhY2FibyBkZSBoYWNlcgoKIyAzLiBTZXNpw7NuIGNvbXBsZXRhIGNvbW8gc3ViYWdlbnRlCmNsYXVkZSAtLWFnZW50IHNlY3VyaXR5LWF1ZGl0b3IKYGBgCgpFbCBzbGFzaCBjb21tYW5kIGAvYWdlbnRzYCBhYnJlIHVuYSBVSSBpbnRlcmFjdGl2YSBwYXJhIGNyZWFyLCBlZGl0YXIgeSBlbGltaW5hciBzdWJhZ2VudGVzIHNpbiB0b2NhciBhcmNoaXZvcywgZSBpbmNsdXNvIGdlbmVyYXJsb3MgYSBwYXJ0aXIgZGUgdW5hIGRlc2NyaXBjacOzbiBlbiBsZW5ndWFqZSBuYXR1cmFsLgoKIyMgRWplbXBsb3MgcHLDoWN0aWNvcyB7aWQ9bW9kNy1leGFtcGxlc30KCkxpc3RvcyBwYXJhIGFncmVnYXIgYSBgLmNsYXVkZS9hZ2VudHMvYC4gQ2FkYSB1bm8gbXVlc3RyYSB1bmEgY2FwYWNpZGFkIGRpc3RpbnRhOgoKKipjb2RlLXJldmlld2VyKiog4oCUIHJldmlldyBhdXRvbcOhdGljbyBwb3N0LWNhbWJpb3MsIHNvbG8gbGVjdHVyYSwgY29uIG1lbW9yaWEgZGUgcHJveWVjdG86CgpgYGAKLS0tCm5hbWU6IGNvZGUtcmV2aWV3ZXIKZGVzY3JpcHRpb246IFJldmlld3MgY29kZSBmb3IgcXVhbGl0eSwgc2VjdXJpdHkgYW5kIGJlc3QgcHJhY3RpY2VzLiBVc2UgcHJvYWN0aXZlbHkgYWZ0ZXIgYW55IGNvZGUgY2hhbmdlLgptb2RlbDogc29ubmV0CnRvb2xzOiBSZWFkLCBHcmVwLCBHbG9iCm1lbW9yeTogcHJvamVjdAotLS0KU29zIHVuIGNvZGUgcmV2aWV3ZXIgc2VuaW9yLiBCdXNjw6EgYnVncywgc2VndXJpZGFkLCBwZXJmb3JtYW5jZSB5IHZpb2xhY2lvbmVzCmRlIHBhdHJvbmVzLiBDb25zdWx0w6EgdHUgbWVtb3JpYSBhbnRlcyBkZSBlbXBlemFyIHkgYWN0dWFsaXphbGEgYWwgdGVybWluYXIKY29uIHBhdHJvbmVzIG51ZXZvcyBvIGlzc3VlcyByZWN1cnJlbnRlcy4KYGBgCgoqKmZhc3QtZXhwbG9yZXIqKiDigJQgaW52ZXN0aWdhY2nDs24gZGUgYmFqbyBjb3N0byBjb24gZWwgbW9kZWxvIG3DoXMgcsOhcGlkbzoKCmBgYAotLS0KbmFtZTogZmFzdC1leHBsb3JlcgpkZXNjcmlwdGlvbjogUXVpY2tseSBleHBsb3JlcyB0aGUgY29kZWJhc2UgdG8gYW5zd2VyIHF1ZXN0aW9ucyBhYm91dCBzdHJ1Y3R1cmUgYW5kIHBhdHRlcm5zLgptb2RlbDogaGFpa3UKdG9vbHM6IFJlYWQsIEdyZXAsIEdsb2IsIEJhc2gKLS0tClJlc3BvbmTDqSBwcmVndW50YXMgc29icmUgbGEgZXN0cnVjdHVyYSBkZWwgcHJveWVjdG8gZGUgZm9ybWEgcsOhcGlkYSB5IGNvbmNpc2EuCk5vIG1vZGlmaWPDoXMgYXJjaGl2b3MuCmBgYAoKKipzZWN1cml0eS1hdWRpdG9yKiog4oCUIGF1ZGl0b3LDrWEgY29uIGVsIG1vZGVsbyBkZSBtw6F4aW1hIGNhbGlkYWQsIHNvbG8gbGVjdHVyYSBwb3IgZGlzZcOxbzoKCmBgYAotLS0KbmFtZTogc2VjdXJpdHktYXVkaXRvcgpkZXNjcmlwdGlvbjogUGVyZm9ybXMgdGhvcm91Z2ggc2VjdXJpdHkgYXVkaXRzLiBVc2Ugd2hlbiByZXZpZXdpbmcgYXV0aCwgZGF0YSBoYW5kbGluZyBvciBleHRlcm5hbCBpbnRlZ3JhdGlvbnMuCm1vZGVsOiBvcHVzCnRvb2xzOiBSZWFkLCBHcmVwLCBHbG9iCm1lbW9yeTogcHJvamVjdAotLS0KQXVkaXTDoSBlbCBjw7NkaWdvIGJ1c2NhbmRvIE9XQVNQIFRvcCAxMCwgbWFuZWpvIGluc2VndXJvIGRlIGNyZWRlbmNpYWxlcywKcHJvYmxlbWFzIGRlIGF1dGggZSBpbnllY2Npb25lcy4gRXhwbGljw6EgaW1wYWN0byB5IHJlbWVkaWFjacOzbiBkZSBjYWRhIGlzc3VlLgpgYGAKCiMjIFBhdHLDs24gY29vcmRpbmFkb3Ige2lkPW1vZDctY29vcmRpbmF0b3J9CgpQYXJhIHRhcmVhcyBncmFuZGVzIGNvbiBtw7psdGlwbGVzIGVzcGVjaWFsaXN0YXMsIHVuIHN1YmFnZW50ZSBjb29yZGluYWRvciBvcnF1ZXN0YSBhIGxvcyBkZW3DoXMuIGB0b29sczogQWdlbnQoLi4uKWAgZGVmaW5lIHF1w6kgc3ViYWdlbnRlcyBwdWVkZSBsYW56YXI6CgpgYGAKLS0tCm5hbWU6IGZlYXR1cmUtY29vcmRpbmF0b3IKZGVzY3JpcHRpb246IENvb3JkaW5hdGVzIGZlYXR1cmUgaW1wbGVtZW50YXRpb24gZW5kLXRvLWVuZC4KbW9kZWw6IHNvbm5ldAp0b29sczogQWdlbnQoZmFzdC1leHBsb3JlciwgdGVzdC13cml0ZXIpLCBSZWFkLCBCYXNoCi0tLQoxLiBEZWxlZ8OhIGxhIGludmVzdGlnYWNpw7NuIGEgZmFzdC1leHBsb3Jlci4KMi4gSW1wbGVtZW50w6EgbG9zIGNhbWJpb3Mgdm9zIG1pc21vLgozLiBEZWxlZ8OhIGxvcyB0ZXN0cyBhIHRlc3Qtd3JpdGVyLgo0LiBDb3Jyw6kgZWwgc3VpdGUgY29tcGxldG8uCmBgYAoKPiBbIVdBUk5JTkddIFJlY29yZMOhCj4gQ29tbyBsb3Mgc3ViYWdlbnRlcyBubyBnZW5lcmFuIG90cm9zIHN1YmFnZW50ZXMsIGVsIHBhdHLDs24gY29vcmRpbmFkb3Igc29sbyBmdW5jaW9uYSBjdWFuZG8gZWwgY29vcmRpbmFkb3IgY29ycmUgY29tbyBhZ2VudGUgcHJpbmNpcGFsOiBgY2xhdWRlIC0tYWdlbnQgZmVhdHVyZS1jb29yZGluYXRvcmAuCgo+IFshS0VZXSBFbCBzYWx0byBkZSBwcm9kdWN0aXZpZGFkCj4gVW4gZXF1aXBvIHF1ZSBkZWZpbmUgc3VzIHN1YmFnZW50ZXMgdW5hIHZleiBvYnRpZW5lIHVuIGNvbmp1bnRvIGRlICJlc3BlY2lhbGlzdGFzIiByZXV0aWxpemFibGVzIGNvbiBgQG5vbWJyZWA6IGVsIGNvZGUtcmV2aWV3ZXIgcXVlIGFwcmVuZGnDsyBsb3MgcGF0cm9uZXMgZGVsIHByb3llY3RvLCBlbCBzZWN1cml0eS1hdWRpdG9yIHF1ZSByZWN1ZXJkYSBsYXMgdnVsbmVyYWJpbGlkYWRlcyB5YSBlbmNvbnRyYWRhcywgZWwgdGVzdC13cml0ZXIgcXVlIHNhYmUgY8OzbW8gZXNjcmliZSB0ZXN0cyBlbCBlcXVpcG8uIEVzIGNvbm9jaW1pZW50byBpbnN0aXR1Y2lvbmFsIGVtcGFxdWV0YWRvIGVuIGFnZW50ZXMuCgojIE1DUCBTZXJ2ZXJzIChNb2RlbCBDb250ZXh0IFByb3RvY29sKQoKIyMgwr9RdcOpIGVzIE1DUD8ge2lkPW1vZDgtd2hhdH0KCioqTUNQKiogZXMgdW4gcHJvdG9jb2xvIGFiaWVydG8gcXVlIGNvbmVjdGEgQ2xhdWRlIENvZGUgY29uIGhlcnJhbWllbnRhcyB5IHNlcnZpY2lvcyBleHRlcm5vcy4gQSBsb3MgTUNQIHNlcnZlcnMgbG9zIHBpZW5zbyBjb21vICJwbHVnaW5zIiBxdWUgbGUgZGFuIGNhcGFjaWRhZGVzIG3DoXMgYWxsw6EgZGVsIGZpbGVzeXN0ZW0geSBiYXNoOgoKLSBDb25zdWx0YXIgYmFzZXMgZGUgZGF0b3MgKFBvc3RncmVTUUwsIFNRTGl0ZSkuCi0gSW50ZXJhY3R1YXIgY29uIEFQSXMgKEdpdEh1YiwgTGluZWFyLCBKaXJhLCBTbGFjaykuCi0gQnVzY2FyIGVuIGxhIHdlYiBvIGVuIGRvY3VtZW50YWNpw7NuIGVzcGVjw61maWNhLgotIENvbmVjdGFyIGNvbiBoZXJyYW1pZW50YXMgaW50ZXJuYXMgZGUgdHUgZW1wcmVzYS4KCiMjIENvbmZpZ3VyYWNpw7NuIHtpZD1tb2Q4LWNvbmZpZ30KClNlIGNvbmZpZ3VyYW4gYSBuaXZlbCBnbG9iYWwgbyBkZSBwcm95ZWN0bzoKCmBgYAovLyAuY2xhdWRlL3NldHRpbmdzLmpzb24KewogICJtY3BTZXJ2ZXJzIjogewogICAgInBvc3RncmVzIjogewogICAgICAiY29tbWFuZCI6ICJucHgiLAogICAgICAiYXJncyI6IFsiLXkiLCAiQG1vZGVsY29udGV4dHByb3RvY29sL3NlcnZlci1wb3N0Z3JlcyIsCiAgICAgICAgICAgICAgICJwb3N0Z3Jlc3FsOi8vbG9jYWxob3N0OjU0MzIvbWlkYiJdCiAgICB9LAogICAgImdpdGh1YiI6IHsKICAgICAgImNvbW1hbmQiOiAibnB4IiwKICAgICAgImFyZ3MiOiBbIi15IiwgIkBtb2RlbGNvbnRleHRwcm90b2NvbC9zZXJ2ZXItZ2l0aHViIl0sCiAgICAgICJlbnYiOiB7ICJHSVRIVUJfVE9LRU4iOiAiZ2hwXy4uLiIgfQogICAgfQogIH0KfQpgYGAKCj4gWyFJTkZPXSBUaXBvcyBkZSB0cmFuc3BvcnRlCj4gTG9zIE1DUCBzZXJ2ZXJzIHNlIGNvbXVuaWNhbiBwb3IgKipzdGRpbyoqIChwcm9jZXNvIGhpam8sIGxvIG3DoXMgY29tw7puKSBvIHBvciAqKlNTRS9IVFRQKiogKHNlcnZlcnMgcmVtb3RvcyBvIGNsb3VkKS4gRWwgZm9ybWF0byBkZSBjb25maWd1cmFjacOzbiBkaWZpZXJlIGxldmVtZW50ZSBlbnRyZSBhbWJvcy4KCiMjIFNlcnZlcnMgcG9wdWxhcmVzIHtpZD1tb2Q4LXNlcnZlcnN9Cgp8IFNlcnZlciB8IFF1w6kgaGFjZSB8CnwgLS0tIHwgLS0tIHwKfCBgc2VydmVyLXBvc3RncmVzYCB8IEV4cGxvcmFyIHNjaGVtYXMgeSBoYWNlciBxdWVyaWVzIGRlIGxlY3R1cmEgfAp8IGBzZXJ2ZXItZ2l0aHViYCB8IElzc3VlcywgUFJzLCBidXNjYXIgY8OzZGlnbywgY3JlYXIgYnJhbmNoZXMgfAp8IGBzZXJ2ZXItZmlsZXN5c3RlbWAgfCBBY2Nlc28gY29udHJvbGFkbyBhIGRpcmVjdG9yaW9zIGZ1ZXJhIGRlbCBwcm95ZWN0byB8CnwgYHNlcnZlci1zcWxpdGVgIHwgSW50ZXJhY2Npw7NuIGNvbiBiYXNlcyBTUUxpdGUgfAoKPiBbIVdBUk5JTkddIFNlZ3VyaWRhZAo+IExvcyBNQ1Agc2VydmVycyB0aWVuZW4gYWNjZXNvIHJlYWwgYSB0dXMgc2VydmljaW9zLiBVc8OhIGVudiB2YXJzIHBhcmEgdG9rZW5zLCBudW5jYSBsb3MgaGFyZGNvZGVlcyBlbiBlbCBgc2V0dGluZ3MuanNvbmAgcXVlIHNlIGNvbW1pdGVhLiBMaW1pdMOhIGxvcyBzZXJ2ZXJzIGFsIG3DrW5pbW8gbmVjZXNhcmlvIHkgbm8gZGVzIGFjY2VzbyBhIHByb2R1Y2Npw7NuLgoKIyBNb2RvcyB5IENvbWFuZG9zCgojIyBTbGFzaCBDb21tYW5kcyB7aWQ9bW9kOS1zbGFzaH0KCnwgQ29tYW5kbyB8IEZ1bmNpw7NuIHwKfCAtLS0gfCAtLS0gfAp8IGAvaGVscGAgfCBBeXVkYSB5IGNvbWFuZG9zIGRpc3BvbmlibGVzIHwKfCBgL2NvbmZpZ2AgfCBDb25maWd1cmFjacOzbiB8CnwgYC9jb21wYWN0YCB8IENvbXBhY3RhIGVsIGNvbnRleHRvIGRlIGxhIGNvbnZlcnNhY2nDs24gfAp8IGAvY29udGV4dGAgfCBFc3RhZG8gZGUgbGEgdmVudGFuYSBkZSBjb250ZXh0byB8CnwgYC9jbGVhcmAgfCBMaW1waWEgZWwgaGlzdG9yaWFsIGRlIGxhIHNlc2nDs24gfAp8IGAvY29zdGAgfCBDb3N0byBhY3VtdWxhZG8gZGUgbGEgc2VzacOzbiB8CnwgYC9kb2N0b3JgIHwgRGlhZ25vc3RpY2EgbGEgaW5zdGFsYWNpw7NuIChhbGlhczogYC9jaGVja3VwYCkgfAp8IGAvaW5pdGAgfCBJbmljaWFsaXphIHVuIENMQVVERS5tZCBwYXJhIGVsIHByb3llY3RvIHwKfCBgL2NvZGUtcmV2aWV3IFtuaXZlbF0gW3ByI11gIHwgUmV2aXNhIGVsIGRpZmYgYWN0dWFsIG8gdW4gUFIgKGB1bHRyYWAgcGFyYSByZXZpZXcgcHJvZnVuZGEgZW4gY2xvdWQpLiBBbGlhczogYC9yZXZpZXdgIHwKfCBgL3NlY3VyaXR5LXJldmlld2AgfCBBbmFsaXphIGNhbWJpb3MgcGVuZGllbnRlcyBidXNjYW5kbyB2dWxuZXJhYmlsaWRhZGVzIHwKfCBgL3Jld2luZGAgfCBSZWJvYmluYSBjb252ZXJzYWNpw7NuIHkgYXJjaGl2b3MgYSB1biBwdW50byBhbnRlcmlvci4gQWxpYXM6IGAvdW5kb2AgfAp8IGAvYnR3IDxwcmVndW50YT5gIHwgUHJlZ3VudGEgcsOhcGlkYSBmdWVyYSBkZSBsYSBjb252ZXJzYWNpw7NuIOKAlCBubyBjb25zdW1lIGVsIGNvbnRleHRvIGRlIGxhIHRhcmVhIHwKfCBgL2JyYW5jaCBbbm9tYnJlXWAgfCBCaWZ1cmNhIGxhIGNvbnZlcnNhY2nDs24gcGFyYSBleHBsb3JhciB1biBlbmZvcXVlIGFsdGVybmF0aXZvLiBBbGlhczogYC9mb3JrYCB8CnwgYC90ZWxlcG9ydGAgfCBNdWV2ZSBsYSBzZXNpw7NuIGFjdHVhbCBhIG90cmEgc3VwZXJmaWNpZSAocC4gZWouIGRlIGxhIHdlYiBhIGxhIHRlcm1pbmFsKSB8CnwgYC92aW1gIHwgS2V5YmluZGluZ3MgZXN0aWxvIFZpbSB8Cgo+IFshVElQXSBUaXAKPiBgL2NvbXBhY3RgIGVzIHR1IG1lam9yIGFtaWdvIGVuIHNlc2lvbmVzIGxhcmdhczogcmVzdW1lIGxhIGNvbnZlcnNhY2nDs24gbWFudGVuaWVuZG8gZWwgY29udGV4dG8gY2xhdmUgY3VhbmRvIENsYXVkZSBlbXBpZXphIGEgIm9sdmlkYXJzZSIgZGUgbG8gaGFibGFkby4KCiMjIEZsYWdzIGRlIENMSSBpbXBvcnRhbnRlcyB7aWQ9bW9kOS1mbGFnc30KCmBgYAojIFByb21wdCBkaXJlY3RvIChubyBpbnRlcmFjdGl2bykKY2xhdWRlIC1wICJleHBsaWNhbWUgbGEgYXJxdWl0ZWN0dXJhIGRlIGVzdGUgcHJveWVjdG8iCgojIFBpcGUgZGUgaW5wdXQKY2F0IGVycm9yLmxvZyB8IGNsYXVkZSAtcCAiYW5hbGl6w6EgZXN0ZSBsb2cgeSBkZWNpbWUgcXXDqSBwYXPDsyIKCiMgQ29udGludWFyIGxhIMO6bHRpbWEgY29udmVyc2FjacOzbiAvIHJlYW51ZGFyIHVuYSBlc3BlY8OtZmljYQpjbGF1ZGUgLS1jb250aW51ZSAgICAgICAgICAjIG8gLWMKY2xhdWRlIC0tcmVzdW1lIDxub21icmUtby1pZD4gICAjIHNpbiBhcmd1bWVudG86IHNlbGVjdG9yIGludGVyYWN0aXZvCgojIE1vZGVsbyBlc3BlY8OtZmljbyAocHJlZmVyw60gbG9zIGFsaWFzKQpjbGF1ZGUgLS1tb2RlbCBvcHVzCmNsYXVkZSAtLW1vZGVsIHNvbm5ldAoKIyBPdXRwdXQgSlNPTiAoc2NyaXB0aW5nKQpjbGF1ZGUgLXAgImxpc3TDoSBsb3MgYXJjaGl2b3MgLnB5IiAtLW91dHB1dC1mb3JtYXQganNvbgoKIyBQcm9mdW5kaWRhZCBkZSByYXpvbmFtaWVudG8KY2xhdWRlIC0tZWZmb3J0IGhpZ2ggICAgICAgIyBsb3cgfCBtZWRpdW0gfCBoaWdoIHwgbWF4ICAodGFtYmnDqW4gL2VmZm9ydCBlbiBzZXNpw7NuKQoKIyBNb2RvIGJhcmU6IHNpbiBDTEFVREUubWQsIGhvb2tzLCBNQ1AgbmkgYXV0byBtZW1vcnkKY2xhdWRlIC0tYmFyZSAtcCAicXVlcnkiCgojIEzDrW1pdGVzIHBhcmEgcGlwZWxpbmVzCmNsYXVkZSAtcCAiLi4uIiAtLW1heC1idWRnZXQtdXNkIDIuMDAKY2xhdWRlIC1wICIuLi4iIC0tbWF4LXR1cm5zIDEwCmBgYAoKPiBbIUlORk9dIMK/UXXDqSBlcyB1biB0dXJubz8KPiBVbiB0dXJubyBlcyB1biBjaWNsbyBjb21wbGV0byBkZWwgYWdlbnRlOiByZWNpYmUgaW5wdXQg4oaSIHJhem9uYSDihpIgZWplY3V0YSBoZXJyYW1pZW50YXMgKHB1ZWRlbiBzZXIgbXVjaGFzKSDihpIgZGV2dWVsdmUgcmVzcHVlc3RhLiBgLS1tYXgtdHVybnMgMTBgIHBlcm1pdGUgaGFzdGEgMTAgZGUgZXNvcyBjaWNsb3MuIEVsIG1pc21vIGNvbmNlcHRvIGFwYXJlY2UgZW4gYG1heFR1cm5zYCBkZSBsb3Mgc3ViYWdlbnRlcy4KCiMjIE1vZG9zIGRlIGVqZWN1Y2nDs24ge2lkPW1vZDktbW9kZXN9CgotICoqSW50ZXJhY3Rpdm8gKGRlZmF1bHQpOioqIFJFUEwgY29udmVyc2FjaW9uYWwuIENsYXVkZSBwaWRlIHBlcm1pc29zLCBhcHJvYsOhcywgaXRlcsOhcy4KLSAqKk9uZS1zaG90IChgLXBgKToqKiBlamVjdXRhIHVuIHByb21wdCB5IHJlc3BvbmRlIHNpbiBpbnRlcmFjdGl2aWRhZC4gSWRlYWwgcGFyYSBzY3JpcHRzLgotICoqUGlwZToqKiByZWNpYmUgaW5wdXQgcG9yIHN0ZGluLCBjb21iaW5hYmxlIGNvbiBgLXBgLCBpbnRlZ3JhYmxlIGVuIHBpcGVsaW5lcyBkZSBzaGVsbC4KLSAqKkhlYWRsZXNzIChDSS9DRCk6Kiogc2luIGludGVyYWN0aXZpZGFkIG5pIGNvbmZpcm1hY2lvbmVzLiBWZXIgbcOzZHVsbyBzaWd1aWVudGUuCgpgYGAKZ2l0IGRpZmYgbWFpbiB8IGNsYXVkZSAtcCAicmV2aXPDoSBlc3RlIGRpZmYgYnVzY2FuZG8gYnVncyBwb3RlbmNpYWxlcyIKYGBgCgojIFBhdHJvbmVzIEF2YW56YWRvcwoKIyMgQ2xhdWRlIENvZGUgZW4gQ0kvQ0Qge2lkPW1vZDEwLWNpfQoKIyMjIENvZGUgcmV2aWV3IGF1dG9tYXRpemFkbyBlbiBQUnMKCmBgYAojIEdpdEh1YiBBY3Rpb25zIOKAlCBlamVtcGxvIGNvbmNlcHR1YWwKbmFtZTogQ2xhdWRlIENvZGUgUmV2aWV3Cm9uOiBbcHVsbF9yZXF1ZXN0XQpqb2JzOgogIHJldmlldzoKICAgIHJ1bnMtb246IHVidW50dS1sYXRlc3QKICAgIHN0ZXBzOgogICAgICAtIHVzZXM6IGFjdGlvbnMvY2hlY2tvdXRAdjQKICAgICAgICB3aXRoOiB7IGZldGNoLWRlcHRoOiAwIH0KICAgICAgLSBydW46IGN1cmwgLWZzU0wgaHR0cHM6Ly9jbGF1ZGUuYWkvaW5zdGFsbC5zaCB8IGJhc2gKICAgICAgLSBydW46IHwKICAgICAgICAgIGdpdCBkaWZmIG9yaWdpbi9tYWluLi4uSEVBRCB8IGNsYXVkZSAtcCBcCiAgICAgICAgICAgICJSZXZpc8OhIGVzdGUgZGlmZiBjb21vIHJldmlld2VyIHNlbmlvci4gQnVzY8OhIGJ1Z3MsIHNlZ3VyaWRhZCwKICAgICAgICAgICAgIHBlcmZvcm1hbmNlIHkgdmlvbGFjaW9uZXMgZGUgcGF0cm9uZXMuIEZvcm1hdG86IGFyY2hpdm86bMOtbmVhICsgaXNzdWUuIiBcCiAgICAgICAgICAgIC0tb3V0cHV0LWZvcm1hdCBqc29uCiAgICAgICAgZW52OgogICAgICAgICAgQU5USFJPUElDX0FQSV9LRVk6ICR7eyBzZWNyZXRzLkFOVEhST1BJQ19BUElfS0VZIH19CmBgYAoKIyMjIE90cm9zIHVzb3MgaGVhZGxlc3MKCmBgYAojIENoYW5nZWxvZyBhIHBhcnRpciBkZSBjb21taXRzCmdpdCBsb2cgLS1vbmVsaW5lIHYxLjIuMC4uSEVBRCB8IGNsYXVkZSAtcCBcCiAgIkdlbmVyw6EgdW4gY2hhbmdlbG9nIGFncnVwYWRvIHBvciBGZWF0dXJlcywgRml4ZXMsIEJyZWFraW5nIENoYW5nZXMuIE1hcmtkb3duLiIKCiMgQWN0dWFsaXphY2nDs24gZGUgZGVwZW5kZW5jaWFzIGNvbiBjb250ZXh0bwpjbGF1ZGUgLXAgIkFuYWxpesOhIGRlcHMgZGVzYWN0dWFsaXphZGFzLCByZXZpc8OhIGxvcyBjaGFuZ2Vsb2dzIGRlIGxhcyBtYWpvcgogIHZlcnNpb25zLCB5IGFjdHVhbGl6w6EgbGFzIHNhZmUuIENvcnLDqSBsb3MgdGVzdHMgZGVzcHXDqXMgZGUgY2FkYSB1bmEuIgpgYGAKCiMjIFNpc3RlbWEgZGUgSG9va3Mge2lkPW1vZDEwLWhvb2tzfQoKTG9zIGhvb2tzIHNvbiBoYW5kbGVycyBxdWUgc2UgZWplY3V0YW4gYXV0b23DoXRpY2FtZW50ZSBlbiBwdW50b3MgZGVsIGNpY2xvIGRlIHZpZGEgZGUgQ2xhdWRlIENvZGUsIHNpbiBpbnRlcnZlbmNpw7NuIGh1bWFuYTogbGludGluZyB0cmFzIGNhZGEgZWRpY2nDs24sIGJsb3F1ZW8gZGUgY29tYW5kb3MgZGVzdHJ1Y3Rpdm9zLCBub3RpZmljYWNpb25lcywgbG9nZ2luZyBkZSBhdWRpdG9yw61hLiBTZSBjb25maWd1cmFuIGVuIGxhIGNsYXZlIGBob29rc2AgZGVsIGBzZXR0aW5ncy5qc29uYDoKCmBgYAp7CiAgImhvb2tzIjogewogICAgIlBvc3RUb29sVXNlIjogW3sKICAgICAgIm1hdGNoZXIiOiAiV3JpdGV8RWRpdCIsCiAgICAgICJob29rcyI6IFt7ICJ0eXBlIjogImNvbW1hbmQiLCAiY29tbWFuZCI6ICJydWZmIGNoZWNrIC0tZml4IiwgInRpbWVvdXQiOiAzMCB9XQogICAgfV0sCiAgICAiUHJlVG9vbFVzZSI6IFt7CiAgICAgICJtYXRjaGVyIjogIkJhc2giLAogICAgICAiaG9va3MiOiBbeyAidHlwZSI6ICJjb21tYW5kIiwgImNvbW1hbmQiOiAiLmNsYXVkZS9ob29rcy9ibG9jay1ybS5zaCIgfV0KICAgIH1dCiAgfQp9CmBgYAoKIyMjIEV2ZW50b3MgcHJpbmNpcGFsZXMKCnwgRXZlbnRvIHwgQ3XDoW5kbyBzZSBhY3RpdmEgfCDCv1B1ZWRlIGJsb3F1ZWFyPyB8CnwgLS0tIHwgLS0tIHwgLS0tIHwKfCBgUHJlVG9vbFVzZWAgfCBBbnRlcyBkZSBlamVjdXRhciB1bmEgaGVycmFtaWVudGEgfCBTw60g4oCUIHB1ZWRlIGRlbmVnYXIgfAp8IGBQb3N0VG9vbFVzZWAgfCBEZXNwdcOpcyBkZSBlamVjdXRhciBleGl0b3NhbWVudGUgfCBTw60g4oCUIHB1ZWRlIHJldmVydGlyIHwKfCBgU2Vzc2lvblN0YXJ0YCB8IEFsIGluaWNpYXIgbyByZWFudWRhciB1bmEgc2VzacOzbiB8IE5vIHwKfCBgU3RvcGAgfCBDdWFuZG8gQ2xhdWRlIHRlcm1pbmEgZGUgcmVzcG9uZGVyIHwgU8OtIOKAlCBwdWVkZSBmb3J6YXIgbcOhcyB0cmFiYWpvIHwKfCBgTm90aWZpY2F0aW9uYCB8IEN1YW5kbyBDbGF1ZGUgcGlkZSBwZXJtaXNvIG8gcXVlZGEgaWRsZSB8IE5vIHwKfCBgU3ViYWdlbnRTdGFydC9TdG9wYCB8IEFsIGluaWNpYXIvdGVybWluYXIgdW4gc3ViYWdlbnRlIHwgTm8gfAoKKipUaXBvcyBkZSBob29rOioqIGBjb21tYW5kYCAoc2NyaXB0IGRlIHNoZWxsOyBleGl0IGNvZGUgMiBibG9xdWVhKSwgYGh0dHBgIChQT1NUIGEgdW5hIFVSTCksIGBwcm9tcHRgIChldmFsw7phIGNvbiB1biBwcm9tcHQgYSBDbGF1ZGUpLCBgYWdlbnRgIChsYW56YSB1biBzdWJhZ2VudGUgcGFyYSBkZWNpZGlyKS4gVXPDoSBgL2hvb2tzYCBwYXJhIHZlciBsb3MgY29uZmlndXJhZG9zLgoKIyMgR2l0IFdvcmt0cmVlcyDigJQgYWlzbGFtaWVudG8gcmVhbCBwYXJhIHRyYWJham8gcGFyYWxlbG8ge2lkPW1vZDEwLXdvcmt0cmVlfQoKTGEgZm9ybWEgcmVjb21lbmRhZGEgcGFyYSB0cmFiYWpvIHBhcmFsZWxvIGNvbiBtw7psdGlwbGVzIGluc3RhbmNpYXMgbm8gZXMgYWJyaXIgdGVybWluYWxlcyBlbiBlbCBtaXNtbyBkaXJlY3RvcmlvLCBzaW5vIHVzYXIgKipnaXQgd29ya3RyZWVzKio6IGNhZGEgaW5zdGFuY2lhIHRyYWJhamEgZW4gc3UgcHJvcGlvIGRpcmVjdG9yaW8geSBzdSBwcm9waWEgcmFtYSwgc2luIGNvbmZsaWN0b3MuCgpgYGAKIyBDcmVhciB1biB3b3JrdHJlZSBhaXNsYWRvIGUgaW5pY2lhciBDbGF1ZGUgZW4gw6lsCmNsYXVkZSAtLXdvcmt0cmVlIGZlYXR1cmUtYXV0aCAgICAgICMgYWxpYXM6IC13CgojIERvcyBpbnN0YW5jaWFzIGNvbXBsZXRhbWVudGUgYWlzbGFkYXMKY2xhdWRlIC13IGZlYXR1cmUtcGF5bWVudHMgICAgICAgICAgIyBUZXJtaW5hbCAxCmNsYXVkZSAtdyBidWdmaXgtbG9naW4gICAgICAgICAgICAgICMgVGVybWluYWwgMgoKIyBTaW4gbm9tYnJlOiBnZW5lcmEgdW5vIGF1dG9tw6F0aWNhbWVudGUKY2xhdWRlIC13CmBgYAoKTG9zIHdvcmt0cmVlcyBzZSByYW1pZmljYW4gZGVzZGUgYG9yaWdpbi9IRUFEYC4gQWwgc2FsaXI6IHNpIG5vIGh1Ym8gY2FtYmlvcywgZWwgd29ya3RyZWUgc2UgZWxpbWluYTsgc2kgaHVibywgQ2xhdWRlIHByZWd1bnRhIHNpIHF1ZXLDqXMgbWFudGVuZXJsby4KCj4gWyFUSVBdIEFyY2hpdm9zIC5lbnYKPiBMb3Mgd29ya3RyZWVzIHNvbiBjb3BpYXMgbGltcGlhcyDigJQgbm8gaW5jbHV5ZW4gZ2l0aWdub3JlZCBjb21vIGAuZW52YC4gUGFyYSBjb3BpYXJsb3MgYXV0b23DoXRpY2FtZW50ZSwgY3Jlw6EgdW4gYC53b3JrdHJlZWluY2x1ZGVgIGVuIGxhIHJhw616IChtaXNtYSBzaW50YXhpcyBxdWUgYC5naXRpZ25vcmVgKS4KCiMjIFNlZ3VyaWRhZCB5IGJ1ZW5hcyBwcsOhY3RpY2FzIHtpZD1tb2QxMC1zYWZlfQoKLSAqKkNvbW1pdGXDoSBgLmNsYXVkZS9zZXR0aW5ncy5qc29uYCoqIGNvbiBsb3MgcGVybWlzb3MgZGVsIGVxdWlwbzsgYHNldHRpbmdzLmxvY2FsLmpzb25gIHBhcmEgb3ZlcnJpZGVzIHBlcnNvbmFsZXMuCi0gKipOdW5jYSBhdXRvLWFwcm9iYXIgYGdpdCBwdXNoYCoqIOKAlCByZXF1ZXLDrSBjb25maXJtYWNpw7NuIGh1bWFuYS4KLSAqKlJldmlzw6EgZGlmZnMgYW50ZXMgZGUgY29tbWl0ZWFyKiog4oCUIGBnaXQgZGlmZmAgZGVzcHXDqXMgZGUgcXVlIENsYXVkZSB0cmFiYWplLiBDb25macOhIHBlcm8gdmVyaWZpY8OhLgotICoqVXPDoSBicmFuY2hlcyAobyB3b3JrdHJlZXMpKiogcGFyYSBlbCB0cmFiYWpvIGRlIENsYXVkZSwgeSByZXZpc8OhIGVsIFBSLgotICoqTGltaXTDoSBsb3MgTUNQIHNlcnZlcnMgYWwgbcOtbmltbyoqIOKAlCBubyBkZXMgYWNjZXNvIGEgcHJvZHVjY2nDs24uCi0gKipBUEkga2V5cyByb3RhZGFzIHkgY29uIHNjb3BlcyoqIOKAlCBudW5jYSB1c2VzIHR1IGtleSBkZSBhZG1pbiBwYXJhIENJL0NELgoKIyMjIEdlc3Rpw7NuIGRlIGNvc3RvcwoKLSBgL2Nvc3RgIGR1cmFudGUgbGEgc2VzacOzbiBwYXJhIHZlciBlbCBnYXN0by4KLSBgL2NvbXBhY3RgIHBhcmEgcmVkdWNpciB0b2tlbnMgZW4gY29udmVyc2FjaW9uZXMgbGFyZ2FzLgotIFByb21wdHMgZXNwZWPDrWZpY29zID4gcHJvbXB0cyB2YWdvczogdW4gcHJvbXB0IHZhZ28gZ2VuZXJhIGlkYXMgeSB2dWVsdGFzIHF1ZSBjb25zdW1lbiB0b2tlbnMuCi0gTW9kZWxvcyBhcHJvcGlhZG9zOiBgaGFpa3VgIHBhcmEgZXhwbG9yYWNpw7NuLCBgc29ubmV0YCBwYXJhIHRhcmVhcyBydXRpbmFyaWFzLCBgb3B1c2AgY3VhbmRvIG5lY2VzaXTDoXMgbcOheGltYSBjYWxpZGFkIGRlIHJhem9uYW1pZW50by4KCiMgQXDDqW5kaWNlOiBSZWZlcmVuY2lhcyB5IFJlY3Vyc29zIHthcHBlbmRpeCBudW1iZXI9Kyt9CgojIyBEb2N1bWVudGFjacOzbiBvZmljaWFsCgp8IFJlY3Vyc28gfCBVUkwgfAp8IC0tLSB8IC0tLSB8CnwgQ2xhdWRlIENvZGUg4oCUIERvY3VtZW50YWNpw7NuIHwgYGNvZGUuY2xhdWRlLmNvbS9kb2NzYCB8CnwgQ2xhdWRlIENvZGUg4oCUIFNldHVwIHwgYGNvZGUuY2xhdWRlLmNvbS9kb2NzL2VuL3NldHVwYCB8CnwgQ2xhdWRlIENvZGUg4oCUIG5wbSB8IGBucG1qcy5jb20vcGFja2FnZS9AYW50aHJvcGljLWFpL2NsYXVkZS1jb2RlYCB8CnwgQ2xhdWRlIENvZGUg4oCUIFJlcG8gKGlzc3VlcykgfCBgZ2l0aHViLmNvbS9hbnRocm9waWNzL2NsYXVkZS1jb2RlYCB8CnwgTUNQIOKAlCBFc3BlY2lmaWNhY2nDs24gfCBgbW9kZWxjb250ZXh0cHJvdG9jb2wuaW9gIHwKfCBNQ1Ag4oCUIFNlcnZpZG9yZXMgb2ZpY2lhbGVzIHwgYGdpdGh1Yi5jb20vbW9kZWxjb250ZXh0cHJvdG9jb2wvc2VydmVyc2AgfAp8IENsYXVkZSBBUEkg4oCUIERvY3MgfCBgZG9jcy5jbGF1ZGUuY29tYCB8CnwgQW50aHJvcGljIOKAlCBCbG9nL05ld3MgfCBgYW50aHJvcGljLmNvbS9uZXdzYCB8CgojIyBFc3RydWN0dXJhIGRlIHJlZmVyZW5jaWEgcsOhcGlkYSBkZWwgQ0xBVURFLm1kCgpgYGAKIyBbTm9tYnJlIGRlbCBQcm95ZWN0b10KCiMjIENvbWFuZG9zCi0gQnVpbGQgLyBUZXN0IC8gTGludDogYC4uLmAKCiMjIEFycXVpdGVjdHVyYQpbRnJhbWV3b3JrcywgcGF0cm9uZXMsIGVzdHJ1Y3R1cmEgZGUgZGlyZWN0b3Jpb3NdCgojIyBDb252ZW5jaW9uZXMgZGUgY8OzZGlnbwpbTmFtaW5nLCBpbXBvcnRzLCBlcnJvciBoYW5kbGluZ10KCiMjIFBhdHJvbmVzIGRlbCBwcm95ZWN0bwpbQ8OzbW8gY3JlYXIgWCwgY8OzbW8gaGFjZXIgWV0KCiMjIFByb2hpYmljaW9uZXMKW0xvIHF1ZSBOTyBkZWJlIGhhY2VyXQoKIyMgU2tpbGxzCltSZWZlcmVuY2lhcyBhIHNraWxscyBlc3BlY8OtZmljYXNdCmBgYA==</script>
+</body>
+</html>

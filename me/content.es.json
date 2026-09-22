@@ -123,10 +123,10 @@
       "tags": ["IA", "Self-hosting"]
     },
     {
-      "title": "Curso de Claude Code",
-      "url": "#",
-      "description": "Material de formación sobre Claude Code para desarrolladores senior: configuración, skills personalizadas, subagentes e integración MCP.",
-      "tags": ["IA", "Formación"]
+      "title": "Guía de Claude Code",
+      "url": "guias/claude-code.html",
+      "description": "Guía modular para desarrolladores: instalación, configuración, CLAUDE.md, skills, subagentes, MCP y patrones de uso profesional. Documento HTML autocontenido, generado desde Markdown, sin dependencias ni build step.",
+      "tags": ["HTML", "Markdown", "IA"]
     }
   ],
   "resources": [

@@ -72,7 +72,7 @@ El principio rector es **máxima modularidad**: tres ejes completamente desacopl
                                       │ fetch()  (cache: no-cache)
           ┌───────────────────────────┼───────────────────────────┐
           ▼                           ▼                           ▼
-  data/content.{es,en}.json    config/site.json           config/theme.json
+   me/content.{es,en}.json     config/site.json           config/theme.json
      CONTENIDO                  ESTRUCTURA                  APARIENCIA
    (CV, hub, textos)      (secciones, sidebar, idiomas)   (temas, retratos)
           │                           │                           │
@@ -82,7 +82,7 @@ El principio rector es **máxima modularidad**: tres ejes completamente desacopl
 
 | Eje | Archivo | Lo lee | Responsabilidad |
 |-----|---------|--------|-----------------|
-| **Contenido** | `data/content.es.json` · `data/content.en.json` | `content-renderer.js` | Perfil, experiencia, formación, skills, proyectos, recursos, contacto y encabezados (un archivo por idioma) |
+| **Contenido** | `me/content.es.json` · `me/content.en.json` | `content-renderer.js` | Perfil, experiencia, formación, skills, proyectos, recursos, contacto y encabezados (un archivo por idioma) |
 | **Estructura** | `config/site.json` | `site-config.js` | Qué secciones existen, su orden, grupos y visibilidad; idiomas y selector; switchers |
 | **Apariencia** | `config/theme.json` | `theme-loader.js` | Temas disponibles, tema por defecto, retratos, botones |
 
@@ -97,9 +97,14 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 ```
 .
 ├── index.html                 # Esqueleto + carga de scripts y CSS
-├── data/
+├── me/                        # ← TODO tu contenido personal vive acá
 │   ├── content.es.json        # ← Tu CV y tus enlaces (español)
-│   └── content.en.json        # ← Tu CV y tus enlaces (inglés)
+│   ├── content.en.json        # ← Tu CV y tus enlaces (inglés)
+│   ├── favicon-32.png         # ← Tu favicon
+│   ├── favicon-180.png        # ← Tu icono para iOS
+│   └── images/                # ← Tus retratos (portrait-<tema>.jpg) y og-image.jpg
+├── guias/                     # ← Documentos HTML propios enlazados desde el CV
+│   └── claude-code.html       # ← Guía de Claude Code (proyecto en #projects)
 ├── config/
 │   ├── site.json              # ← Secciones, sidebar, visibilidad, idiomas
 │   └── theme.json             # ← Temas, tema por defecto, retratos
@@ -114,26 +119,29 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 │   ├── layout.css             # Sidebar + main + responsive
 │   ├── components.css         # Componentes (hero, timeline, chips…)
 │   └── main.css               # Orquestador de @import
-├── vendor/
-│   └── html2pdf.bundle.min.js # Dependencia para exportar a PDF (incluida)
-└── assets/
-    └── images/                # ← Tus retratos: portrait-<tema>.jpg
+└── vendor/
+    └── html2pdf.bundle.min.js # Dependencia para exportar a PDF (incluida)
 ```
 
 > Lo que editás vos está marcado con ←. **El resto no se toca** para personalizar tu página.
+>
+> **Todo lo que es tuyo vive en `me/`**: textos, imágenes y favicons. `config/` no es contenido personal sino configuración del sitio (qué secciones existen, qué temas hay); la tocás solo si querés cambiar el comportamiento, no tus datos.
+>
+> ⚠️ **Única excepción:** las etiquetas `<title>`, `description` y Open Graph del `<head>` de `index.html` llevan tu nombre y la URL de tu sitio hardcodeados. No pueden salir de ahí porque los crawlers de WhatsApp, LinkedIn y Slack **no ejecutan JavaScript**: si se inyectaran desde `me/`, las previews al compartir tu link se verían vacías. Son 7 líneas, están comentadas en el archivo.
 
 ---
 
 ## 🛠️ Cómo armar tu propia página
 
 1. **Cloná o usá este repo como plantilla.**
-2. **Editá `data/content.es.json`** (y `content.en.json` si querés versión en inglés) con tus datos: nombre, bio, experiencia, formación, skills, proyectos, recursos y contacto.
-3. **Ajustá `config/site.json`** si querés cambiar etiquetas del menú, agrupaciones, esconder secciones o configurar los idiomas.
-4. **Personalizá `config/theme.json`**: elegí el tema por defecto, ocultá los que no quieras.
-5. **Subí tus retratos** a `assets/images/` (uno por tema, ver [retratos](#retratos-por-tema)).
-6. **Levantá un servidor** (ver [Despliegue](#-despliegue)) — recordá que **no funciona abriendo el `.html` con doble clic** (ver [por qué](#por-qué-hace-falta-un-servidor)).
+2. **Editá `me/content.es.json`** (y `content.en.json` si querés versión en inglés) con tus datos: nombre, bio, experiencia, formación, skills, proyectos, recursos y contacto.
+3. **Subí tus retratos** a `me/images/` (uno por tema, ver [retratos](#retratos-por-tema)), y reemplazá `me/images/og-image.jpg` y los `me/favicon-*.png` por los tuyos.
+4. **Actualizá el `<head>` de `index.html`**: el `<title>`, la `description` y las etiquetas Open Graph / Twitter con tu nombre, tu rol y la URL de tu sitio. Es lo único personal fuera de `me/`, y está comentado en el archivo explicando por qué.
+5. *(Opcional)* **Ajustá `config/site.json`** si querés cambiar etiquetas del menú, agrupaciones, esconder secciones o configurar los idiomas.
+6. *(Opcional)* **Personalizá `config/theme.json`**: elegí el tema por defecto, ocultá los que no quieras.
+7. **Levantá un servidor** (ver [Despliegue](#-despliegue)) — recordá que **no funciona abriendo el `.html` con doble clic** (ver [por qué](#por-qué-hace-falta-un-servidor)).
 
-No hace falta tocar HTML, CSS ni JavaScript.
+Salvo esas etiquetas del `<head>`, no hace falta tocar HTML, CSS ni JavaScript.
 
 ---
 
@@ -171,12 +179,12 @@ El sitio es **100% estático**, así que la imagen solo necesita un servidor web
 FROM nginx:alpine
 
 # Copiamos solo lo que sirve el sitio (nada de .git, configs locales, etc.)
+# me/ trae el contenido personal: textos del CV, retratos y favicons.
 COPY index.html /usr/share/nginx/html/
 COPY styles  /usr/share/nginx/html/styles
 COPY scripts /usr/share/nginx/html/scripts
-COPY data    /usr/share/nginx/html/data
 COPY config  /usr/share/nginx/html/config
-COPY assets  /usr/share/nginx/html/assets
+COPY me      /usr/share/nginx/html/me
 
 EXPOSE 80
 ```
@@ -249,11 +257,11 @@ Otros flags globales en `site.json`:
 
 ### Idiomas (es / en)
 
-El contenido vive en un archivo por idioma (`data/content.es.json`, `data/content.en.json`), ambos con la **misma estructura**. El idioma activo se guarda en `localStorage` (`es` por defecto) y se cambia con el selector del sidebar, **en vivo, sin recargar**. Las etiquetas del menú y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`).
+El contenido vive en un archivo por idioma (`me/content.es.json`, `me/content.en.json`), ambos con la **misma estructura**. El idioma activo se guarda en `localStorage` (`es` por defecto) y se cambia con el selector del sidebar, **en vivo, sin recargar**. Las etiquetas del menú y los nombres de grupo se traducen desde `site.json` (`sections[].label.{es,en}` y `groupLabels`).
 
 **Añadir un idioma** son 3 pasos en JSON, sin tocar JS ni HTML:
 
-1. Creá `data/content.<idioma>.json` (copiá uno existente y traducí los textos).
+1. Creá `me/content.<idioma>.json` (copiá uno existente y traducí los textos).
 2. En `site.json`, agregalo a `languages` y a cada entrada de `groupLabels`:
    ```json
    "languages": { "es": { "name": "Español", "label": "ES" }, "fr": { "name": "Français", "label": "FR" } }
@@ -267,7 +275,7 @@ El contenido vive en un archivo por idioma (`data/content.es.json`, `data/conten
 En `config/theme.json`, cada tema también tiene `visible`:
 
 ```json
-"dnd35": { "name": "D&D 3.5", "type": "special", "visible": false, "label": "D&D", "dot": "#8b1a1a", "portrait": "assets/images/portrait-dnd35.jpg" }
+"dnd35": { "name": "D&D 3.5", "type": "special", "visible": false, "label": "D&D", "dot": "#8b1a1a", "portrait": "me/images/portrait-dnd35.jpg" }
 ```
 
 - `type`: `base` (botón de modo de selección directa, como Light/Dark) o `special` (botón propio que se activa/desactiva).
@@ -277,7 +285,7 @@ En `config/theme.json`, cada tema también tiene `visible`:
 
 ### Retratos por tema
 
-Cada tema referencia su imagen en `theme.json` (`"portrait": "assets/images/portrait-<tema>.jpg"`). Subí las imágenes a `assets/images/`:
+Cada tema referencia su imagen en `theme.json` (`"portrait": "me/images/portrait-<tema>.jpg"`). Subí las imágenes a `me/images/`:
 
 | Propiedad | Recomendación |
 |-----------|---------------|
@@ -364,7 +372,7 @@ Consecuencias de rasterizar el DOM:
 | La página carga vacía / sin contenido | Abierta como `file://` | Servila por HTTP (ver [Despliegue](#-despliegue)) |
 | Edité un JSON y no se actualiza | Caché del navegador | `Ctrl+Shift+R`, o DevTools → Network → *Disable cache* |
 | El cambio no aparece en GitHub Pages | Falta `git push` o el deploy tarda | Pushear y esperar ~1 min; luego `Ctrl+Shift+R` |
-| El retrato no aparece | Falta la imagen o el nombre no coincide | Verificá `assets/images/portrait-<tema>.jpg`; mientras tanto se ve el placeholder |
+| El retrato no aparece | Falta la imagen o el nombre no coincide | Verificá `me/images/portrait-<tema>.jpg`; mientras tanto se ve el placeholder |
 | `404` en consola por una imagen | El retrato de ese tema aún no se subió | Es benigno (cae al placeholder); desaparece al subir la imagen |
 
 ---

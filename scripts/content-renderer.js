@@ -1,6 +1,6 @@
 /* ============================================================
    content-renderer.js
-   Lee data/content.{idioma}.json (es/en) y puebla las secciones del CV.
+   Lee me/content.{idioma}.json (es/en) y puebla las secciones del CV.
    Fase 2: el contenido vive en el JSON; el HTML es el esqueleto.
    Construye el markup con template literals (datos propios, no externos).
    ============================================================ */
@@ -34,13 +34,16 @@ const CONTACT_ICONS = { email: ICONS.email, linkedin: ICONS.linkedin, github: IC
 
 const chip = (text) => `<span class="chip">${text}</span>`;
 
-// Atributos para que un enlace a otro sitio abra en una pestaña nueva.
-// Solo aplica a URLs externas (http/https) y mailto; las anclas internas ("#…")
-// y los placeholders ("#") navegan en la misma ventana, como corresponde.
+// Atributos para que un enlace a otro documento abra en una pestaña nueva.
+// Aplica a URLs externas (http/https), mailto y a las páginas propias que no
+// son el CV (p. ej. "guias/claude-code.html"): son documentos aparte, así que
+// abrirlos en una pestaña nueva no hace perder el CV. Las anclas internas
+// ("#…") y los placeholders ("#") navegan en la misma ventana.
 // rel="noopener noreferrer" evita que la pestaña nueva acceda a window.opener.
 function externalLinkAttrs(url) {
-  const isExternal = /^(https?:|mailto:)/i.test(url || "");
-  return isExternal ? ` target="_blank" rel="noopener noreferrer"` : "";
+  const href = url || "";
+  const isOtherDocument = /^(https?:|mailto:)/i.test(href) || /\.html$/i.test(href);
+  return isOtherDocument ? ` target="_blank" rel="noopener noreferrer"` : "";
 }
 
 // Estiliza el apellido (última palabra) en cursiva, como en el diseño original.
@@ -246,7 +249,7 @@ async function loadContent(lang) {
   try {
     // cache: "no-cache" -> el navegador revalida con el server en cada carga,
     // así al editar el JSON se ve con un F5 normal (sin hard refresh).
-    const response = await fetch(`data/content.${lang}.json`, { cache: "no-cache" });
+    const response = await fetch(`me/content.${lang}.json`, { cache: "no-cache" });
     if (!response.ok) {
       // Fallar de forma visible: sin contenido la página no tiene sentido.
       throw new Error(`No se pudo cargar content.${lang}.json (HTTP ${response.status})`);
