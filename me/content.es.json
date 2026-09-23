@@ -117,10 +117,10 @@
       "tags": ["js", "Docs"]
     },
     {
-      "title": "Lab de IA self-hosted",
-      "url": "#",
-      "description": "Entorno de inferencia de IA en local: despliegue de modelos LLM sobre hardware propio con interfaz web, para tareas que priorizan la privacidad.",
-      "tags": ["IA", "Self-hosting"]
+      "title": "Plantilla de página personal",
+      "url": "https://github.com/Guillepee/personal_page_empy",
+      "description": "Esta misma página sin datos personales: cualquiera despliega la suya editando tres archivos JSON (contenido, estructura y apariencia), sin tocar código. HTML, CSS y JavaScript vanilla, sin build step ni frameworks; bilingüe es/en, cinco temas y exportación del CV a PDF. Se publica en GitHub Pages o como imagen Docker.",
+      "tags": ["Vanilla JS", "JSON", "Docker"]
     },
     {
       "title": "Guía de Claude Code",
