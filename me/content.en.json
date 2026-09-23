@@ -117,10 +117,10 @@
       "tags": ["Js", "Docs"]
     },
     {
-      "title": "Self-hosted AI lab",
-      "url": "#",
-      "description": "Local AI inference environment: deploying LLM models on own hardware with a web interface, for privacy-first tasks.",
-      "tags": ["AI", "Self-hosting"]
+      "title": "Personal page template",
+      "url": "https://github.com/Guillepee/personal_page_empy",
+      "description": "This very page with the personal data stripped out: anyone can deploy their own by editing three JSON files (content, structure and appearance), without touching code. Plain HTML, CSS and JavaScript — no build step, no frameworks; bilingual es/en, five themes and PDF export of the CV. Ships to GitHub Pages or as a Docker image.",
+      "tags": ["Vanilla JS", "JSON", "Docker"]
     },
     {
       "title": "Claude Code Guide",
