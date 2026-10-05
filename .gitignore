@@ -2,3 +2,7 @@
 
 # Config local de Claude Code (no versionar); el CLAUDE.md sí se versiona
 .claude/settings.local.json
+
+dist/
+__pycache__/
+.venv/
