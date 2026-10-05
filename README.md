@@ -2,13 +2,13 @@
 
 # 🪪 CV Web + Hub de Recursos
 
-**Una página personal (CV navegable + hub de enlaces) totalmente modular, multi-tema y sin build step.**
+**Una página personal (CV navegable + hub de enlaces) totalmente modular y multi-tema, con un Archivo generado desde Markdown.**
 
 Editás tres archivos JSON y tenés tu propia página. Sin frameworks ni compilación; la única dependencia es **html2pdf.js** (incluida en el repo) para exportar el CV a PDF.
 
-![Build](https://img.shields.io/badge/build-ninguno-22c55e?style=flat-square)
+![Build](https://img.shields.io/badge/build-Python-22c55e?style=flat-square)
 ![Vanilla JS](https://img.shields.io/badge/Vanilla-JS-f7df1e?style=flat-square)
-![Dependencias](https://img.shields.io/badge/dependencias-1%20(html2pdf.js)-8b5cf6?style=flat-square)
+![Dependencias](https://img.shields.io/badge/runtime-html2pdf.js-8b5cf6?style=flat-square)
 ![Temas](https://img.shields.io/badge/temas-5-e11d48?style=flat-square)
 ![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages%20%C2%B7%20Docker-222?style=flat-square)
 
@@ -55,7 +55,8 @@ Inspiración visual: el tema **Anuppuccin** de Obsidian (Catppuccin + tipografí
 - 🧭 **Sidebar dinámica** — se construye desde config; secciones y temas se activan/desactivan con un flag.
 - 📐 **Sin scroll en la sidebar** — el contenido se autoescala para entrar completo en cualquier alto de pantalla.
 - 📄 **Descargar CV en PDF** — botón en el sidebar que genera un PDF del CV respetando el tema activo (vía html2pdf.js, incluida en el repo).
-- ⚡ **Sin build** — HTML + CSS + JavaScript vanilla. Abre con un servidor estático; la única dependencia (html2pdf.js) viene incluida.
+- ⚡ **Runtime estático** — HTML + CSS + JavaScript vanilla. El build Python genera únicamente el Archivo y empaqueta el sitio; no hay backend.
+- 📚 **Archivo** — Markdown con frontmatter, índice por fecha, búsqueda y etiquetas; páginas de lectura que comparten los temas del portfolio.
 - ♿ **Accesible** — respeta `prefers-reduced-motion`, navegación por teclado y `aria-label`.
 
 ---
@@ -158,7 +159,9 @@ La página carga su contenido con `fetch()` de los archivos JSON. Por seguridad,
 Cualquier servidor estático sirve. El más a mano, con Python:
 
 ```bash
-python3 -m http.server 8000
+python3 -m pip install -r requirements-build.txt
+python3 tools/build_site.py
+python3 -m http.server 8000 --directory dist
 ```
 
 Abrí **http://localhost:8000**.
@@ -173,21 +176,7 @@ Editás un JSON → guardás → `F5`. Los loaders usan `cache: "no-cache"`, as�
 
 El sitio es **100% estático**, así que la imagen solo necesita un servidor web. `nginx:alpine` (~25 MB) es robusto y resuelve los MIME types correctamente.
 
-**`Dockerfile`:**
-
-```dockerfile
-FROM nginx:alpine
-
-# Copiamos solo lo que sirve el sitio (nada de .git, configs locales, etc.)
-# me/ trae el contenido personal: textos del CV, retratos y favicons.
-COPY index.html /usr/share/nginx/html/
-COPY styles  /usr/share/nginx/html/styles
-COPY scripts /usr/share/nginx/html/scripts
-COPY config  /usr/share/nginx/html/config
-COPY me      /usr/share/nginx/html/me
-
-EXPOSE 80
-```
+El `Dockerfile` incluido genera el sitio en una etapa Python y sirve `dist/` con nginx.
 
 **Construir y correr:**
 
@@ -197,32 +186,13 @@ docker run --rm -p 8080:80 cv-web
 # → http://localhost:8080
 ```
 
-#### Imagen mínima absoluta
-
-Si buscás el menor tamaño posible, un servidor estático compilado pesa **~10 MB o menos**. Por ejemplo, con [`static-web-server`](https://static-web-server.net/):
-
-```dockerfile
-FROM ghcr.io/static-web-server/static-web-server:2
-COPY . /public
-# Sirve /public en :80 por defecto
-```
-
-```bash
-docker build -t cv-web-mini .
-docker run --rm -p 8080:80 cv-web-mini
-```
-
-> **Tip de tamaño**: agregá un `.dockerignore` con `.git`, `.venv`, `*.md`, etc. para no inflar el contexto de build ni la imagen.
-
----
-
 ### 3. GitHub Pages
 
 La opción más simple para publicarlo gratis:
 
 1. Subí el repo a GitHub.
 2. **Settings → Pages**.
-3. En *Source* elegí **Deploy from a branch**, rama `main`, carpeta `/ (root)`.
+3. En *Source* elegí **GitHub Actions**. El workflow `.github/workflows/pages.yml` valida y genera `dist/`, y publica al hacer push a `main`. Los PR solo construyen y validan.
 4. Guardá. En ~1 minuto estará en `https://<usuario>.github.io/<repo>/`.
 
 GitHub Pages ya sirve por HTTP, así que `fetch` funciona sin configuración extra.
@@ -379,6 +349,44 @@ Consecuencias de rasterizar el DOM:
 
 <div align="center">
 
-Hecho con HTML, CSS y JavaScript vanilla — sin frameworks, sin build.
+Hecho con HTML, CSS y JavaScript vanilla — sin frameworks ni backend.
 
 </div>
+
+
+## 📚 Publicar en el Archivo
+
+1. Copiá `me/archive/content/plantilla.md` a otro `.md` en la misma carpeta.
+2. Editá título, descripción, fecha, etiquetas y contenido. Usá un `slug` único de letras minúsculas, números y guiones: define la URL estable `archive/<slug>/`.
+3. Cambiá `published` a `true` y hacé commit + push. GitHub Actions generará el HTML y actualizará el índice automáticamente.
+
+```yaml
+---
+title: Una idea que quiero conservar
+description: Un resumen breve para el índice.
+date: 2026-10-05
+slug: una-idea
+tags: [IA, Desarrollo]
+type: note
+lang: es
+published: true
+source: https://example.com/original
+---
+```
+
+`type`: `note`, `article`, `link`, `document`, `news` o `guide`. `source` es opcional y enlaza al original; no descarga contenido. `lang` identifica el idioma real del texto, no lo traduce. El Archivo usa interfaz en español y conserva el selector de idioma del portfolio al volver.
+
+Escribí el cuerpo desde `##`: el título principal viene del frontmatter. Soporta Markdown CommonMark, tablas y bloques de código; HTML crudo se muestra como texto. No ejecuta scripts, Mermaid ni extensiones de Obsidian. El conversor vive detrás de `render_markdown()` en `tools/build_site.py`, listo para sustituirlo por un motor compartido con `markdown-to-html` cuando se revise su contrato.
+
+Guardá imágenes/PDF en `me/archive/assets/` y enlazalos como `[Documento](archive/assets/documento.pdf)` o `![Descripción](archive/assets/imagen.png)`. Los enlaces se resuelven desde la raíz del sitio, incluso en GitHub Pages bajo `/Personal_page/`.
+
+Los archivos con `published: false` o sin `published: true` quedan fuera de `dist/`, **pero siguen visibles en el repositorio público**. Conservá las notas privadas fuera del repo. No edites el HTML de `dist/`: se regenera y elimina páginas antiguas al retirar o renombrar una entrada. Los slugs deben mantenerse estables si ya compartiste su enlace.
+
+El build falla con un mensaje si una entrada publicada tiene metadatos inválidos o un slug duplicado. La plantilla incluida es un borrador: la primera publicación comienza con el índice vacío. El índice y los artículos se pueden leer sin JavaScript; búsqueda, filtros y cambio de temas se activan con JavaScript.
+
+Verificación local:
+
+```bash
+python3 -m unittest discover -s tests
+python3 tools/build_site.py
+```

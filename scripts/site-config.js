@@ -43,7 +43,7 @@ function resolveLang(config) {
 
 function renderNavLink(section, lang, isActive) {
   return `
-    <a href="#${section.id}" class="nav-link${isActive ? " is-active" : ""}">
+    <a href="${section.href || (document.documentElement.dataset.page ? `index.html#${section.id}` : `#${section.id}`)}" class="nav-link${isActive ? " is-active" : ""}">
       ${navIcon(section.icon)}
       <span>${section.label[lang]}</span>
     </a>`;
@@ -86,7 +86,7 @@ function renderNavInto(lang) {
     .querySelector(".nav-link.is-active")
     ?.getAttribute("href")
     ?.slice(1);
-  const activeId = currentActive || (visible.length ? visible[0].id : null);
+  const activeId = document.documentElement.dataset.page || currentActive || (visible.length ? visible[0].id : null);
   nav.innerHTML = renderNav(siteConfig.sections, siteConfig.groupLabels, lang, activeId);
 }
 
@@ -143,8 +143,8 @@ function setLanguage(lang) {
 
 function applyConfig(config) {
   siteConfig = config;
-  activeLang = resolveLang(config);
-  document.documentElement.lang = activeLang;
+  activeLang = document.documentElement.dataset.page ? "es" : resolveLang(config);
+  if (!document.documentElement.dataset.page) document.documentElement.lang = activeLang;
 
   renderNavInto(activeLang);
   applyActionLabels(activeLang);
@@ -158,7 +158,7 @@ function applyConfig(config) {
   }
 
   // Selector de idioma: se omite si la config lo desactiva.
-  if (config.show_language_switcher === false) {
+  if (config.show_language_switcher === false || document.documentElement.dataset.page) {
     document.querySelector(".sidebar__langs")?.remove();
   } else {
     renderLangButtons(config.languages, activeLang);

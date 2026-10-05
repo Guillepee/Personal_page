@@ -9,9 +9,11 @@
 __pycache__
 
 # Documentación y archivos de proyecto (no van a la imagen)
-*.md
 Dockerfile
 .dockerignore
 
 # Datos de ejemplo / backups que no deben ir a producción
 data/content_mock.json
+
+dist
+tests

@@ -1,0 +1,25 @@
+.archive-header { margin-block: var(--sp-6) var(--sp-7); }
+.archive-header h1 { font-size: var(--fs-2xl); margin-block: var(--sp-3); overflow-wrap: anywhere; }
+.archive-meta { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-text-muted); margin-block: var(--sp-3); }
+.archive-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block: var(--sp-3); }
+.archive-tag { font-size: var(--fs-sm); color: var(--color-accent); }
+.archive-entry { padding-block: var(--sp-6); border-bottom: 1px solid var(--color-border); }
+.archive-entry h2 { font-size: var(--fs-lg); margin-bottom: var(--sp-3); overflow-wrap: anywhere; }
+.archive-entry h2 a { color: var(--color-text); }
+.archive-entry h2 a:hover { color: var(--color-accent); }
+.archive-entry > p { color: var(--color-text-muted); }
+#archiveSearch { width: 100%; padding: var(--sp-3); margin-top: var(--sp-2); background: var(--color-bg-elevated); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-sm); font: inherit; }
+#archiveSearch:focus-visible { outline: 2px solid var(--color-accent); }
+#archiveFilters [aria-pressed="true"] { background: var(--color-accent-soft); color: var(--color-accent); }
+.archive-prose { overflow-wrap: anywhere; }
+.archive-prose > * + * { margin-top: var(--sp-5); }
+.archive-prose h2 { font-size: var(--fs-xl); padding-top: var(--sp-4); }
+.archive-prose h3 { font-size: var(--fs-lg); }
+.archive-prose ul, .archive-prose ol { padding-left: var(--sp-5); list-style: revert; }
+.archive-prose li + li { margin-top: var(--sp-2); }
+.archive-prose a { text-decoration: underline; }
+.archive-prose pre { padding: var(--sp-4); background: var(--color-bg-elevated); overflow-x: auto; }
+.archive-prose blockquote { margin-inline: 0; padding-left: var(--sp-5); border-left: 2px solid var(--color-accent); color: var(--color-text-muted); }
+.archive-prose table { display: block; overflow-x: auto; border-collapse: collapse; }
+.archive-prose th, .archive-prose td { padding: var(--sp-3); border: 1px solid var(--color-border); }
+.archive-entry[hidden], [hidden] { display: none !important; }
