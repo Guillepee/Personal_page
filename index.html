@@ -239,6 +239,36 @@
       );
 
       sections.forEach((s) => observer.observe(s));
+
+      // Salto al ancla tras el render. El contenido llega por fetch, así que
+      // cuando el navegador procesa el hash (p. ej. al volver desde Archivo con
+      // index.html#skills) las secciones todavía están vacías y el scroll queda
+      // desfasado. Se reposiciona cuando el DOM ya tiene contenido y otra vez
+      // al cargar las fuentes web, que vuelven a cambiar las alturas.
+      let hashAligned = false;
+      let userTookOver = false;
+      ["wheel", "touchstart", "keydown"].forEach((evt) =>
+        window.addEventListener(evt, () => (userTookOver = true), {
+          passive: true,
+          once: true,
+        })
+      );
+
+      function alignToHash() {
+        // Si el usuario ya movió el scroll, su posición manda.
+        if (userTookOver || !location.hash) return;
+        const target = document.getElementById(location.hash.slice(1));
+        // "instant": el reposicionamiento es una corrección, no una navegación.
+        if (target) target.scrollIntoView({ behavior: "instant", block: "start" });
+      }
+
+      document.addEventListener("content:rendered", () => {
+        // Solo en la carga inicial: al cambiar de idioma no hay que mover nada.
+        if (hashAligned) return;
+        hashAligned = true;
+        alignToHash();
+        document.fonts.ready.then(alignToHash);
+      });
     })();
   </script>
 </body>
