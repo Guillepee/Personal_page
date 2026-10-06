@@ -2,7 +2,7 @@
 title: Second brain sincronizado y editable con Claude Code/Codex
 description: Arquitectura reproducible sobre Syncthing, con una única fuente de verdad replicada entre varios dispositivos y un peer permanente.
 date: 2026-10-05
-slug: mi-primera-nota
+slug: second-brain-syncthing
 tags:
   - Organizacion
   - IA
