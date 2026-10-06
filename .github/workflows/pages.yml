@@ -6,6 +6,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,12 +30,24 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Check Pages publication source
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data } = await github.rest.repos.getPages({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            if (data.build_type !== 'workflow') {
+              core.setFailed('Settings → Pages → Source must be GitHub Actions. Deploy from a branch runs Jekyll and can overwrite the generated archive. Change Source, then run this workflow again.');
+            }
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4

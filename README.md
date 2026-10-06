@@ -4,7 +4,7 @@
 
 **Una página personal (CV navegable + hub de enlaces) totalmente modular y multi-tema, con un Archivo generado desde Markdown.**
 
-Editás tres archivos JSON y tenés tu propia página. Sin frameworks ni compilación; la única dependencia es **html2pdf.js** (incluida en el repo) para exportar el CV a PDF.
+Editás tres archivos JSON para el portfolio y archivos Markdown para el Archivo. Sin frameworks ni backend. Python genera el sitio para publicar; **html2pdf.js** (incluida en el repo) permite exportar el CV a PDF.
 
 ![Build](https://img.shields.io/badge/build-Python-22c55e?style=flat-square)
 ![Vanilla JS](https://img.shields.io/badge/Vanilla-JS-f7df1e?style=flat-square)
@@ -22,6 +22,7 @@ Editás tres archivos JSON y tenés tu propia página. Sin frameworks ni compila
 - [Características](#-características)
 - [Arquitectura](#-arquitectura)
 - [Estructura del proyecto](#-estructura-del-proyecto)
+- [Publicar en el Archivo](#-publicar-en-el-archivo)
 - [Cómo armar tu propia página](#-cómo-armar-tu-propia-página)
 - [Despliegue](#-despliegue)
   - [Desarrollo local](#1-desarrollo-local)
@@ -35,12 +36,13 @@ Editás tres archivos JSON y tenés tu propia página. Sin frameworks ni compila
 
 ## 🎯 Qué es
 
-Una web personal con dos propósitos:
+Una web personal con tres propósitos:
 
 1. **CV en formato web** — navegable, elegante, con scroll a anclas y navegación lateral.
 2. **Hub de accesos rápidos** — tus enlaces favoritos agrupados por categoría.
+3. **Archivo público** — notas, documentos, noticias y lecturas desde Markdown, con índice y páginas independientes.
 
-Lo distintivo: **todo el contenido, la estructura y la apariencia viven en archivos JSON**. El HTML es un esqueleto vacío que se rellena en tiempo de ejecución. Para hacerla tuya, **no tocás código**: editás JSON.
+El portfolio carga contenido y configuración desde JSON en el navegador. El Archivo se genera desde Markdown durante el build: sus páginas ya contienen el texto al publicarse. Ambos comparten la navegación y los temas. Para publicar contenido, editás JSON o Markdown.
 
 Inspiración visual: el tema **Anuppuccin** de Obsidian (Catppuccin + tipografía editorial).
 
@@ -87,6 +89,15 @@ El principio rector es **máxima modularidad**: tres ejes completamente desacopl
 | **Estructura** | `config/site.json` | `site-config.js` | Qué secciones existen, su orden, grupos y visibilidad; idiomas y selector; switchers |
 | **Apariencia** | `config/theme.json` | `theme-loader.js` | Temas disponibles, tema por defecto, retratos, botones |
 
+El Archivo añade una fuente independiente:
+
+| Fuente | Procesa | Resultado |
+|--------|---------|-----------|
+| `me/archive/content/*.md` + frontmatter | `tools/build_site.py` durante el build | `dist/archive/index.html` y `dist/archive/<slug>/index.html` |
+| `me/archive/assets/` | Copia durante el build | `dist/archive/assets/` |
+
+El navegador recibe HTML generado para las entradas. JavaScript solo añade búsqueda, filtros y temas. El build empaqueta también el portfolio, las guías y la política de privacidad en `dist/`, sin incluir los Markdown fuente.
+
 > **¿Por qué separar en tres?** Para que cada tipo de cambio tenga **un único lugar**: actualizar tu CV no toca la apariencia; agregar un tema no toca el contenido; reordenar el menú no toca nada de lo demás. El HTML y el CSS quedan estables; los datos cambian por su cuenta. Es el patrón de *separación de responsabilidades* llevado a archivos de configuración.
 
 El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens.css` como variable (`--color-bg`, `--font-display`, etc.). Cambiar un tema = redefinir variables, no reescribir reglas.
@@ -95,36 +106,43 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 
 ## 📂 Estructura del proyecto
 
-```
+```text
 .
-├── index.html                 # Esqueleto + carga de scripts y CSS
-├── me/                        # ← TODO tu contenido personal vive acá
-│   ├── content.es.json        # ← Tu CV y tus enlaces (español)
-│   ├── content.en.json        # ← Tu CV y tus enlaces (inglés)
-│   ├── favicon-32.png         # ← Tu favicon
-│   ├── favicon-180.png        # ← Tu icono para iOS
-│   └── images/                # ← Tus retratos (portrait-<tema>.jpg) y og-image.jpg
-├── guias/                     # ← Documentos HTML propios enlazados desde el CV
-│   └── claude-code.html       # ← Guía de Claude Code (proyecto en #projects)
+├── index.html                 # Portfolio: esqueleto cargado desde JSON
+├── me/
+│   ├── content.{es,en}.json   # CV, proyectos y recursos por idioma
+│   ├── favicon-*.png
+│   ├── images/                # Retratos y previews sociales
+│   └── archive/
+│       ├── content/*.md        # Entradas fuente con frontmatter YAML
+│       └── assets/             # Imágenes y documentos del Archivo (opcional)
+├── guias/                     # Guías HTML existentes
+├── focustube-privacy.html      # URL pública conservada
 ├── config/
-│   ├── site.json              # ← Secciones, sidebar, visibilidad, idiomas
-│   └── theme.json             # ← Temas, tema por defecto, retratos
+│   ├── site.json              # Navegación, idiomas y enlace al Archivo
+│   └── theme.json             # Temas y retratos
 ├── scripts/
-│   ├── content-renderer.js    # Rellena el contenido del idioma activo (template literals)
-│   ├── site-config.js         # Construye el sidebar y maneja el selector de idioma
-│   ├── theme-loader.js        # Botones de tema (Light/Dark + especiales) + retrato
-│   └── pdf-export.js          # Exporta el CV a PDF (usa html2pdf.js)
-├── styles/
-│   ├── tokens.css             # Variables + paletas de los 5 temas
-│   ├── base.css               # Reset y estilos globales
-│   ├── layout.css             # Sidebar + main + responsive
-│   ├── components.css         # Componentes (hero, timeline, chips…)
-│   └── main.css               # Orquestador de @import
-└── vendor/
-    └── html2pdf.bundle.min.js # Dependencia para exportar a PDF (incluida)
+│   ├── content-renderer.js    # Contenido del portfolio
+│   ├── site-config.js         # Navegación por anclas y páginas
+│   ├── theme-loader.js        # Temas compartidos
+│   ├── archive.js             # Búsqueda y filtros del Archivo
+│   └── pdf-export.js          # Exportación del CV
+├── styles/                    # Tokens, layout y componentes compartidos
+│   └── archive.css            # Índice y tipografía de lectura
+├── vendor/html2pdf.bundle.min.js
+├── tools/build_site.py        # Valida Markdown y genera el sitio estático
+├── tests/test_archive.py      # Pruebas del build y las entradas
+├── requirements-build.txt     # Dependencias Python del build
+├── .github/workflows/pages.yml # Validación y despliegue de dist/
+├── Dockerfile                 # Build Python + servidor nginx
+└── dist/                      # Generado, ignorado por Git
+    ├── index.html             # Portfolio y sus assets
+    ├── archive/index.html     # Índice de entradas publicadas
+    ├── archive/<slug>/index.html # Página de lectura
+    └── archive/assets/        # Assets publicados
 ```
 
-> Lo que editás vos está marcado con ←. **El resto no se toca** para personalizar tu página.
+> Editás `me/content.{es,en}.json` para el portfolio y `me/archive/content/*.md` para publicar notas. El HTML de `dist/` se genera; no se edita.
 >
 > **Todo lo que es tuyo vive en `me/`**: textos, imágenes y favicons. `config/` no es contenido personal sino configuración del sitio (qué secciones existen, qué temas hay); la tocás solo si querés cambiar el comportamiento, no tus datos.
 >
@@ -168,13 +186,13 @@ Abrí **http://localhost:8000**.
 
 > **¿Trabajás dentro de un contenedor/VM remota?** `localhost` apunta a tu máquina, no al contenedor. Accedé por la IP de red del contenedor (`http://<ip-del-contenedor>:8000`) o reenviá el puerto (VS Code → pestaña *Ports*; o SSH con `-L 8000:localhost:8000`).
 
-Editás un JSON → guardás → `F5`. Los loaders usan `cache: "no-cache"`, así que el navegador revalida y ves el cambio sin *hard refresh*.
+Después de editar JSON, Markdown, estilos o scripts, ejecutá `python3 tools/build_site.py` de nuevo y recargá con `F5` (el servidor local sirve `dist/`). Los loaders usan `cache: "no-cache"`, así que el navegador revalida y ves el cambio sin *hard refresh*.
 
 ---
 
 ### 2. Docker (imagen liviana)
 
-El sitio es **100% estático**, así que la imagen solo necesita un servidor web. `nginx:alpine` (~25 MB) es robusto y resuelve los MIME types correctamente.
+La imagen final sirve un sitio **100% estático** con `nginx:alpine`. Una etapa previa con Python instala las dependencias y genera `dist/`; esas dependencias no pasan a la imagen final.
 
 El `Dockerfile` incluido genera el sitio en una etapa Python y sirve `dist/` con nginx.
 
@@ -195,7 +213,11 @@ La opción más simple para publicarlo gratis:
 3. En *Source* elegí **GitHub Actions**. El workflow `.github/workflows/pages.yml` valida y genera `dist/`, y publica al hacer push a `main`. Los PR solo construyen y validan.
 4. Guardá. En ~1 minuto estará en `https://<usuario>.github.io/<repo>/`.
 
-GitHub Pages ya sirve por HTTP, así que `fetch` funciona sin configuración extra.
+**Migración desde el despliegue anterior:** es obligatorio cambiar *Source* de **Deploy from a branch** a **GitHub Actions**. Si quedan activos ambos métodos, Jekyll puede publicar la raíz del repo después del build Python y sobrescribir el sitio: la sidebar aparece pero `/archive/` devuelve 404.
+
+Después de cambiar *Source*, abrí **Actions → Build and deploy static site → Run workflow → main** para regenerar y publicar. No uses el workflow antiguo “pages build and deployment”. El nuevo workflow comprueba esta configuración antes de publicar.
+
+La URL esperada del Archivo es `https://guillepee.github.io/Personal_page/archive/`. GitHub Pages sirve `dist/` por HTTP, con las rutas relativas del portfolio y del Archivo.
 
 > ⚠️ **Lo que editás localmente no aparece en Pages hasta que hagas `git push`.** Y tras pushear, el deploy tarda ~1 min y el navegador puede cachear: si no ves el cambio, `Ctrl+Shift+R`.
 
@@ -341,6 +363,7 @@ Consecuencias de rasterizar el DOM:
 |---------|----------------|----------|
 | La página carga vacía / sin contenido | Abierta como `file://` | Servila por HTTP (ver [Despliegue](#-despliegue)) |
 | Edité un JSON y no se actualiza | Caché del navegador | `Ctrl+Shift+R`, o DevTools → Network → *Disable cache* |
+| Archivo devuelve 404 aunque el build pasó | Un despliegue antiguo de Jekyll sobrescribió `dist/` | En Settings → Pages elegí GitHub Actions y ejecutá el nuevo workflow |
 | El cambio no aparece en GitHub Pages | Falta `git push` o el deploy tarda | Pushear y esperar ~1 min; luego `Ctrl+Shift+R` |
 | El retrato no aparece | Falta la imagen o el nombre no coincide | Verificá `me/images/portrait-<tema>.jpg`; mientras tanto se ve el placeholder |
 | `404` en consola por una imagen | El retrato de ese tema aún no se subió | Es benigno (cae al placeholder); desaparece al subir la imagen |
