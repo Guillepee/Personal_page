@@ -397,7 +397,7 @@ source: https://example.com/original
 ---
 ```
 
-`type`: `note`, `article`, `link`, `document`, `news` o `guide`. `source` es opcional y enlaza al original; no descarga contenido. `lang` identifica el idioma real del texto, no lo traduce. El Archivo usa interfaz en español y conserva el selector de idioma del portfolio al volver.
+`type`: `note`, `article`, `link`, `document`, `news` o `guide`. `source` es opcional y enlaza al original; no descarga contenido. `lang` identifica el idioma real del texto, no lo traduce. La interfaz del Archivo comparte el selector ES/EN y la preferencia guardada del portfolio. Sus textos viven en `me/content.es.json` y `me/content.en.json`, bajo `archive`. Cambiar la interfaz no traduce las entradas: títulos, etiquetas y cuerpos conservan el idioma de cada Markdown.
 
 Escribí el cuerpo desde `##`: el título principal viene del frontmatter. Soporta Markdown CommonMark, tablas y bloques de código; HTML crudo se muestra como texto. No ejecuta scripts, Mermaid ni extensiones de Obsidian. El conversor vive detrás de `render_markdown()` en `tools/build_site.py`, listo para sustituirlo por un motor compartido con `markdown-to-html` cuando se revise su contrato.
 
@@ -411,5 +411,6 @@ Verificación local:
 
 ```bash
 python3 -m unittest discover -s tests
+node tests/test_archive_i18n.cjs
 python3 tools/build_site.py
 ```

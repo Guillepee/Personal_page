@@ -1,4 +1,28 @@
 {
+  "archive": {
+    "name": "Archive",
+    "title": "Notes and reading",
+    "description": "Notes, documents and things I want to keep.",
+    "search": "Search the archive",
+    "placeholder": "Title, description or tag…",
+    "all": "All",
+    "empty": "No published entries yet.",
+    "noResults": "No entries found.",
+    "back": "← Archive",
+    "portfolio": "← Portfolio",
+    "source": "Source ↗",
+    "readingTime": "{minutes} min read",
+    "count": "{count} of {total} entries",
+    "navigation": "Main navigation",
+    "types": {
+      "note": "Note",
+      "article": "Article",
+      "link": "Link",
+      "document": "Document",
+      "news": "News",
+      "guide": "Guide"
+    }
+  },
   "sectionHeaders": {
     "experience": { "eyebrow": "Career", "title": "Experience", "lede": "Roles that have shaped how I think about product, systems and teams." },
     "education":  { "eyebrow": "Studies", "title": "Education", "lede": "The official part. The important stuff I learned afterwards." },

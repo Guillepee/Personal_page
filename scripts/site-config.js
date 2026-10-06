@@ -143,8 +143,8 @@ function setLanguage(lang) {
 
 function applyConfig(config) {
   siteConfig = config;
-  activeLang = document.documentElement.dataset.page ? "es" : resolveLang(config);
-  if (!document.documentElement.dataset.page) document.documentElement.lang = activeLang;
+  activeLang = resolveLang(config);
+  document.documentElement.lang = activeLang;
 
   renderNavInto(activeLang);
   applyActionLabels(activeLang);
@@ -158,7 +158,7 @@ function applyConfig(config) {
   }
 
   // Selector de idioma: se omite si la config lo desactiva.
-  if (config.show_language_switcher === false || document.documentElement.dataset.page) {
+  if (config.show_language_switcher === false) {
     document.querySelector(".sidebar__langs")?.remove();
   } else {
     renderLangButtons(config.languages, activeLang);

@@ -1,4 +1,28 @@
 {
+  "archive": {
+    "name": "Archivo",
+    "title": "Notas y lecturas",
+    "description": "Notas, documentos y cosas que quiero conservar.",
+    "search": "Buscar en el archivo",
+    "placeholder": "Título, descripción o etiqueta…",
+    "all": "Todos",
+    "empty": "Todavía no hay entradas publicadas.",
+    "noResults": "No se encontraron entradas.",
+    "back": "← Archivo",
+    "portfolio": "← Portfolio",
+    "source": "Fuente ↗",
+    "readingTime": "{minutes} min de lectura",
+    "count": "{count} de {total} entradas",
+    "navigation": "Navegación principal",
+    "types": {
+      "note": "Nota",
+      "article": "Artículo",
+      "link": "Enlace",
+      "document": "Documento",
+      "news": "Noticia",
+      "guide": "Guía"
+    }
+  },
   "sectionHeaders": {
     "experience": { "eyebrow": "Trayectoria", "title": "Experiencia", "lede": "Roles que han moldeado cómo pienso sobre producto, sistemas y equipos." },
     "education":  { "eyebrow": "Estudios", "title": "Formación", "lede": "La parte oficial. Lo importante lo aprendí después." },

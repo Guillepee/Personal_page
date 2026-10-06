@@ -1,8 +1,9 @@
 import tempfile
+import json
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from tools.build_site import load_entries, render_markdown, build
+from tools.build_site import ROOT, load_entries, render_markdown, build
 
 
 class ArchiveTests(unittest.TestCase):
@@ -13,6 +14,14 @@ class ArchiveTests(unittest.TestCase):
 
     def write(self, name='entry', extra='', body='## Texto\n\nHola'):
         (self.folder / f'{name}.md').write_text(f'---\ntitle: Título\ndescription: Descripción\ndate: 2026-10-05\npublished: true\n{extra}---\n{body}')
+
+    def test_archive_translations_have_matching_keys(self):
+        es = json.loads((ROOT / 'me/content.es.json').read_text())['archive']
+        en = json.loads((ROOT / 'me/content.en.json').read_text())['archive']
+        self.assertEqual(es.keys(), en.keys())
+        self.assertEqual(es['types'].keys(), en['types'].keys())
+        self.assertEqual(en['name'], 'Archive')
+        self.assertIn('{count}', en['count'])
 
     def test_drafts_are_excluded(self):
         (self.folder / 'draft.md').write_text('---\npublished: false\n---\nPrivado')
@@ -52,6 +61,9 @@ class ArchiveTests(unittest.TestCase):
             build(out)
         article = (out / 'archive/entry/index.html').read_text()
         self.assertIn('<base href="../../"', article)
+        self.assertIn('data-archive-text="back"', article)
+        self.assertIn('data-archive-type="note"', article)
+        self.assertIn('<article lang="es">', article)
         self.assertIn('&lt;Texto&gt;', article)
         self.assertIn('href="archive/assets/test.pdf"', article)
         self.assertIn('href="index.html#about"', article)

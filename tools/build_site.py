@@ -12,7 +12,16 @@ from markdown_it import MarkdownIt
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-TYPES = {'note': 'Nota', 'article': 'Artículo', 'link': 'Enlace', 'document': 'Documento', 'news': 'Noticia', 'guide': 'Guía'}
+TYPES = ('note', 'article', 'link', 'document', 'news', 'guide')
+
+def archive_text():
+    return json.loads((ROOT / 'me/content.es.json').read_text())['archive']
+
+def label(key):
+    return f'<span data-archive-text="{key}">{e(archive_text()[key])}</span>'
+
+def type_label(kind):
+    return f'<span data-archive-type="{kind}">{e(archive_text()["types"][kind])}</span>'
 
 
 def render_markdown(body):
@@ -74,8 +83,8 @@ def page(title, description, content, depth, lang='es'):
     links = ''.join(f'<a class="nav-link{ " is-active" if item["id"] == "archive" else ""}" href="{item.get("href", "index.html#" + item["id"])}">{e(item["label"]["es"])}</a>' for item in config['sections'] if item['visible'])
     sidebar = sidebar.replace('<nav class="sidebar__nav" aria-label="Navegación principal"></nav>', f'<nav class="sidebar__nav" aria-label="Navegación principal">{links}</nav>')
     profile = json.loads((ROOT / 'me/content.es.json').read_text())['profile']
-    sidebar = sidebar.replace('<div class="sidebar__brand-mark"></div>', '<div class="sidebar__brand-mark">GP</div>').replace('<span class="sidebar__brand-name"></span>', f'<span class="sidebar__brand-name">{e(profile["name"])}</span>').replace('<span class="sidebar__brand-role"></span>', '<span class="sidebar__brand-role">Archivo</span>')
-    sidebar = re.sub(r'<button class="sidebar__download".*?</button>', '<a class="sidebar__download" href="index.html">← Portfolio</a>', sidebar, flags=re.S)
+    sidebar = sidebar.replace('<div class="sidebar__brand-mark"></div>', '<div class="sidebar__brand-mark">GP</div>').replace('<span class="sidebar__brand-name"></span>', f'<span class="sidebar__brand-name">{e(profile["name"])}</span>').replace('<span class="sidebar__brand-role"></span>', '<span class="sidebar__brand-role" data-archive-text="name">Archivo</span>')
+    sidebar = re.sub(r'<button class="sidebar__download".*?</button>', '<a class="sidebar__download" href="index.html" data-archive-text="portfolio">← Portfolio</a>', sidebar, flags=re.S)
     layout = original.split('  <script>')[-1].split('</script>')[0]
     return f'<!DOCTYPE html><html lang="{lang}" data-theme="light" data-page="archive"><head>{head}</head><body><div class="app"><aside class="sidebar">{sidebar}</aside><main class="main"><div class="main__inner">{content}</div></main></div><script>{layout}</script></body></html>'
 
@@ -101,17 +110,17 @@ def build(output):
     rows = []
     for item in entries:
         slug = item['slug']
-        rows.append(f'<article class="archive-entry" data-tags="{e(json.dumps(item["tags"], ensure_ascii=False), quote=True)}"><p class="archive-meta">{TYPES[item["type"]]} · <time datetime="{item["date"]}">{item["date"]}</time></p><h2><a href="archive/{slug}/">{e(item["title"])}</a></h2><p>{e(item["description"])}</p><div class="archive-tags">{tags_html(item["tags"])}</div></article>')
-        source = f'<p><a href="{e(item["source"], quote=True)}" rel="noopener noreferrer">Fuente ↗</a></p>' if item['source'] else ''
+        rows.append(f'<article class="archive-entry" lang="{item["lang"]}" data-tags="{e(json.dumps(item["tags"], ensure_ascii=False), quote=True)}"><p class="archive-meta">{type_label(item['type'])} · <time datetime="{item["date"]}">{item["date"]}</time></p><h2><a href="archive/{slug}/">{e(item["title"])}</a></h2><p>{e(item["description"])}</p><div class="archive-tags">{tags_html(item["tags"])}</div></article>')
+        source = f'<p><a href="{e(item["source"], quote=True)}" rel="noopener noreferrer" data-archive-text="source">{e(archive_text()["source"])}</a></p>' if item['source'] else ''
         minutes = max(1, (len(item['body'].split()) + 199) // 200)
-        body = f'<article lang="{item["lang"]}"><a href="archive/">← Archivo</a><header class="archive-header"><p class="archive-meta">{TYPES[item["type"]]} · <time>{item["date"]}</time> · {minutes} min</p><h1>{e(item["title"])}</h1><p class="section__lede">{e(item["description"])}</p><div class="archive-tags">{tags_html(item["tags"])}</div></header><div class="archive-prose">{source}{render_markdown(item["body"])}</div></article>'
+        body = f'<article lang="{item["lang"]}"><a href="archive/" data-archive-text="back">{e(archive_text()["back"])}</a><header class="archive-header"><p class="archive-meta">{type_label(item['type'])} · <time>{item["date"]}</time> · <span data-reading-minutes="{minutes}">{e(archive_text()["readingTime"].replace("{minutes}", str(minutes)))}</span></p><h1>{e(item["title"])}</h1><p class="section__lede">{e(item["description"])}</p><div class="archive-tags">{tags_html(item["tags"])}</div></header><div class="archive-prose">{source}{render_markdown(item["body"])}</div></article>'
         dest = archive / slug
         dest.mkdir()
         (dest / 'index.html').write_text(page(item['title'], item['description'], body, 2, item['lang']))
     all_tags = sorted({t for item in entries for t in item['tags']}, key=str.casefold)
     buttons = ''.join(f'<button class="chip" type="button" data-tag="{e(t, quote=True)}" aria-pressed="false">{e(t)}</button>' for t in all_tags)
-    content = f'<header><span class="section__eyebrow">Archivo</span><h1 class="section__title">Notas y lecturas</h1><p class="section__lede">Notas, documentos y cosas que quiero conservar.</p></header><div id="archiveFilters" hidden><label for="archiveSearch">Buscar en el archivo</label><input type="search" id="archiveSearch" placeholder="Título, descripción o etiqueta…" /><div class="archive-tags"><button class="chip" type="button" data-tag="" aria-pressed="true">Todos</button>{buttons}</div></div><p id="archiveCount" class="archive-meta" role="status"></p><div id="archiveEntries">{"".join(rows)}</div><p id="archiveEmpty" {"hidden" if rows else ""}>{"Todavía no hay entradas publicadas." if not rows else "No se encontraron entradas."}</p>'
-    (archive / 'index.html').write_text(page('Archivo', 'Notas, documentos y cosas que quiero conservar.', content, 1))
+    content = f'<header><span class="section__eyebrow" data-archive-text="name">{e(archive_text()["name"])}</span><h1 class="section__title" data-archive-text="title">{e(archive_text()["title"])}</h1><p class="section__lede" data-archive-text="description">{e(archive_text()["description"])}</p></header><div id="archiveFilters" hidden><label for="archiveSearch" data-archive-text="search">{e(archive_text()["search"])}</label><input type="search" id="archiveSearch" placeholder="{e(archive_text()["placeholder"], quote=True)}" /><div class="archive-tags"><button class="chip" type="button" data-tag="" aria-pressed="true" data-archive-text="all">{e(archive_text()["all"])}</button>{buttons}</div></div><p id="archiveCount" class="archive-meta" role="status"></p><div id="archiveEntries">{"".join(rows)}</div><p id="archiveEmpty" {"hidden" if rows else ""}>{e(archive_text()["empty" if not rows else "noResults"])}</p>'
+    (archive / 'index.html').write_text(page(archive_text()['name'], archive_text()['description'], content, 1))
     print(f'Sitio generado en {output}: {len(entries)} entradas')
 
 
