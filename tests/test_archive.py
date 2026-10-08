@@ -20,7 +20,7 @@ class ArchiveTests(unittest.TestCase):
         en = json.loads((ROOT / 'me/content.en.json').read_text())['archive']
         self.assertEqual(es.keys(), en.keys())
         self.assertEqual(es['types'].keys(), en['types'].keys())
-        self.assertEqual(en['name'], 'Archive')
+        self.assertEqual(en['name'], 'Library')
         self.assertIn('{count}', en['count'])
 
     def test_drafts_are_excluded(self):
