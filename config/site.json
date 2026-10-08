@@ -99,7 +99,7 @@
         "es": "Archivo",
         "en": "Archive"
       },
-      "icon": "bookmark",
+      "icon": "book",
       "group": "Hub",
       "visible": true,
       "href": "archive/"

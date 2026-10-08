@@ -3,6 +3,7 @@
 .archive-meta { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-text-muted); margin-block: var(--sp-3); }
 .archive-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block: var(--sp-3); }
 .archive-tag { font-size: var(--fs-sm); color: var(--color-accent); }
+.archive-tag + .archive-tag::before { content: ""; display: inline-block; width: .2em; height: .2em; margin-inline-end: var(--sp-2); border-radius: 50%; background: var(--color-text-muted); vertical-align: middle; }
 .archive-entry { padding-block: var(--sp-6); border-bottom: 1px solid var(--color-border); }
 .archive-entry h2 { font-size: var(--fs-lg); margin-bottom: var(--sp-3); overflow-wrap: anywhere; }
 .archive-entry h2 a { color: var(--color-text); }
