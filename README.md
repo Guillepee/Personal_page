@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🪪 CV Web + Hub de Recursos
+# 🪪 CV Web + Links + Biblioteca
 
-**Una página personal (CV navegable + hub de enlaces) totalmente modular y multi-tema, con un Archivo generado desde Markdown.**
+**Una página personal (CV navegable + hub de enlaces) totalmente modular y multi-tema, con una Biblioteca generada desde Markdown.**
 
-Editás tres archivos JSON para el portfolio y archivos Markdown para el Archivo. Sin frameworks ni backend. Python genera el sitio para publicar; **html2pdf.js** (incluida en el repo) permite exportar el CV a PDF.
+Editás tres archivos JSON para el portfolio y archivos Markdown para la Biblioteca. Sin frameworks ni backend. Python genera el sitio para publicar; **html2pdf.js** (incluida en el repo) permite exportar el CV a PDF.
 
 ![Build](https://img.shields.io/badge/build-Python-22c55e?style=flat-square)
 ![Vanilla JS](https://img.shields.io/badge/Vanilla-JS-f7df1e?style=flat-square)
@@ -22,7 +22,7 @@ Editás tres archivos JSON para el portfolio y archivos Markdown para el Archivo
 - [Características](#-características)
 - [Arquitectura](#-arquitectura)
 - [Estructura del proyecto](#-estructura-del-proyecto)
-- [Publicar en el Archivo](#-publicar-en-el-archivo)
+- [Publicar en la Biblioteca](#-publicar-en-la-biblioteca)
 - [Cómo armar tu propia página](#-cómo-armar-tu-propia-página)
 - [Despliegue](#-despliegue)
   - [Desarrollo local](#1-desarrollo-local)
@@ -40,9 +40,9 @@ Una web personal con tres propósitos:
 
 1. **CV en formato web** — navegable, elegante, con scroll a anclas y navegación lateral.
 2. **Hub de accesos rápidos** — tus enlaces favoritos agrupados por categoría.
-3. **Archivo público** — notas, documentos, noticias y lecturas desde Markdown, con índice y páginas independientes.
+3. **Biblioteca pública** — notas, documentos, noticias y lecturas desde Markdown, con índice y páginas independientes.
 
-El portfolio carga contenido y configuración desde JSON en el navegador. El Archivo se genera desde Markdown durante el build: sus páginas ya contienen el texto al publicarse. Ambos comparten la navegación y los temas. Para publicar contenido, editás JSON o Markdown.
+El portfolio carga contenido y configuración desde JSON en el navegador. La Biblioteca se genera desde Markdown durante el build: sus páginas ya contienen el texto al publicarse. Ambos comparten la navegación y los temas. Para publicar contenido, editás JSON o Markdown.
 
 Inspiración visual: el tema **Anuppuccin** de Obsidian (Catppuccin + tipografía editorial).
 
@@ -57,8 +57,8 @@ Inspiración visual: el tema **Anuppuccin** de Obsidian (Catppuccin + tipografí
 - 🧭 **Sidebar dinámica** — se construye desde config; secciones y temas se activan/desactivan con un flag.
 - 📐 **Sin scroll en la sidebar** — el contenido se autoescala para entrar completo en cualquier alto de pantalla.
 - 📄 **Descargar CV en PDF** — botón en el sidebar que genera un PDF del CV respetando el tema activo (vía html2pdf.js, incluida en el repo).
-- ⚡ **Runtime estático** — HTML + CSS + JavaScript vanilla. El build Python genera únicamente el Archivo y empaqueta el sitio; no hay backend.
-- 📚 **Archivo** — Markdown con frontmatter, índice por fecha, búsqueda y etiquetas; páginas de lectura que comparten los temas del portfolio.
+- ⚡ **Runtime estático** — HTML + CSS + JavaScript vanilla. El build Python genera únicamente la Biblioteca y empaqueta el sitio; no hay backend.
+- 📚 **Biblioteca** — Markdown con frontmatter, índice por fecha, búsqueda y etiquetas; páginas de lectura que comparten los temas del portfolio.
 - ♿ **Accesible** — respeta `prefers-reduced-motion`, navegación por teclado y `aria-label`.
 
 ---
@@ -89,7 +89,7 @@ El principio rector es **máxima modularidad**: tres ejes completamente desacopl
 | **Estructura** | `config/site.json` | `site-config.js` | Qué secciones existen, su orden, grupos y visibilidad; idiomas y selector; switchers |
 | **Apariencia** | `config/theme.json` | `theme-loader.js` | Temas disponibles, tema por defecto, retratos, botones |
 
-El Archivo añade una fuente independiente:
+La Biblioteca añade una fuente independiente:
 
 | Fuente | Procesa | Resultado |
 |--------|---------|-----------|
@@ -115,17 +115,17 @@ El CSS **nunca tiene valores hardcodeados**: todo literal vive en `styles/tokens
 │   ├── images/                # Retratos y previews sociales
 │   └── archive/
 │       ├── content/*.md        # Entradas fuente con frontmatter YAML
-│       └── assets/             # Imágenes y documentos del Archivo (opcional)
+│       └── assets/             # Imágenes y documentos de la Biblioteca (opcional)
 ├── guias/                     # Guías HTML existentes
 ├── focustube-privacy.html      # URL pública conservada
 ├── config/
-│   ├── site.json              # Navegación, idiomas y enlace al Archivo
+│   ├── site.json              # Navegación, idiomas y enlace a la Biblioteca
 │   └── theme.json             # Temas y retratos
 ├── scripts/
 │   ├── content-renderer.js    # Contenido del portfolio
 │   ├── site-config.js         # Navegación por anclas y páginas
 │   ├── theme-loader.js        # Temas compartidos
-│   ├── archive.js             # Búsqueda y filtros del Archivo
+│   ├── archive.js             # Búsqueda y filtros de la Biblioteca
 │   └── pdf-export.js          # Exportación del CV
 ├── styles/                    # Tokens, layout y componentes compartidos
 │   └── archive.css            # Índice y tipografía de lectura
@@ -217,7 +217,7 @@ La opción más simple para publicarlo gratis:
 
 Después de cambiar *Source*, abrí **Actions → Build and deploy static site → Run workflow → main** para regenerar y publicar. No uses el workflow antiguo “pages build and deployment”. El nuevo workflow comprueba esta configuración antes de publicar.
 
-La URL esperada del Archivo es `https://guillepee.github.io/Personal_page/archive/`. GitHub Pages sirve `dist/` por HTTP, con las rutas relativas del portfolio y del Archivo.
+La URL esperada de la Biblioteca es `https://guillepee.github.io/Personal_page/archive/`. GitHub Pages sirve `dist/` por HTTP, con las rutas relativas del portfolio y de la Biblioteca.
 
 > ⚠️ **Lo que editás localmente no aparece en Pages hasta que hagas `git push`.** Y tras pushear, el deploy tarda ~1 min y el navegador puede cachear: si no ves el cambio, `Ctrl+Shift+R`.
 
@@ -230,7 +230,7 @@ La URL esperada del Archivo es `https://guillepee.github.io/Personal_page/archiv
 En `config/site.json`, cada sección tiene un flag `visible`. Ponelo en `false` para esconderla (desaparece del menú **y** del contenido):
 
 ```json
-{ "id": "resources", "label": "Recursos", "icon": "bookmark", "group": "Hub", "visible": false }
+{ "id": "resources", "label": { "es": "Links", "en": "Links" }, "icon": "bookmark", "group": "Hub", "visible": false }
 ```
 
 | Campo | Qué hace |
@@ -363,7 +363,7 @@ Consecuencias de rasterizar el DOM:
 |---------|----------------|----------|
 | La página carga vacía / sin contenido | Abierta como `file://` | Servila por HTTP (ver [Despliegue](#-despliegue)) |
 | Edité un JSON y no se actualiza | Caché del navegador | `Ctrl+Shift+R`, o DevTools → Network → *Disable cache* |
-| Archivo devuelve 404 aunque el build pasó | Un despliegue antiguo de Jekyll sobrescribió `dist/` | En Settings → Pages elegí GitHub Actions y ejecutá el nuevo workflow |
+| Biblioteca devuelve 404 aunque el build pasó | Un despliegue antiguo de Jekyll sobrescribió `dist/` | En Settings → Pages elegí GitHub Actions y ejecutá el nuevo workflow |
 | El cambio no aparece en GitHub Pages | Falta `git push` o el deploy tarda | Pushear y esperar ~1 min; luego `Ctrl+Shift+R` |
 | El retrato no aparece | Falta la imagen o el nombre no coincide | Verificá `me/images/portrait-<tema>.jpg`; mientras tanto se ve el placeholder |
 | `404` en consola por una imagen | El retrato de ese tema aún no se subió | Es benigno (cae al placeholder); desaparece al subir la imagen |
@@ -377,7 +377,7 @@ Hecho con HTML, CSS y JavaScript vanilla — sin frameworks ni backend.
 </div>
 
 
-## 📚 Publicar en el Archivo
+## 📚 Publicar en la Biblioteca
 
 1. Copiá `me/archive/content/plantilla.md` a otro `.md` en la misma carpeta.
 2. Editá título, descripción, fecha, etiquetas y contenido. Usá un `slug` único de letras minúsculas, números y guiones: define la URL estable `archive/<slug>/`.
@@ -397,7 +397,7 @@ source: https://example.com/original
 ---
 ```
 
-`type`: `note`, `article`, `link`, `document`, `news` o `guide`. `source` es opcional y enlaza al original; no descarga contenido. `lang` identifica el idioma real del texto, no lo traduce. La interfaz del Archivo comparte el selector ES/EN y la preferencia guardada del portfolio. Sus textos viven en `me/content.es.json` y `me/content.en.json`, bajo `archive`. Cambiar la interfaz no traduce las entradas: títulos, etiquetas y cuerpos conservan el idioma de cada Markdown.
+`type`: `note`, `article`, `link`, `document`, `news` o `guide`. `source` es opcional y enlaza al original; no descarga contenido. `lang` identifica el idioma real del texto, no lo traduce. La interfaz de la Biblioteca comparte el selector ES/EN y la preferencia guardada del portfolio. Sus textos viven en `me/content.es.json` y `me/content.en.json`, bajo `archive`. Cambiar la interfaz no traduce las entradas: títulos, etiquetas y cuerpos conservan el idioma de cada Markdown.
 
 Escribí el cuerpo desde `##`: el título principal viene del frontmatter. Soporta Markdown CommonMark, tablas y bloques de código; HTML crudo se muestra como texto. No ejecuta scripts, Mermaid ni extensiones de Obsidian. El conversor vive detrás de `render_markdown()` en `tools/build_site.py`, listo para sustituirlo por un motor compartido con `markdown-to-html` cuando se revise su contrato.
 

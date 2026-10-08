@@ -86,8 +86,8 @@
     {
       "id": "resources",
       "label": {
-        "es": "Recursos",
-        "en": "Resources"
+        "es": "Links",
+        "en": "Links"
       },
       "icon": "bookmark",
       "group": "Hub",
@@ -96,8 +96,8 @@
     {
       "id": "archive",
       "label": {
-        "es": "Archivo",
-        "en": "Archive"
+        "es": "Biblioteca",
+        "en": "Library"
       },
       "icon": "book",
       "group": "Hub",

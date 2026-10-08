@@ -1,14 +1,14 @@
 {
   "archive": {
-    "name": "Archive",
+    "name": "Library",
     "title": "Notes and reading",
     "description": "Notes, documents and things I want to keep.",
-    "search": "Search the archive",
+    "search": "Search the library",
     "placeholder": "Title, description or tag…",
     "all": "All",
     "empty": "No published entries yet.",
     "noResults": "No entries found.",
-    "back": "← Archive",
+    "back": "← Library",
     "portfolio": "← Portfolio",
     "source": "Source ↗",
     "readingTime": "{minutes} min read",
@@ -28,7 +28,7 @@
     "education":  { "eyebrow": "Studies", "title": "Education", "lede": "The official part. The important stuff I learned afterwards." },
     "skills":     { "eyebrow": "Toolbox", "title": "Skills", "lede": "What I'm comfortable with day to day, grouped by where it fits in the stack." },
     "projects":   { "eyebrow": "Own work", "title": "Projects", "lede": "Things I built because I wanted to use them." },
-    "resources":  { "eyebrow": "Quick-access hub", "title": "Resources", "lede": "The pages I keep one click away. My desktop in the cloud." },
+    "resources":  { "eyebrow": "Quick-access hub", "title": "Links", "lede": "The pages I keep one click away. My desktop in the cloud." },
     "contact":    { "eyebrow": "Connect", "title": "Contact", "lede": "The fastest way to reach me. I reply within 24h unless there are fires." }
   },
   "profile": {
