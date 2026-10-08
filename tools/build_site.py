@@ -67,7 +67,7 @@ def load_entries(folder):
 
 
 def tags_html(tags):
-    return ' '.join(f'<span class="archive-tag">#{e(t)}</span>' for t in tags)
+    return ' '.join(f'<span class="archive-tag">{e(t)}</span>' for t in tags)
 
 
 def page(title, description, content, depth, lang='es'):

@@ -4,9 +4,11 @@ description: Arquitectura reproducible sobre Syncthing, con una única fuente de
 date: 2026-10-05
 slug: second-brain-syncthing
 tags:
-  - Organizacion
   - IA
-  - Descentralizado
+  - Second Brain
+  - Syncthing
+  - Obsidian
+  - Automatización
 type: note
 lang: es
 published: true
